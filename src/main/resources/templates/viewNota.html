@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Ver Nota</title>
+    <link th:href="@{/style.css}" rel="stylesheet">
+    <link href="/static/style.css" rel="stylesheet">
+</head>
+<body>
+    <h1>Nota: <span th:text="${nota.titulo}"></span></h1>
+    <object th:src="@{/notas/view/{id}(id=${nota.id})}" type="application/pdf" width="100%" height="600px">
+        <p>Tu navegador no soporta la visualización de PDFs. Puedes descargar la nota <a th:href="@{/notas/download/{id}(id=${nota.id})}">aquí</a>.</p>
+    </object>
+    <br>
+    <a href="/index">Volver a la lista de notas</a>
+</body>
+</html>

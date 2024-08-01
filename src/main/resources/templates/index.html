@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/style.css}" rel="stylesheet">
+    <link href="/static/style.css" rel="stylesheet">
+    <title>Concejo</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{'/'}">Consejo Recreo</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{'/notas/upload'}">Ingresar Nota</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{'/notas'}">Todas las Notas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+   <!-- <dim class="Container-fluid">
+        <dim class="row">
+            <dim class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 text-center">
+            </dim>
+        </dim>
+    </dim>
+   -->
+
+</body>
+
+</html>
