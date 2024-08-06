@@ -1,6 +1,5 @@
 package com.consejo.pojos;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,8 +9,8 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 
 @Entity
-@Table (name="NOTA")
-public class Nota {
+@Table(name="NOTA_MODIFICACION")
+public class NotaModificacion {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,42 +23,51 @@ public class Nota {
 	@Column(name="activa")
 	private boolean esActiva;
 	
-	public Nota() {
+	
+	public NotaModificacion() {
 		super();
 	}
+
 
 	public Long getId() {
 		return id;
 	}
 
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 
 	public String getTitulo() {
 		return titulo;
 	}
 
+
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
+
 
 	public byte[] getNota() {
 		return nota;
 	}
 
-	public void setNota(byte[] bs) {
-		this.nota = bs;
+
+	public void setNota(byte[] nota) {
+		this.nota = nota;
 	}
+
 
 	public boolean isEsActiva() {
 		return esActiva;
 	}
 
+
 	public void setEsActiva(boolean esActiva) {
 		this.esActiva = esActiva;
 	}
-
+	
 	
 	
 }
