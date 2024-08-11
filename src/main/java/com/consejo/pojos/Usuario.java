@@ -1,8 +1,14 @@
 package com.consejo.pojos;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,6 +25,15 @@ public class Usuario {
 	private String mail;
 	@Column(name="activo")
 	private boolean esActivo;
+	//Relaciones entre Objetos
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "usuario_tipo", referencedColumnName = "id")
+	private TipoUsuario tipo;
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Ingreso> ingreso;
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "pass", referencedColumnName = "id")
+	private Password contra;
 	
 	
 	public Usuario() {

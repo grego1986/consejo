@@ -2,10 +2,15 @@ package com.consejo.pojos;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,8 +23,13 @@ public class Movimiento {
 	private LocalDate fecha;
 	@Column(name="detalle")
 	private String detalle;
+	//Relacion entre Objetos
+	@ManyToOne
+    @JoinColumn(name = "expediente_id")
+    private Expediente expediente;
+	@OneToMany(mappedBy = "historial", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Nota> notas;
 	//quien hizo el movimiento
-	
 	
 	public Movimiento() {
 		super();

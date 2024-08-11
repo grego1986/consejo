@@ -5,7 +5,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -22,7 +24,10 @@ public class NotaModificacion {
 	private byte[] nota;
 	@Column(name="activa")
 	private boolean esActiva;
-	
+	//Relaciones entre Objetos
+	@ManyToOne
+    @JoinColumn(name = "nota_id")
+    private Nota notaOriginal;
 	
 	public NotaModificacion() {
 		super();

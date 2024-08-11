@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,6 +19,10 @@ public class Ingreso {
 	private LocalDate fecha;
 	@Column(name="hora")
 	private LocalDate hora;
+	//Relaciones entre Objetos
+	@ManyToOne
+    @JoinColumn(name = "ingreso_id")
+	private Usuario usuario;
 	
 	
 	public Ingreso() {

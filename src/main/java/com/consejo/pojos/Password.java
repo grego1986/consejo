@@ -3,19 +3,23 @@ package com.consejo.pojos;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name="PASS")
-public class password {
+public class Password {
 
 	
 	@Id
 	private Integer id;
 	@Column(name="pass")
 	private String pass;
+	//relaciones entre Objetos
+	@OneToOne(mappedBy = "contra")
+	private Usuario user;
 	
-	public password() {
+	public Password() {
 		super();
 	}
 	
