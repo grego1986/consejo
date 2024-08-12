@@ -1,6 +1,7 @@
 package com.consejo.pojos;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,7 +19,7 @@ public class Ingreso {
 	@Column(name="fecha")
 	private LocalDate fecha;
 	@Column(name="hora")
-	private LocalDate hora;
+	private LocalTime hora;
 	//Relaciones entre Objetos
 	@ManyToOne
     @JoinColumn(name = "ingreso_id")
@@ -40,10 +41,10 @@ public class Ingreso {
 	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
-	public LocalDate getHora() {
+	public LocalTime getHora() {
 		return hora;
 	}
-	public void setHora(LocalDate hora) {
+	public void setHora(LocalTime hora) {
 		this.hora = hora;
 	}
 	
