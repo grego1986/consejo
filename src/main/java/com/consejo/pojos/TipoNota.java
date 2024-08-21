@@ -53,6 +53,14 @@ public class TipoNota {
 	public void setInicial(String inicial) {
 		this.inicial = inicial;
 	}
+
+	public List<Expediente> getExpedientes() {
+		return expedientes;
+	}
+
+	public void setExpedientes(List<Expediente> expedientes) {
+		this.expedientes = expedientes;
+	}
 	
 	
 	

@@ -38,6 +38,7 @@ public class Nota {
 	
 	public Nota() {
 		super();
+		
 	}
 
 	public Long getId() {
@@ -70,6 +71,22 @@ public class Nota {
 
 	public void setEsActiva(boolean esActiva) {
 		this.esActiva = esActiva;
+	}
+
+	public Movimiento getHistorial() {
+		return historial;
+	}
+
+	public void setHistorial(Movimiento historial) {
+		this.historial = historial;
+	}
+
+	public List<NotaModificacion> getModificaciones() {
+		return modificaciones;
+	}
+
+	public void setModificaciones(List<NotaModificacion> modificaciones) {
+		this.modificaciones = modificaciones;
 	}
 
 	

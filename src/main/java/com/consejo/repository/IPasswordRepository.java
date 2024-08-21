@@ -7,4 +7,5 @@ import com.consejo.pojos.Password;
 @Repository
 public interface IPasswordRepository extends JpaRepository <Password,Integer> {
 
+	public Password findByUserDni(Long dni);
 }

@@ -6,6 +6,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -24,7 +26,9 @@ public class Persona {
 	//Relaciones entre objetos
 	@OneToMany(mappedBy = "persona", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Expediente> expedientes;
-	
+	@ManyToOne
+    @JoinColumn(name = "tipo_ciudadano")
+    private TipoCiudadano tipo;
 	
 	public Persona() {
 		super();
@@ -68,6 +72,26 @@ public class Persona {
 
 	public void setMail(String mail) {
 		this.mail = mail;
+	}
+
+
+	public List<Expediente> getExpedientes() {
+		return expedientes;
+	}
+
+
+	public void setExpedientes(List<Expediente> expedientes) {
+		this.expedientes = expedientes;
+	}
+
+
+	public TipoCiudadano getTipo() {
+		return tipo;
+	}
+
+
+	public void setTipo(TipoCiudadano tipo) {
+		this.tipo = tipo;
 	}
 	
 	

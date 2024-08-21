@@ -24,6 +24,7 @@ public class NotaController {
 
     @Autowired
     private NotaDaos notaServi;
+    
 
     @GetMapping("/notas")
     public String getAllNotas(Model model) {
@@ -39,8 +40,11 @@ public class NotaController {
     @PostMapping("/notas/upload")
     public String uploadNota(@RequestParam("titulo") String titulo, @RequestParam("file") MultipartFile file, Model model) throws IOException {
         try {
+        	Nota nota = new Nota();
             byte[] notaBytes = file.getBytes();
-            notaServi.guardarNota(titulo, notaBytes);
+            nota.setNota(notaBytes);
+            nota.setTitulo(titulo);
+            notaServi.guardarNota(nota );
             return "redirect:/notas/success";
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,6 +1,7 @@
 package com.consejo.pojos;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -71,6 +72,32 @@ public class Expediente {
 		this.fecha = fecha;
 	}
 	
-	
+	 public List<Movimiento> getMovimientos() {
+		return movimientos;
+	}
+
+	public void setMovimientos(List<Movimiento> movimientos) {
+		this.movimientos = movimientos;
+	}
+
+	public TipoNota getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(TipoNota tipo) {
+		this.tipo = tipo;
+	}
+
+	public Persona getPersona() {
+		return persona;
+	}
+
+	public void setPersona(Persona persona) {
+		this.persona = persona;
+	}
+
+	public void generateId(String codigoAsunto, String tipo, LocalDate fecha, String nroOrdenDia) {
+        this.id = String.format("%s-%s-%s-%s", codigoAsunto, tipo, fecha.format(DateTimeFormatter.BASIC_ISO_DATE), nroOrdenDia);
+    }
 
 }

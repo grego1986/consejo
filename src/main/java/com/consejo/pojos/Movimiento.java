@@ -63,6 +63,26 @@ public class Movimiento {
 	public void setDetalle(String detalle) {
 		this.detalle = detalle;
 	}
+
+
+	public Expediente getExpediente() {
+		return expediente;
+	}
+
+
+	public void setExpediente(Expediente expediente) {
+		this.expediente = expediente;
+	}
+
+
+	public List<Nota> getNotas() {
+		return notas;
+	}
+
+
+	public void setNotas(List<Nota> notas) {
+		this.notas = notas;
+	}
 	
 	
 	

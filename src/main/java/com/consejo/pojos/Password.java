@@ -38,6 +38,14 @@ public class Password {
 	public void setPass(String pass) {
 		this.pass = pass;
 	}
+
+	public Usuario getUser() {
+		return user;
+	}
+
+	public void setUser(Usuario user) {
+		this.user = user;
+	}
 	
 	
 }

@@ -2,6 +2,8 @@ package com.consejo.pojos;
 
 import java.util.List;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,17 +28,17 @@ public class Usuario {
 	@Column(name="activo")
 	private boolean esActivo;
 	//Relaciones entre Objetos
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "usuario_tipo", referencedColumnName = "id")
-	private TipoUsuario tipo;
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Ingreso> ingreso;
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pass", referencedColumnName = "id")
 	private Password contra;
+	@OneToOne
+    @JoinColumn(name = "rol_id")
+    private Rol rol;
 	
 	
-	public Usuario() {
+	public Usuario(String string, String string2, boolean b, boolean c, boolean d, boolean e, List<SimpleGrantedAuthority> list) {
 		super();
 	}
 
@@ -88,6 +90,36 @@ public class Usuario {
 
 	public void setEsActivo(boolean esActivo) {
 		this.esActivo = esActivo;
+	}
+
+
+	public List<Ingreso> getIngreso() {
+		return ingreso;
+	}
+
+
+	public void setIngreso(List<Ingreso> ingreso) {
+		this.ingreso = ingreso;
+	}
+
+
+	public Password getContra() {
+		return contra;
+	}
+
+
+	public void setContra(Password contra) {
+		this.contra = contra;
+	}
+
+
+	public Rol getRol() {
+		return rol;
+	}
+
+
+	public void setRol(Rol rol) {
+		this.rol = rol;
 	}
 	
 	

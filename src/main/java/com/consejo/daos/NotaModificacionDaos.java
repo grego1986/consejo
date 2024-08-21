@@ -10,20 +10,20 @@ import org.springframework.stereotype.Service;
 
 import com.consejo.pojos.Nota;
 import com.consejo.pojos.NotaModificacion;
-import com.consejo.repository.INotaRepository;
+import com.consejo.repository.INotaModificacionRepository;
 
 @Service
-public class NotaDaos implements INotaDaos {
+public class NotaModificacionDaos implements INotaModificacionDaos {
 
 	@Autowired
-	private INotaRepository notaRepo;
-
+	private INotaModificacionRepository notaModiRepo;
+	
 	@Override
-	public List<Nota> listarNota() {
+	public List<NotaModificacion> listarNota() {
 
 		try {
 
-			return notaRepo.findAll();
+			return notaModiRepo.findAll();
 
 		} catch (DataAccessException dae) {
 			// Manejar la excepción de acceso a la base de datos
@@ -37,10 +37,10 @@ public class NotaDaos implements INotaDaos {
 	}
 
 	@Override
-	public Nota BuscarNota(Long id) {
+	public NotaModificacion BuscarNota(Long id) {
 
 		try {
-			return notaRepo.findById(id).orElse(null);
+			return notaModiRepo.findById(id).orElse(null);
 		} catch (DataAccessException dae) {
 			// Manejar la excepción de acceso a la base de datos
 			System.err.println("Error al acceder a la base de datos: " + dae.getMessage());
@@ -52,24 +52,17 @@ public class NotaDaos implements INotaDaos {
 		}
 	}
 
-	/*
-	 * @Override public void agregarNota(Nota nota) {
-	 * 
-	 * notaRepo.save(nota); }
-	 */
-
 	@Override
-	public void eliminaNota(Nota nota) {
-
-		// notaRepo.delete(nota);
+	public void eliminaNota(NotaModificacion nota) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
-	public void guardarNota(Nota nota) throws IOException {
-
+	public void guardarNota(NotaModificacion nota) throws IOException {
 		try {
 
-			notaRepo.save(nota);
+			notaModiRepo.save(nota);
 
 		} catch (DataAccessException dae) {
 			// Manejo de errores específicos de la base de datos
@@ -81,14 +74,15 @@ public class NotaDaos implements INotaDaos {
 			// Manejo general de excepciones
 			throw new IOException("Error al guardar el expediente: " + ex.getMessage(), ex);
 		}
-
+		
 	}
 
 	@Override
 	public void modificarNota(NotaModificacion nuevaNota, Nota nota) throws IOException {
 
+		/*
 		try {
-			if (notaRepo.existsById(nota.getId())) {
+			if (notaModiRepo.existsById(nota.getId())) {
 	            nota.setEsActiva(false);
 	            nota.getModificaciones().add(nuevaNota);
 	            notaRepo.save(nota);    
@@ -104,14 +98,7 @@ public class NotaDaos implements INotaDaos {
 			// Manejo general de excepciones
 			throw new IOException("Error al guardar el expediente: " + ex.getMessage(), ex);
 		}
-
+		*/
 	}
-
-	/*
-	 * @Override public void guardarNota(String titulo, File pdfFile) throws
-	 * IOException { Nota nota = new Nota(); nota.setTitulo(titulo);
-	 * nota.setNota(PdfToByteArray.convertPdfToByteArray(pdfFile));
-	 * notaRepo.save(nota); }
-	 */
 
 }

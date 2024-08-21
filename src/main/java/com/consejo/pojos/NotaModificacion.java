@@ -72,6 +72,16 @@ public class NotaModificacion {
 	public void setEsActiva(boolean esActiva) {
 		this.esActiva = esActiva;
 	}
+
+
+	public Nota getNotaOriginal() {
+		return notaOriginal;
+	}
+
+
+	public void setNotaOriginal(Nota notaOriginal) {
+		this.notaOriginal = notaOriginal;
+	}
 	
 	
 	
