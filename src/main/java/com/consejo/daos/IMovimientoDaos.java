@@ -10,6 +10,6 @@ import com.consejo.pojos.Movimiento;
 public interface IMovimientoDaos {
 
 	public List<Movimiento> listarMovimientoExpediente (Expediente e);
-	public void agregarMovimiento (Movimiento m, Expediente e) throws IOException;
+	public void agregarMovimiento (Movimiento m) throws IOException;
 	
 }

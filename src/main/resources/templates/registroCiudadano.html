@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link th:href="@{/style.css}" rel="stylesheet">
     <link href="/static/css/style.css" rel="stylesheet">
     <link th:href="@{/css/style.css}" rel="stylesheet">
     <title>Concejo</title>
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark">
         <div class="container-fluid">
@@ -128,26 +128,60 @@
             </div>
         </div>
     </nav>
-    <h1>Lista de Notas</h1>
-    <a href="/notas/upload">Subir Nueva Nota</a>
-    <table class="table table-success table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Título</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="nota : ${notas}">
-                <td th:text="${nota.id}"></td>
-                <td th:text="${nota.titulo}"></td>
-                <td>
-                    <a class="" th:href="@{/notas/view/{id}(id=${nota.id})}">Ver</a>
-                    <a th:href="@{/notas/download/{id}(id=${nota.id})}" target="_blank">Descargar</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</body>    
+
+    <form th:action="@{/mesa-entrada/ciudadanoRegistrado}" method="post" enctype="multipart/form-data" th:object="${formCiudadano}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+        <div class="form-check mb-1">
+            <label for="cuit" class="form-label">DNI o CUIT</label>
+            <label for="nombre" class="form-label" th:text="${dni}"></label>
+        </div>
+
+        <div class="mb-1">
+            <label for="cuit" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="nombre del ciudadano" th:field="*{nombre}" required>
+        </div>
+
+        <div class="mb-1">
+            <label for="cuit" class="form-label">Dirección</label>
+            <input type="text" class="form-control" id="direccion" name="direccion" placeholder="dirección" th:field="*{direccion}" required>
+        </div>
+
+        <div class="mb-1">
+            <label for="cuit" class="form-label">Teléfono</label>
+            <input type="text" class="form-control" id="telefono" name="telefono" placeholder="teléfono" th:field="*{telefono}" required>
+        </div>
+
+        <div class="mb-1">
+            <label for="cuit" class="form-label">E-mail</label>
+            <input type="email" class="form-control" id="mail" name="mail" placeholder="correo electronico" th:field="*{mail}" required>
+        </div>
+    
+        <div class="mb-1">
+            <label for="tipoCiudadano" class="form-label">Tipo de Ciudadano</label>
+            <select class="form-select" id="tipoCiudadano" name="tipoCiudadano" required>
+                <option th:each="tipo : ${tipoCiudadanos}" th:value="${tipo.id}" th:text="${tipo.toString}"></option>
+            </select>
+        </div>
+
+        <div class="form-check mb-1">
+            <input class="form-check-input" type="checkbox" id="organizacion" th:field="*{organizacion}">
+            <label class="form-check-label" for="organizacion">
+                Organización (Persona Jurídica)
+            </label>
+        </div>
+
+        <div class="form-check mb-1">
+            <button type="submit" class="btn btn-primary" name="action" value="guardarCiudadano">Guardar Ciudadano</button>
+        </div>
+        </div>
+
+    </form>
+
+    
+    <script th:src="@{/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js}"></script>
+    <script src="/static/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    
+</body>
+
 </html>

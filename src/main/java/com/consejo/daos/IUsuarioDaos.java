@@ -8,7 +8,8 @@ public interface IUsuarioDaos {
 
 	public List<Usuario> listarUsuarios();
 	public Usuario buscarUsuario (Long dni);
-	public void agregarUsuario (Usuario usuario);
+	public boolean agregarUsuario (Usuario usuario);
 	public void elimuinarUsuario (Long dni);
+	public List<Usuario> buscarUsuarios(String nombre, String apellido);
 	
 }

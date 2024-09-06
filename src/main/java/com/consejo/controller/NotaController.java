@@ -26,7 +26,7 @@ public class NotaController {
     private NotaDaos notaServi;
     
 
-    @GetMapping("/notas")
+    @GetMapping("/administrador/nota")
     public String getAllNotas(Model model) {
         model.addAttribute("notas", notaServi.listarNota());
         return "notas";

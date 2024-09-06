@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link th:href="@{/style.css}" rel="stylesheet">
     <link href="/static/css/style.css" rel="stylesheet">
     <link th:href="@{/css/style.css}" rel="stylesheet">
     <title>Concejo</title>
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark">
         <div class="container-fluid">
@@ -128,26 +128,17 @@
             </div>
         </div>
     </nav>
-    <h1>Lista de Notas</h1>
-    <a href="/notas/upload">Subir Nueva Nota</a>
-    <table class="table table-success table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Título</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="nota : ${notas}">
-                <td th:text="${nota.id}"></td>
-                <td th:text="${nota.titulo}"></td>
-                <td>
-                    <a class="" th:href="@{/notas/view/{id}(id=${nota.id})}">Ver</a>
-                    <a th:href="@{/notas/download/{id}(id=${nota.id})}" target="_blank">Descargar</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</body>    
+
+    <form th:action="@{/mesa-entrada/ciudadanoBuscar}" th:object="${formBean}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <label for="cuit" class="form-label">DNI o CUIT</label>
+        <input type="text" class="form-control"  th:field="*{dni}" id="dni" name="dni" placeholder="DNI o CUIT" required>
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </form>
+    
+    <script th:src="@{/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js}"></script>
+    <script src="/static/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    
+</body>
+
 </html>

@@ -21,7 +21,11 @@ public class Persona {
 	private String nombre;
 	@Column(name="organizacion")
 	private boolean esOrganizacion;
-	@Column(name="Contacto")
+	@Column(name="telefono")
+	private String telefono;
+	@Column(name="direccion")
+	private String direccion;
+	@Column(name="mail")
 	private String mail;
 	//Relaciones entre objetos
 	@OneToMany(mappedBy = "persona", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -92,6 +96,26 @@ public class Persona {
 
 	public void setTipo(TipoCiudadano tipo) {
 		this.tipo = tipo;
+	}
+
+
+	public String getTelefono() {
+		return telefono;
+	}
+
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+
+	public String getDireccion() {
+		return direccion;
+	}
+
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
 	}
 	
 	

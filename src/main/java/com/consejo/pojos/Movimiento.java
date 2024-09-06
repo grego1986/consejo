@@ -1,6 +1,8 @@
 package com.consejo.pojos;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -27,7 +29,7 @@ public class Movimiento {
     @JoinColumn(name = "expediente_id")
     private Expediente expediente;
 	@OneToMany(mappedBy = "historial", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Nota> notas;
+    private List<Nota> notas = new ArrayList<>();
 	//quien hizo el movimiento
 	
 	public Movimiento() {
@@ -84,7 +86,9 @@ public class Movimiento {
 		this.notas = notas;
 	}
 	
-	
+	public void generateId(String nroExpediente, Integer nroMovimiento) {
+        this.id = String.format("%s/%s", nroExpediente, nroMovimiento);
+    }
 	
 
 }

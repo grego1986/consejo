@@ -2,6 +2,7 @@ package com.consejo.pojos;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -27,7 +28,7 @@ public class Expediente {
 	private LocalDate fecha;
 	//Relaciones entre objetos
     @OneToMany(mappedBy = "expediente", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Movimiento> movimientos;
+    private List<Movimiento> movimientos = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "tipo_expediente")
     private TipoNota tipo;
@@ -96,7 +97,7 @@ public class Expediente {
 		this.persona = persona;
 	}
 
-	public void generateId(String codigoAsunto, String tipo, LocalDate fecha, String nroOrdenDia) {
+	public void generateId(String codigoAsunto, String tipo, LocalDate fecha, Integer nroOrdenDia) {
         this.id = String.format("%s-%s-%s-%s", codigoAsunto, tipo, fecha.format(DateTimeFormatter.BASIC_ISO_DATE), nroOrdenDia);
     }
 

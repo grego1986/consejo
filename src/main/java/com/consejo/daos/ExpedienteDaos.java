@@ -64,21 +64,11 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	}
 
 	@Override
-	public void guardarExpediente(Expediente expediente, Persona ciudadano, TipoNota tipoNota, int nroOrdenDia, Movimiento movimiento)	throws IOException {
+	public void guardarExpediente(Expediente expediente)	throws IOException {
 		
 		try {
-			Expediente e = new Expediente();
-			String nExpediente = createExpedienteId(ciudadano.getTipo().getId(), tipoNota.getTipo(), expediente.getFecha(), nroOrdenDia);
-			e.setId(nExpediente);
-			e.setCaratula(expediente.getCaratula());
-			e.setDetalle(expediente.getDetalle());
-			e.setFecha(expediente.getFecha());
-			e.setPersona(ciudadano);
-			e.setTipo(tipoNota);
-			expedienteRepo.save(e);
+			expedienteRepo.save(expediente);
 			
-			agregarMovimiento(e.getId(), movimiento);
-
 		} catch (DataAccessException dae) {
 			// Manejo de errores específicos de la base de datos
 			throw new IOException("Error al acceder a la base de datos: " + dae.getMessage(), dae);

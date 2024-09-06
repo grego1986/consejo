@@ -1,40 +1,20 @@
 package com.consejo.daos;
 
-import java.util.Collections;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.consejo.pojos.Usuario;
 import com.consejo.repository.IUsuarioRepository;
 
 @Service
-public class UsuarioDaos implements IUsuarioDaos, UserDetailsService {
+public class UsuarioDaos implements IUsuarioDaos{
 
 	
 	  @Autowired
 	    private IUsuarioRepository usuarioRepo;
-	  
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		 // Buscar el usuario por su mail
-        Usuario usuario = usuarioRepo.findByMail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
-
-        // Convertir el rol en GrantedAuthority
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(usuario.getRol().getrol());
-
-        // Crear un objeto UserDetails
-        return (UserDetails) new Usuario(usuario.getMail(), usuario.getContra().getPass(), 
-                usuario.isEsActivo(), true, true, true, 
-                Collections.singletonList(authority));
-	}
-
 	@Override
 	public List<Usuario> listarUsuarios() {
 		
@@ -48,10 +28,18 @@ public class UsuarioDaos implements IUsuarioDaos, UserDetailsService {
 	}
 
 	@Override
-	public void agregarUsuario(Usuario usuario) {
-		
-		usuarioRepo.save(usuario);
-	}
+	public boolean agregarUsuario(Usuario usuario) {
+		try {
+            // Guardar el usuario en la base de datos
+            usuarioRepo.save(usuario);
+            return true; // Registro exitoso
+        } catch (Exception e) {
+            // Manejar cualquier excepción que pueda ocurrir
+            e.printStackTrace();
+            return false; // Registro fallido
+        }
+    }
+
 
 	@Override
 	public void elimuinarUsuario(Long dni) {
@@ -59,6 +47,20 @@ public class UsuarioDaos implements IUsuarioDaos, UserDetailsService {
 		
 	}
 	
-	
+	public boolean existe (Long dni) {
+		
+		if (usuarioRepo.existsById(dni)) {
+			return true;
+		}
+		return false;
+	}
 
-}
+	@Override
+	public List<Usuario> buscarUsuarios(String nombre, String apellido) {
+	    if ((nombre == null || nombre.isEmpty()) && (apellido == null || apellido.isEmpty())) {
+	        return usuarioRepo.findAll();  // Si no hay nombre ni apellido, listar todos
+	    }
+	    return usuarioRepo.findByNombreOrApellido(nombre, apellido);  // Buscar por nombre o apellido
+	}
+	}
+

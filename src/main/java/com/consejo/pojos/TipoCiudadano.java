@@ -1,5 +1,6 @@
 package com.consejo.pojos;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -18,8 +19,10 @@ public class TipoCiudadano {
 	private Integer id;
 	@Column (name="tipo-usuario")
 	private String tipoUsuario;
+	@Column(name="inicial", length=2)
+	private String inicial;
 	@OneToMany(mappedBy = "tipo", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Persona> ciudadanos;
+    private List<Persona> ciudadanos = new ArrayList<>();
 	
 	
 	public TipoCiudadano() {
@@ -54,6 +57,22 @@ public class TipoCiudadano {
 
 	public void setCiudadanos(List<Persona> ciudadanos) {
 		this.ciudadanos = ciudadanos;
+	}
+
+
+	@Override
+	public String toString() {
+		return tipoUsuario;
+	}
+
+
+	public String getInicial() {
+		return inicial;
+	}
+
+
+	public void setInicial(String inicial) {
+		this.inicial = inicial;
 	}
 	
 	

@@ -1,5 +1,6 @@
 package com.consejo.pojos;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -24,7 +25,7 @@ public class TipoNota {
 	private String inicial;
 	//Relacion entre objetos
 	@OneToMany(mappedBy = "tipo", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Expediente> expedientes;
+    private List<Expediente> expedientes = new ArrayList<>();
 	
 	public TipoNota() {
 		super();

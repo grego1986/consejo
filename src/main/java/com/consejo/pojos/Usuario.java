@@ -1,5 +1,6 @@
 package com.consejo.pojos;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -7,8 +8,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -29,11 +32,11 @@ public class Usuario {
 	private boolean esActivo;
 	//Relaciones entre Objetos
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Ingreso> ingreso;
+	private List<Ingreso> ingreso = new ArrayList<>();
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pass", referencedColumnName = "id")
 	private Password contra;
-	@OneToOne
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rol_id")
     private Rol rol;
 	
@@ -41,6 +44,13 @@ public class Usuario {
 	public Usuario(String string, String string2, boolean b, boolean c, boolean d, boolean e, List<SimpleGrantedAuthority> list) {
 		super();
 	}
+
+	
+
+	public Usuario() {
+		super();
+	}
+
 
 
 	public Long getDni() {

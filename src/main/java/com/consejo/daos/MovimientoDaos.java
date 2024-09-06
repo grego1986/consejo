@@ -36,12 +36,9 @@ public class MovimientoDaos implements IMovimientoDaos {
 	}
 
 	@Override
-	public void agregarMovimiento(Movimiento m, Expediente e) throws IOException{
+	public void agregarMovimiento(Movimiento m) throws IOException{
 			try {
 
-				m.setExpediente(e);
-		        m.setId(generateMovimientoId(e));
-		        e.getMovimientos().add(m);
 		        movimientoRepo.save(m);
 				
 			} catch (DataAccessException dae) {
