@@ -53,7 +53,7 @@ public class MovimientoDaos implements IMovimientoDaos {
 			}
 		}
 	
-	private String generateMovimientoId(Expediente expediente) {
+	private String generateMovimientoId (Expediente expediente) {
         // Lógica para generar el ID del movimiento basado en el expediente y el índice de la lista
         int numeroMovimiento = expediente.getMovimientos().size() - 1;
         return expediente.getId() + "/" + String.format("%02d", numeroMovimiento);

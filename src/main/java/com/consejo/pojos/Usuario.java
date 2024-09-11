@@ -11,6 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -39,7 +40,8 @@ public class Usuario {
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rol_id")
     private Rol rol;
-	
+	@ManyToMany(mappedBy = "usuariosAsignados")
+    private List<Expediente> expedientesAsignados = new ArrayList<>();
 	
 	public Usuario(String string, String string2, boolean b, boolean c, boolean d, boolean e, List<SimpleGrantedAuthority> list) {
 		super();
@@ -130,6 +132,18 @@ public class Usuario {
 
 	public void setRol(Rol rol) {
 		this.rol = rol;
+	}
+
+
+
+	public List<Expediente> getExpedientesAsignados() {
+		return expedientesAsignados;
+	}
+
+
+
+	public void setExpedientesAsignados(List<Expediente> expedientesAsignados) {
+		this.expedientesAsignados = expedientesAsignados;
 	}
 	
 	

@@ -87,7 +87,8 @@ public class Movimiento {
 	}
 	
 	public void generateId(String nroExpediente, Integer nroMovimiento) {
-        this.id = String.format("%s/%s", nroExpediente, nroMovimiento);
+		int numeroMovimiento = nroMovimiento;
+        this.id = String.format("%s/" + numeroMovimiento, nroExpediente );
     }
 	
 

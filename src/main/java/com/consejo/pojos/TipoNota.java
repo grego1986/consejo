@@ -62,6 +62,11 @@ public class TipoNota {
 	public void setExpedientes(List<Expediente> expedientes) {
 		this.expedientes = expedientes;
 	}
+
+	@Override
+	public String toString() {
+		return tipo + " (" + inicial + ")";
+	}
 	
 	
 	

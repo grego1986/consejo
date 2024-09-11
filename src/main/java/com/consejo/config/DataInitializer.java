@@ -50,6 +50,7 @@ public class DataInitializer implements CommandLineRunner {
             Usuario prensa = new Usuario();
             Password passPrensa = new Password();
             Rol rolPrensa = new Rol();
+            Rol rolPresidencia = new Rol();
             
             //Administrador
             admin.setNombre("Jose");
@@ -132,7 +133,7 @@ public class DataInitializer implements CommandLineRunner {
             
             consejal.setContra(passConsejal);
             
-            rolConsejal.setRol("ROLE_CONSEJAL");
+            rolConsejal.setRol("ROLE_CONCEJAL");
             rolConsejal.getUsuarios().add(consejal);
             
             consejal.setRol(rolConsejal);
@@ -141,6 +142,10 @@ public class DataInitializer implements CommandLineRunner {
             rolRepo.save(rolConsejal);
             usuarioRepo.save(consejal);
             passRepo.save(passConsejal);
+            
+            rolPresidencia.setRol("ROLE_PRESIDENTE");
+            
+            rolRepo.save(rolPresidencia);
             
             
         }

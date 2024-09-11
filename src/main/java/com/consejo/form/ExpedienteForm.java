@@ -85,13 +85,15 @@ public class ExpedienteForm {
         this.tituloNota = tituloNota;
     }
 
-    public MultipartFile getNota() {
-        return nota;
-    }
+	
+	public MultipartFile getNota() {
+		return nota;
+	}
 
-    public void setNota(MultipartFile nota) {
-        this.nota = nota;
-    }
+
+	public void setNota(MultipartFile nota) {
+		this.nota = nota;
+	}
 
 
 	public Long getDni() {
@@ -142,6 +144,6 @@ public class ExpedienteForm {
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
-    
-    
+ 
+	
 }
