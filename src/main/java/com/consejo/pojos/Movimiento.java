@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 
 @Entity
@@ -29,6 +30,7 @@ public class Movimiento {
     @JoinColumn(name = "expediente_id")
     private Expediente expediente;
 	@OneToMany(mappedBy = "historial", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OrderBy("id ASC")
     private List<Nota> notas = new ArrayList<>();
 	//quien hizo el movimiento
 	

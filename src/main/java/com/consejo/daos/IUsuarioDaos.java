@@ -11,5 +11,6 @@ public interface IUsuarioDaos {
 	public boolean agregarUsuario (Usuario usuario);
 	public void elimuinarUsuario (Long dni);
 	public List<Usuario> buscarUsuarios(String nombre, String apellido);
+	public boolean modificarUsuario (Usuario usuario);
 	
 }

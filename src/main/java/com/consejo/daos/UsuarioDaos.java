@@ -3,10 +3,13 @@ package com.consejo.daos;
 
 import java.util.List;
 
+import org.apache.el.stream.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.consejo.pojos.Rol;
 import com.consejo.pojos.Usuario;
+import com.consejo.repository.IRolRepository;
 import com.consejo.repository.IUsuarioRepository;
 
 @Service
@@ -15,6 +18,9 @@ public class UsuarioDaos implements IUsuarioDaos{
 	
 	  @Autowired
 	    private IUsuarioRepository usuarioRepo;
+	  @Autowired
+	  private IRolRepository rolRepo;
+	  
 	@Override
 	public List<Usuario> listarUsuarios() {
 		
@@ -61,6 +67,23 @@ public class UsuarioDaos implements IUsuarioDaos{
 	        return usuarioRepo.findAll();  // Si no hay nombre ni apellido, listar todos
 	    }
 	    return usuarioRepo.findByNombreOrApellido(nombre, apellido);  // Buscar por nombre o apellido
+	}
+
+	@Override
+	public boolean modificarUsuario(Usuario usuario) {
+		
+		Rol inactivo = rolRepo.findByRol("ROLE_INACTIVO");
+				
+		if (usuarioRepo.existsById(usuario.getDni())) {
+			if (usuario.getRol().equals(inactivo)) {
+				usuario.setEsActivo(false);
+			} else {
+				usuario.setEsActivo(true);
+			}
+            usuarioRepo.save(usuario);
+            return true;
+        }	
+		return false;
 	}
 	}
 

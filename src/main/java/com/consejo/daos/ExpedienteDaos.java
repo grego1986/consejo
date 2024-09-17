@@ -407,14 +407,23 @@ public class ExpedienteDaos implements IExpedienteDaos {
 
 	@Override
 	public void moverANotaMunicipio(Expediente expediente) throws IOException {
-		// TODO Auto-generated method stub
+		if (expediente.getEstado() == CircuitoExpediente.NOTAS_DE_COMISION) {
+			expediente.setEstado(CircuitoExpediente.NOTA_MUNICIPIO);
+			expedienteRepo.save(expediente);
+		} else {
+			throw new IllegalStateException("El expediente no se encuentra en la etapa correcta");
+		}
 
 	}
 
 	@Override
 	public void moverARepuestaMunicipio(Expediente expediente) throws IOException {
-		// TODO Auto-generated method stub
-
+		if (expediente.getEstado() == CircuitoExpediente.NOTA_MUNICIPIO) {
+			expediente.setEstado(CircuitoExpediente.REPUESTA_MUNICIPIO);
+			expedienteRepo.save(expediente);
+		} else {
+			throw new IllegalStateException("El expediente no se encuentra en la etapa correcta");
+		}
 	}
 
 	@Override

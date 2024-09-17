@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link th:href="@{/css/style.css}" rel="stylesheet">
     <link href="/static/css/style.css" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
     <title>Concejo</title>
 </head>
-<body>
 
+<body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" th:href="@{'/home'}">Concejo Recreo</a>
@@ -163,21 +163,69 @@
                             </form>   
                         </ul>
                     </li>
+                    
                 </ul>
             </div>
         </div>
     </nav>
-
-
-
-
-    <label for="nombre" class="form-label" th:text="${nExpediente}"></label>
-
-    <a class="btn btn-primary" th:href="@{/home}">Aceptar</a>
+    <!---->
+    <form th:action="@{/administrador/modificarUsuario/{id}(id=${usuarioform.dni})}" th:method="post" th:object="${usuarioform}" class="form-horizontal">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <!-- DNI (No editable) -->
+        <div class="form-group">
+            <label for="dni" class="col-sm-2 control-label">DNI</label>
+            <div class="col-sm-10">
+                <input type="text" id="dni" class="form-control" th:field="*{dni}" readonly/>
+            </div>
+        </div>
     
+        <!-- Nombre -->
+        <div class="form-group">
+            <label for="nombre" class="col-sm-2 control-label">Nombre</label>
+            <div class="col-sm-10">
+                <input type="text" id="nombre" class="form-control" th:field="*{nombre}" placeholder="Nombre" readonly/>
+            </div>
+        </div>
+    
+        <!-- Apellido -->
+        <div class="form-group">
+            <label for="apellido" class="col-sm-2 control-label">Apellido</label>
+            <div class="col-sm-10">
+                <input type="text" id="apellido" class="form-control" th:field="*{apellido}" placeholder="Apellido" readonly/>
+            </div>
+        </div>
+    
+        <!-- Email -->
+        <div class="form-group">
+            <label for="mail" class="col-sm-2 control-label">Email</label>
+            <div class="col-sm-10">
+                <input type="email" id="mail" class="form-control" th:field="*{mail}" placeholder="Email" required/>
+            </div>
+        </div>
+    
+        <!-- Rol -->
+        <div class="form-group">
+            <label for="rol" class="col-sm-2 control-label">Rol</label>
+            <div class="col-sm-10">
+                <select id="rol" name="rol" class="form-select" th:field="*{rol}">
+                    <option value="">Seleccione un rol</option>
+                    <option th:each="rol : ${roles}" th:value="${rol.id}" th:text="${rol.toString}"></option>
+                </select>
+            </div>
+        </div>
+    
+        <!-- Botón de Enviar -->
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary">Modificar Usuario</button>
+            </div>
+        </div>
+    </form>
+    
+    
+    <script th:src="@{/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js}"></script>
+    <script src="/static/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 
-    <script src="/static/css/node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="/static/css/node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
-    <script src="/static/css/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

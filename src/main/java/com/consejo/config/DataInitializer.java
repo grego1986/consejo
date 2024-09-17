@@ -51,6 +51,7 @@ public class DataInitializer implements CommandLineRunner {
             Password passPrensa = new Password();
             Rol rolPrensa = new Rol();
             Rol rolPresidencia = new Rol();
+            Rol rolInactivo = new Rol();
             
             //Administrador
             admin.setNombre("Jose");
@@ -147,7 +148,9 @@ public class DataInitializer implements CommandLineRunner {
             
             rolRepo.save(rolPresidencia);
             
+            rolInactivo.setRol("ROLE_INACTIVO");
             
+            rolRepo.save(rolInactivo);
         }
 		
 		if (tipoNotaRepo.count() == 0) {

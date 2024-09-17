@@ -37,4 +37,9 @@ public class RolDaos implements IRolDaos{
 		
 	}
 
+	@Override
+	public Rol buscarRolPorNombre(String rol) {
+		return rolRepo.findByRol(rol);
+	}
+
 }

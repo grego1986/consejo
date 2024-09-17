@@ -28,7 +28,7 @@ public class SecurityConfig  {
 	        http
 	            .authorizeHttpRequests(authorize -> authorize
 	                .requestMatchers("/administrador/**").hasRole("ADMIN")
-	                .requestMatchers("/consejal/**").hasAnyRole("CONCEJAL", "PRESIDENTE")
+	                .requestMatchers("/concejal/**").hasAnyRole("CONCEJAL", "PRESIDENTE")
 	                .requestMatchers("/presidente/**").hasRole("PRESIDENTE")
 	                .requestMatchers("/mesa-entrada/**").hasRole("ENTRADA")
 	                .requestMatchers("/prensa/**").hasRole("PRENSA")

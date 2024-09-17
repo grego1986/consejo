@@ -18,6 +18,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 
 @Entity
@@ -37,6 +38,7 @@ public class Expediente {
     private CircuitoExpediente estado;
 	//Relaciones entre objetos
     @OneToMany(mappedBy = "expediente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("fecha ASC")
     private List<Movimiento> movimientos = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "tipo_expediente")

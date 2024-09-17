@@ -13,7 +13,7 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" th:href="@{'/'}">Consejo Recreo</a>
+            <a class="navbar-brand" th:href="@{'/home'}">Concejo Recreo</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -37,23 +37,53 @@
                         </ul>
                     </li>
                     <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                           Usuarios 
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Usuarios
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <form th:action="@{/administrador/registroUsuario}" method="get">
                                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                                 <li><button type="submit" class="dropdown-item">Registrar Usuario</button></li>
-                            </form>  
+                            </form>
                             <form th:action="@{/administrador/buscarUsuario}" method="get">
                                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                                 <li><button type="submit" class="dropdown-item">Buscar Usuario</button></li>
-                            </form>  
-                            <li><hr class="dropdown-divider"></li>
+                            </form>
+                            <form th:action="@{/administrador/AsignarPresidencia}" method="get">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <li><button type="submit" class="dropdown-item">Asignar Presidencia</button></li>
+                            </form>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
                             <form th:action="@{/administrador/resetearContraseña}" method="get">
                                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                                 <li><button type="submit" class="dropdown-item">Resetear contraseña</button></li>
-                            </form> 
+                            </form>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Expedientes
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <form th:action="@{/administrador/expediente/ingresos}" method="get">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <li><button type="submit" class="dropdown-item">ingresos</button></li>
+                            </form>
+                            <form th:action="@{/administrador/expediente/mover}" method="get">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <li><button type="submit" class="dropdown-item">Mover a...</button></li>
+                            </form>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <form th:action="@{/administrador/expediente/enviar}" method="get">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <li><button type="submit" class="dropdown-item">Enviar a...</button></li>
+                            </form>
                         </ul>
                     </li>
                     <li class="nav-item dropdown" sec:authorize="hasRole('ENTRADA')">
@@ -62,71 +92,83 @@
                             Mesa de Entrada
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Recepcion de Nota (Por el ciudadano)</a></li>
-                            <li><a class="dropdown-item" href="#">Registrar Salida a Municipalidad</a></li>
-                            <li><a class="dropdown-item" href="#">Registrar Entrada desde la Municipalidad</a></li>
+                            <form th:action="@{/mesa-entrada/ciudadanoBuscar}" method="get">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <li><button type="submit" class="dropdown-item">Recepcion de Nota (Por el
+                                        ciudadano)</button></li>
+                            </form>
+                            <form th:action="@{/mesa-entrada/registroSalida}" method="get">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <li><button type="submit" class="dropdown-item">Registrar Salida a
+                                        Municipalidad</button></li>
+                            </form>
+                            <form th:action="@{/mesa-entrada/registroEntrada}" method="get">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <li><button type="submit" class="dropdown-item">Registrar Entrada desde la
+                                        Municipalidad</button></li>
+                            </form>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown" sec:authorize="hasRole('CONSEJAL')">
+                    <li class="nav-item dropdown" sec:authorize="hasRole('CONCEJAL')">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Expediente
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Buscar Expediente</a></li>
-                            <li><a class="dropdown-item" href="#">Listar Expediente</a></li>
-                            <li><a class="dropdown-item" href="#">Agregar Movimiento al Expediente</a></li>
+                            <form th:action="@{/concejal/expediente/ingresos}" method="get">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <li><button type="submit" class="dropdown-item">Ingresos...</button></li>
+                            </form>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle" href="#">Notas</a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Buscar Nota</a></li>
-                                    <li><a class="dropdown-item" href="#">Modificar Nota</a></li>
-                                </ul>
+                            <form th:action="@{/concejal/expediente/enviar}" method="get">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <li><button type="submit" class="dropdown-item">Enviar a...</button></li>
+                            </form>
+                            <form th:action="@{/concejal/expediente/ingresos}" method="get"></form>
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                            <li><button type="submit" class="dropdown-item">Buscar Expediente</button></li>
+                            </form>
+                            <form th:action="@{/concejal/expediente/mover}" method="get">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <li><button type="submit" class="dropdown-item">Listar Expedientes</button></li>
+                            </form>
+                            <li>
+                                <hr class="dropdown-divider">
                             </li>
+                            <form th:action="@{/concejal/expediente/mover}" method="get">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <li><button type="submit" class="dropdown-item">Agregar Movimiento al
+                                        Expediente</button></li>
+                            </form>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown" sec:authorize="hasRole('PRENSA')">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Servicios
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Servicio 1</a></li>
-                            <li><a class="dropdown-item" href="#">Servicio 2</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle" href="#">Más Servicios</a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Servicio 3</a></li>
-                                    <li><a class="dropdown-item" href="#">Servicio 4</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Servicios
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Servicio 1</a></li>
-                            <li><a class="dropdown-item" href="#">Servicio 2</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle" href="#">Más Servicios</a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Servicio 3</a></li>
-                                    <li><a class="dropdown-item" href="#">Servicio 4</a></li>
-                                </ul>
-                            </li>
-                        </ul>
+                    <li class="nav-item dropdown" sec:authorize="hasRole('CONCEJAL')"></li>
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Comisiones
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <form th:action="@{/concejal/comision/gobiernoYDesarrolloSocial}" method="get">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                            <li><button type="submit" class="dropdown-item">COMISION DE GOBIERNO Y DESARROLLO
+                                    SOCIAL</button></li>
+                        </form>
+                        <form th:action="@{/concejal/comision/desarrolloUrbanoyEconomia}" method="get">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                            <li><button type="submit" class="dropdown-item">COMISION DE DESARROLLO URBANO AMBIENTAL Y
+                                    ECONOMIA</button></li>
+                        </form>
+                        <form th:action="@{/concejal/comision/ambasComisiones}" method="get">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                            <li><button type="submit" class="dropdown-item">AMBAS COMISIONES</button></li>
+                        </form>
+                        <form th:action="@{/concejal/comision/archivo}" method="get">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                            <li><button type="submit" class="dropdown-item">ARCHIVO</button></li>
+                        </form>
+                    </ul>
                     </li>
                 </ul>
             </div>
@@ -136,45 +178,47 @@
     <div class="container" sec:authorize="hasRole('ADMIN')">
         <h2>Buscar Usuarios</h2>
         <form th:action="@{/administrador/buscarUsuario/resultado}" th:object="${formBuscarCiudadano}" method="get">
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" >
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
             <input type="text" name="nombre" placeholder="Buscar por nombre" th:field="*{nombre}">
-            <input type="text" name="apellido" placeholder="Buscar por apellido" th:field="*{apellido}"/>
+            <input type="text" name="apellido" placeholder="Buscar por apellido" th:field="*{apellido}" />
             <button type="submit" name="action" value="buscar">Buscar</button>
         </form>
         <br>
-            <h2>Resultados de la búsqueda</h2>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Mail</th>
-                        <th>Rol</th>
-                        <th>Situación</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="usuario : ${usuarios}">
-                        <td th:text="${usuario.nombre}"></td>
-                        <td th:text="${usuario.apellido}"></td>
-                        <td th:text="${usuario.mail}"></td>
-                        <td th:text="${usuario.rol.toString}"></td>
-                        <td th:text="${usuario.esActivo ? 'Activo' : 'Inactivo'}"></td>
-                        <td>
-                            <a th:href="@{/administrador/modificarUsuario/{id}(id=${usuario.dni})}"
-                                class="btn btn-primary">Modificar</a>
-                            <a th:href="@{/administrador/eliminarUsuario/{id}(id=${usuario.dni})}" class="btn btn-danger">Eliminar</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        
+        <h2>Resultados de la búsqueda</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Mail</th>
+                    <th>Rol</th>
+                    <th>Situación</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="usuario : ${usuarios}">
+                    <td th:text="${usuario.nombre}"></td>
+                    <td th:text="${usuario.apellido}"></td>
+                    <td th:text="${usuario.mail}"></td>
+                    <td th:text="${usuario.rol.toString}"></td>
+                    <td th:text="${usuario.esActivo ? 'Activo' : 'Inactivo'}"></td>
+                    <td>
+                        <!-- Condición para verificar si el usuario está activo -->
+                        <form th:action="@{/administrador/modificarUsuario/{id}(id=${usuario.dni})}" method="get">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                            <button type="submit" class="btn btn-primary">Modificar</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
 
         <div th:if="${usuarios == null}">
             <p>No se encontraron usuarios con los criterios de búsqueda.</p>
         </div>
-     </div>   
+    </div>
     <script th:src="@{/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js}"></script>
     <script src="/static/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 </body>

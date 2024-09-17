@@ -10,5 +10,6 @@ public interface IRolDaos {
 	public Rol buscarRol (Integer id);
 	public void agregarRol(Rol rol);
 	public void eliminarRol (Integer id);
+	public Rol buscarRolPorNombre (String rol);
 	
 }

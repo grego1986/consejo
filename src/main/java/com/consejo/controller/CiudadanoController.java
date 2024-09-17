@@ -68,8 +68,8 @@ public class CiudadanoController {
         	
         	
         } else {
-            // Si no existe, pasamos un ciudadano vacío
-            modelo.addAttribute("formCiudadano", frmExpediente);
+            // Si no existe, pasamos un ciudadano vacío¿
+            modelo.addAttribute("formCiudadano", new ExpedienteForm ());
             frmExpediente.setDni(dni);
             return "redirect:/mesa-entrada/registroCiudadano";
         }
@@ -83,7 +83,7 @@ public class CiudadanoController {
 	public String registroCiudadano(Model modelo) {
 		
 		List<TipoCiudadano> tipos = tipoCiudadanoServi.listarTipoCiudadano();
-		modelo.addAttribute("formCiudadano", frmExpediente);
+		modelo.addAttribute("formCiudadano", new ExpedienteForm ());
 		modelo.addAttribute("dni", frmExpediente.getDni());
 		modelo.addAttribute("tipoCiudadanos", tipos);
         return "registroCiudadano";
@@ -105,10 +105,9 @@ public class CiudadanoController {
 		
 		personaServi.guardarPersona(ciudadano);
 		
-		frmExpediente = registroCiudadano;
+		registroCiudadano.setDni(frmExpediente.getDni());
 		
-		//redirectAttributes.addFlashAttribute("formIngresoNota", frmExpediente);
-		session.setAttribute("formIngresoNota", frmExpediente);
+		session.setAttribute("formIngresoNota", registroCiudadano);
     	return "redirect:/mesa-entrada/ingresoNota";
 
 	}
