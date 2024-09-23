@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.consejo.pojos.Password;
 import com.consejo.pojos.Usuario;
 import com.consejo.repository.IPasswordRepository;
+import com.consejo.repository.PasswordResetTokenRepository;
 
 @Service
 public class PasswordDaos implements IPasswordDaos{
@@ -15,6 +16,10 @@ public class PasswordDaos implements IPasswordDaos{
 	private IPasswordRepository passRepo;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	@Autowired
+	private UsuarioDaos userServi;
+	@Autowired
+	private PasswordResetTokenRepository passwordResetTokenRepository;
 
 	@Override
 	public void ingresarPass(Usuario user, String pass) {
@@ -31,7 +36,8 @@ public class PasswordDaos implements IPasswordDaos{
 		if (authenticate(user.getDni(), antiguoPass)) {
 			Password password = new Password();
 	        password.setPass(passwordEncoder.encode(newPass));
-	        passRepo.save(password);
+	        user.setContra(password);
+	        userServi.modificarUsuario(user);
 		}
 	}
 

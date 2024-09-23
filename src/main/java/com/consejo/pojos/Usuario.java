@@ -42,6 +42,8 @@ public class Usuario {
     private Rol rol;
 	@ManyToMany(mappedBy = "usuariosAsignados")
     private List<Expediente> expedientesAsignados = new ArrayList<>();
+	@OneToOne(mappedBy = "usuario")
+    private PasswordResetToken passwordResetToken;
 	
 	public Usuario(String string, String string2, boolean b, boolean c, boolean d, boolean e, List<SimpleGrantedAuthority> list) {
 		super();
@@ -144,6 +146,18 @@ public class Usuario {
 
 	public void setExpedientesAsignados(List<Expediente> expedientesAsignados) {
 		this.expedientesAsignados = expedientesAsignados;
+	}
+
+
+
+	public PasswordResetToken getPasswordResetToken() {
+		return passwordResetToken;
+	}
+
+
+
+	public void setPasswordResetToken(PasswordResetToken passwordResetToken) {
+		this.passwordResetToken = passwordResetToken;
 	}
 	
 	

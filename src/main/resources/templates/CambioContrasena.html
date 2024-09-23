@@ -26,7 +26,7 @@
 
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navCambiar barDropdown">
-                            <li><a class="dropdown-item" th:href="@{/password/cambiarPassword}">Cambiar contraseña</a></li>
+                            <li><a class="dropdown-item" href="#">Cambiar contraseña</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -47,6 +47,11 @@
                                     Usuario</a></li>
                             <li><a class="dropdown-item" th:href="@{/administrador/buscarUsuario}">Buscar Usuario</a>
                             </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" th:href="@{/administrador/resetearContraseña}">Resetear
+                                    contraseña</a></li>
                         </ul>
                     </li>
 
@@ -118,9 +123,37 @@
         </div>
     </nav>
 
-    <div sec:authorize="hasRole('INACTIVO')">
-        <h1>USTED NO TIENE ACCESO AL SISTEMA, MIENTRAS NO SEA PARTE DEL CONSEJO</h1>
-    </div>
+    <form th:action="@{/password/cambiarPassword}" method="post" class="needs-validation" novalidate>
+        <div class="mb-3">
+            <label for="currentPassword" class="form-label">Contraseña actual</label>
+            <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+            <div class="invalid-feedback">
+                Por favor, ingresa tu contraseña actual.
+            </div>
+        </div>
+    
+        <div class="mb-3">
+            <label for="newPassword" class="form-label">Nueva contraseña</label>
+            <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+            <div class="invalid-feedback">
+                Por favor, ingresa tu nueva contraseña.
+            </div>
+        </div>
+    
+        <div class="mb-3">
+            <label for="confirmPassword" class="form-label">Confirmar nueva contraseña</label>
+            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+            <div class="invalid-feedback">
+                Por favor, confirma tu nueva contraseña.
+            </div>
+        </div>
+    
+        <!-- Token CSRF para proteger el formulario -->
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    
+        <button type="submit" class="btn btn-primary">Cambiar contraseña</button>
+    </form>
+
     <script th:src="@{/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js}"></script>
     <script src="/static/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 

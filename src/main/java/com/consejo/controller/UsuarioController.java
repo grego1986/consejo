@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,7 +44,7 @@ public class UsuarioController {
 
 	// El formulario se inicializa aquí
 	private FrmRegistroUsuario form = new FrmRegistroUsuario();
-	
+
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/administrador/registroUsuario")
 	public String registroUsuario(Model modelo) {
@@ -68,7 +71,6 @@ public class UsuarioController {
 		Usuario usuario = new Usuario();
 		Password pass = new Password();
 		Rol rol = new Rol();
-		
 
 		if (action.equals("guardarUsuario")) {
 			if (usuarioServi.existe(registroUsuario.getDni()) == false) {
@@ -84,86 +86,118 @@ public class UsuarioController {
 
 				boolean exito = usuarioServi.agregarUsuario(usuario);
 				passServi.ingresarPass(usuario, pass.getPass());
-				
-				if (exito) {
-		            modelo.addAttribute("mensaje", "Registro exitoso.");
-		            modelo.addAttribute("tipo", "exito");
-		            
-		            
-		        } else {
-		            modelo.addAttribute("mensaje", "El registro falló. Intente nuevamente.");
-		            modelo.addAttribute("tipo", "error");
-		           
-		        }
 
-				
+				if (exito) {
+					modelo.addAttribute("mensaje", "Registro exitoso.");
+					modelo.addAttribute("tipo", "exito");
+
+				} else {
+					modelo.addAttribute("mensaje", "El registro falló. Intente nuevamente.");
+					modelo.addAttribute("tipo", "error");
+
+				}
+
 			} else {
 				modelo.addAttribute("mensaje", "El usuario ya existe");
-	            modelo.addAttribute("tipo", "error");
-	            
+				modelo.addAttribute("tipo", "error");
+
 			}
 
 		}
-		
+
 		return "redirect:/administrador/registroUsuario";
 	}
 
-	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/administrador/buscarUsuario")
-    public String busacarUsuario(Model modelo) {
-        modelo.addAttribute("formBuscarCiudadano", buscarUser);
-    	  
-        return "buscarUsuario";
-    }
-	
-	
+	@GetMapping("/administrador/buscarUsuario")
+	public String busacarUsuario(Model modelo) {
+		modelo.addAttribute("formBuscarCiudadano", buscarUser);
+
+		return "buscarUsuario";
+	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/administrador/buscarUsuario/resultado")
-	public String buscarUsuarios(Model modelo, @RequestParam String action, @RequestParam(value = "nombre", required = false) String nombre,
-            @RequestParam(value = "apellido", required = false) String apellido) {
-		
+	public String buscarUsuarios(Model modelo, @RequestParam String action,
+			@RequestParam(value = "nombre", required = false) String nombre,
+			@RequestParam(value = "apellido", required = false) String apellido) {
+
 		if (action.equals("buscar")) {
-	    usuarios = usuarioServi.buscarUsuarios(nombre , apellido);
-	    
-	    modelo.addAttribute("usuarios", usuarios);
-	    modelo.addAttribute("formBuscarCiudadano", buscarUser);
+			usuarios = usuarioServi.buscarUsuarios(nombre, apellido);
+
+			modelo.addAttribute("usuarios", usuarios);
+			modelo.addAttribute("formBuscarCiudadano", buscarUser);
 		}
-	    return "buscarUsuario";  // Volvemos a la misma vista con los resultados en la tabla
+		return "buscarUsuario"; // Volvemos a la misma vista con los resultados en la tabla
 	}
-	
+
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/administrador/modificarUsuario/{id}")
-	public String modificarUsuario (@PathVariable Long id, Model modelo) {
+	public String modificarUsuario(@PathVariable Long id, Model modelo) {
 		Usuario usuario = usuarioServi.buscarUsuario(id);
-		
+
 		List<Rol> roles = rolServi.listarRoles();
 		usuarioModificar.setDni(usuario.getDni());
 		usuarioModificar.setApellido(usuario.getApellido());
 		usuarioModificar.setNombre(usuario.getNombre());
 		usuarioModificar.setMail(usuario.getMail());
-		
-		
+
 		modelo.addAttribute("usuarioform", usuarioModificar);
 		modelo.addAttribute("roles", roles);
 		return "modificarUsuario";
 	}
-	
-	
+
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/administrador/modificarUsuario/{id}")
-	public String modificarUsuariopost (@ModelAttribute("usuarioform") UsuarioForm usuarioForm, Model modelo) {
-		
+	public String modificarUsuariopost(@ModelAttribute("usuarioform") UsuarioForm usuarioForm, Model modelo) {
+
 		Usuario usuario = usuarioServi.buscarUsuario(usuarioForm.getDni());
 		Rol rol = rolServi.buscarRol(usuarioForm.getRol());
-		
+
 		usuario.setMail(usuarioForm.getMail());
 		usuario.setRol(rol);
-		
+
 		if (usuarioServi.modificarUsuario(usuario)) {
 			return "home";
 		}
 		return "redirect:/administrador/error";
+	}
+
+	@GetMapping ("/password/cambiarPassword")
+	public String cambiarPasswordGet (Model modelo) {
+		
+		
+		return "cambiocontrasena";
+	}
+	
+	@PostMapping("/password/cambiarPassword")
+	public String cambiarPassword(@RequestParam("currentPassword") String currentPassword,
+			@RequestParam("newPassword") String newPassword, @RequestParam("confirmPassword") String confirmPassword,
+			Model model) {
+
+		// Obtener el usuario autenticado
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = null;
+
+		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			username = userDetails.getUsername(); // Obtener el nombre de usuario o el email
+		}
+
+		Usuario usuario = usuarioServi.buscarPorMail(username); 
+
+		if (!passwordEncoder.matches(currentPassword, usuario.getContra().getPass())) {
+			// Manejar el caso en que la contraseña actual no coincida
+			return "redirect:/usuario/cambiar-password?error=wrong_password";
+		}
+
+		if (!newPassword.equals(confirmPassword)) {
+
+			return "redirect:/usuario/cambiar-password?error=wrong_password";
+		}
+		
+		passServi.modificarPass(usuario, newPassword, currentPassword);
+		
+		return "redirect:/home";
 	}
 }

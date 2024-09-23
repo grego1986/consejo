@@ -33,7 +33,7 @@ public class SecurityConfig  {
 	                .requestMatchers("/mesa-entrada/**").hasRole("ENTRADA")
 	                .requestMatchers("/prensa/**").hasRole("PRENSA")
 	                .requestMatchers("/notas/**").hasAnyRole("CONCEJAL", "PRESIDENTE", "ADMIN")
-	                .requestMatchers("/", "/home", "/login", "/login?error=true", "/logout", "/login?logout").permitAll()
+	                .requestMatchers("/", "/home", "/login", "/login?error=true", "/logout", "/login?logout", "/password/cambiarPassword","/forgot-password", "/resetearPassword/**").permitAll()
 	                .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
 	            )
 	            .formLogin(form -> form
