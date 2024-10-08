@@ -59,7 +59,8 @@ public class Rol {
 
 	@Override
 	public String toString() {
-		return this.rol.substring(5);
+		String substring = this.rol.substring(5);
+		return substring.replace("_", " ");
 	}
 
 	

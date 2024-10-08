@@ -44,6 +44,9 @@ public class UsuarioDaos implements IUsuarioDaos {
 	public boolean agregarUsuario(Usuario usuario) {
 		try {
 			// Guardar el usuario en la base de datos
+			if (!usuario.getRol().getrol().equals("ROLE_INACTIVO")) {
+				usuario.setEsActivo(true);
+			}
 			usuarioRepo.save(usuario);
 			return true; // Registro exitoso
 		} catch (Exception e) {

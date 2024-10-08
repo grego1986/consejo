@@ -45,7 +45,7 @@ public class resetearPassword {
         resetServi.createPasswordResetToken(usuario, token);
 
         // Crear el enlace de restablecimiento de contraseña
-        String resetPasswordLink = "http://localhost:8080/resetearPassword/reset-password?token=" + token;
+        String resetPasswordLink = "http://192.168.0.4:8080/resetearPassword/reset-password?token=" + token;
 
         // Enviar el email con el enlace
         emailServi.sendPasswordResetEmail(email, resetPasswordLink);

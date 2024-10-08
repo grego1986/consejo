@@ -10,7 +10,7 @@
     <title>Concejo</title>
 </head>
 
-<body>
+<body >
     <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" th:href="@{'/home'}">Concejo Recreo</a>
@@ -120,53 +120,71 @@
         </div>
     </nav>
 
-
-    <div class="container" sec:authorize="hasRole('SEC_PARLAMENTARIO')">
-        <h2>Buscar Usuarios</h2>
-        <form th:action="@{/secParlamentario/buscarUsuario/resultado}" th:object="${formBuscarCiudadano}" method="get">
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-            <input type="text" name="nombre" placeholder="Buscar por nombre" th:field="*{nombre}">
-            <input type="text" name="apellido" placeholder="Buscar por apellido" th:field="*{apellido}" />
-            <button type="submit" name="action" value="buscar">Buscar</button>
+    <div class="container mt-5">
+        <h2>Búsqueda de Expedientes</h2>
+        <!-- Formulario de Búsqueda -->
+        <form th:action="@{/expediente/buscarExpediente/resultado}" method="get" class="row g-3" th:object="${formBuscarExpediente}">
+            <div class="col-md-3">
+                <label for="fecha" class="form-label">Fecha de Ingreso</label>
+                <input type="date" class="form-control" id="fecha" name="fecha" th:value="${fecha}">
+            </div>
+            <div class="col-md-3">
+                <label for="detalle" class="form-label">Detalle</label>
+                <input type="text" class="form-control" id="detalle" name="detalle" placeholder="Buscar por detalle" th:value="${detalle}">
+            </div>
+            <div class="col-md-3">
+                <label for="id" class="form-label">Número de Expediente</label>
+                <input type="text" class="form-control" id="id" name="id" placeholder="Buscar por número" th:value="${id}">
+            </div>
+            <div class="col-md-3">
+                <label for="caratula" class="form-label">Carátula</label>
+                <input type="text" class="form-control" id="caratula" name="caratula" placeholder="Buscar por carátula" th:value="${caratula}">
+            </div>
+            <div class="col-md-3">
+                <label for="nombrePersona" class="form-label">Nombre del Ciudadano</label>
+                <input type="text" class="form-control" id="nombrePersona" name="nombrePersona" placeholder="Buscar por nombre" th:value="${nombrePersona}">
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </div>
         </form>
-        <br>
-        <h2>Resultados de la búsqueda</h2>
-        <table class="table table-striped">
+    
+        <!-- Tabla de Resultados -->
+        <table class="table table-striped mt-4">
             <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Mail</th>
-                    <th>Rol</th>
-                    <th>Situación</th>
-                    <th>Acciones</th>
-                </tr>
+            <tr>
+                <th>Número de Expediente</th>
+                <th>Carátula</th>
+                <th>Ciudadano</th>
+                <th>Fecha de Ingreso</th>
+                <th>Estado</th>
+                <th>Acción</th>
+            </tr>
             </thead>
             <tbody>
-                <tr th:each="usuario : ${usuarios}">
-                    <td th:text="${usuario.nombre}"></td>
-                    <td th:text="${usuario.apellido}"></td>
-                    <td th:text="${usuario.mail}"></td>
-                    <td th:text="${usuario.rol.toString}"></td>
-                    <td th:text="${usuario.esActivo ? 'Activo' : 'Inactivo'}"></td>
-                    <td>
-                        <!-- Condición para verificar si el usuario está activo -->
-                        <form th:action="@{/secParlamentario/modificarUsuario/{id}(id=${usuario.dni})}" method="get">
-                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                            <button type="submit" class="btn btn-primary">Modificar</button>
-                        </form>
-                    </td>
-                </tr>
+            <!-- Itera sobre la lista de expedientes y muestra los resultados -->
+            <tr th:each="expediente : ${expedientes}">
+                <td th:text="${expediente.id}"></td>
+                <td th:text="${expediente.caratula}"></td>
+                <td th:text="${expediente.persona.nombre}"></td>
+                <td th:text="${expediente.fecha}"></td>
+                <td th:text="${expediente.estado}"></td>
+                <td>
+                    <a th:href="@{/expediente/ver/{id}(id=${expediente.id})}" class="btn btn-info btn-sm">Ver</a>
+                </td>
+            </tr>
+            <!-- Muestra un mensaje si no hay expedientes que coincidan con la búsqueda -->
+            <tr th:if="${#lists.isEmpty(expedientes)}">
+                <td colspan="6" class="text-center">No se encontraron expedientes.</td>
+            </tr>
             </tbody>
         </table>
-
-
-        <div th:if="${usuarios == null}">
-            <p>No se encontraron usuarios con los criterios de búsqueda.</p>
-        </div>
     </div>
+
+
     <script th:src="@{/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js}"></script>
     <script src="/static/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    
 </body>
 
 </html>

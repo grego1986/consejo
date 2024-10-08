@@ -8,10 +8,12 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 
@@ -29,9 +31,9 @@ public class Movimiento {
 	@ManyToOne
     @JoinColumn(name = "expediente_id")
     private Expediente expediente;
-	@OneToMany(mappedBy = "historial", cascade = CascadeType.ALL, orphanRemoval = true)
-	@OrderBy("id ASC")
-    private List<Nota> notas = new ArrayList<>();
+	@OneToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "nota_id") // Define la columna que guarda la clave foránea de Nota
+    private Nota nota;
 	//quien hizo el movimiento
 	
 	public Movimiento() {
@@ -79,13 +81,13 @@ public class Movimiento {
 	}
 
 
-	public List<Nota> getNotas() {
-		return notas;
+	public Nota getNota() {
+		return nota;
 	}
 
 
-	public void setNotas(List<Nota> notas) {
-		this.notas = notas;
+	public void setNota(Nota notas) {
+		this.nota = notas;
 	}
 	
 	public void generateId(String nroExpediente, Integer nroMovimiento) {

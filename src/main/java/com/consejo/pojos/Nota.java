@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -30,8 +31,7 @@ public class Nota {
 	@Column(name="activa")
 	private boolean esActiva;
 	//Relaciones entre objetos
-	@ManyToOne
-    @JoinColumn(name = "historial_id")
+	@OneToOne(mappedBy = "nota", cascade = CascadeType.ALL, orphanRemoval = true)
     private Movimiento historial;
 	@OneToMany(mappedBy = "notaOriginal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<NotaModificacion> modificaciones;

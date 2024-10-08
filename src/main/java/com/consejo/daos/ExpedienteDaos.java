@@ -7,6 +7,7 @@ import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.consejo.enumeraciones.CircuitoExpediente;
@@ -15,6 +16,7 @@ import com.consejo.pojos.Movimiento;
 import com.consejo.pojos.Persona;
 import com.consejo.pojos.TipoNota;
 import com.consejo.repository.IExpedienteRepository;
+import com.consejo.specification.ExpedienteSpecification;
 
 @Service
 public class ExpedienteDaos implements IExpedienteDaos {
@@ -97,31 +99,31 @@ public class ExpedienteDaos implements IExpedienteDaos {
 			case OFICINA_PARLAMENTARIA:
 				moverAOficinaParlamentaria(e);
 				break;
-				
+
 			case COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL:
 				moverAGobiernoYSocial(e);
 				break;
-				
+
 			case COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA:
 				moverAComisionAmbientalYEconomia(e);
 				break;
-				
+
 			case AMBAS_COMISIONES:
 				moverAAmbasComisiones(e);
 				break;
-				
+
 			case ARCHIVO:
 				moverAArchivo(e);
 				break;
-				
+
 			case PRESIDENCIA:
 				moverAPresidencia(e);
 				break;
-				
+
 			case BLOQUE_A:
 				moverABloque_A(e);
 				break;
-				
+
 			case BLOQUE_B:
 				moverABloque_B(e);
 				break;
@@ -129,39 +131,42 @@ public class ExpedienteDaos implements IExpedienteDaos {
 			case BLOQUE_C:
 				moverABloque_B(e);
 				break;
-				
+
 			case TODOS_LOS_BLOQUES:
 				moverATodosBloques(e);
 				break;
-				
+
 			case LEGISLACION:
 				moverALegislacion(e);
 				break;
-				
+
 			case DESPACHOS_DE_COMISION:
 				moverADespachoComision(e);
 				break;
-				
+
 			case NOTAS_DE_COMISION:
 				moverANotasComision(e);
 				break;
-				
-			case REPUESTA_A_DESTINATARIO:
+
+			case REPUESTA_A_CIUDADANO:
 				moverARepuestaDestinatario(e);
 				break;
-				
+
 			case NOTA_MUNICIPIO:
 				moverANotaMunicipio(e);
 				break;
-				
+
 			case REPUESTA_MUNICIPIO:
 				moverARepuestaMunicipio(e);
 				break;
-				
+			case FIN:
+				moverAFin(e);
+				break;
+
 			default:
-                System.out.println("Estado no reconocido.");
-                break;
-			
+				System.out.println("Estado no reconocido.");
+				break;
+
 			}
 
 		} catch (DataAccessException dae) {
@@ -221,7 +226,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverAOficinaParlamentaria(Expediente expediente) throws IOException {
 
-		if (expediente.getEstado() == CircuitoExpediente.INGRESO) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.REPUESTA_MUNICIPIO)) {
 			expediente.setEstado(CircuitoExpediente.OFICINA_PARLAMENTARIA);
 			expedienteRepo.save(expediente);
 		} else {
@@ -233,7 +238,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverAComisionAmbientalYEconomia(Expediente expediente) throws IOException {
 
-		if (expediente.getEstado() == CircuitoExpediente.INGRESO) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.NOTA_MUNICIPIO)) {
 			expediente.setEstado(CircuitoExpediente.COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA);
 			expedienteRepo.save(expediente);
 		} else {
@@ -245,8 +250,8 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverAGobiernoYSocial(Expediente expediente) throws IOException {
 
-		if (expediente.getEstado() == CircuitoExpediente.INGRESO) {
-			expediente.setEstado(CircuitoExpediente.COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA);
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.NOTA_MUNICIPIO)) {
+			expediente.setEstado(CircuitoExpediente.COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL);
 			expedienteRepo.save(expediente);
 		} else {
 			throw new IllegalStateException("El expediente no se encuentra en la etapa correcta");
@@ -257,7 +262,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverAAmbasComisiones(Expediente expediente) throws IOException {
 
-		if (expediente.getEstado() == CircuitoExpediente.INGRESO) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.NOTA_MUNICIPIO)) {
 			expediente.setEstado(CircuitoExpediente.AMBAS_COMISIONES);
 			expedienteRepo.save(expediente);
 		} else {
@@ -365,6 +370,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 
 		if (expediente.getEstado() == CircuitoExpediente.DESPACHOS_DE_COMISION) {
 			expediente.setEstado(CircuitoExpediente.LEGISLACION);
+			expediente.setFincircuito(true);
 			expedienteRepo.save(expediente);
 		} else {
 			throw new IllegalStateException("El expediente no se encuentra en la etapa correcta");
@@ -398,11 +404,27 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	public void moverARepuestaDestinatario(Expediente expediente) throws IOException {
 
 		if (expediente.getEstado() == CircuitoExpediente.NOTAS_DE_COMISION) {
-			expediente.setEstado(CircuitoExpediente.REPUESTA_A_DESTINATARIO);
+			expediente.setEstado(CircuitoExpediente.REPUESTA_A_CIUDADANO);
+			expediente.setFincircuito(true);
 			expedienteRepo.save(expediente);
 		} else {
 			throw new IllegalStateException("El expediente no se encuentra en la etapa correcta");
 		}
+	}
+
+	@Override
+	public void moverAFin(Expediente expediente) throws IOException {
+
+		if ((expediente.getEstado() == CircuitoExpediente.REPUESTA_A_CIUDADANO)
+				|| (expediente.getEstado() == CircuitoExpediente.LEGISLACION)
+				|| (expediente.getEstado() == CircuitoExpediente.REPUESTA_MUNICIPIO)
+				|| (expediente.getEstado() == CircuitoExpediente.NOTA_MUNICIPIO)) {
+			expediente.setEstado(CircuitoExpediente.FIN);
+			expedienteRepo.save(expediente);
+		} else {
+			throw new IllegalStateException("El expediente no se encuentra en la etapa correcta");
+		}
+
 	}
 
 	@Override
@@ -456,6 +478,29 @@ public class ExpedienteDaos implements IExpedienteDaos {
 			System.err.println("Ocurrió un error: " + ex.getMessage());
 			return null;
 		}
+	}
+
+	@Override
+	public List<Expediente> buscarExpediente(LocalDate fecha, String detalle, String id, String caratula,
+			String nombrePersona) {
+
+		Specification<Expediente> spec = ExpedienteSpecification.buscarExpedientes(fecha, detalle, id, caratula,
+				nombrePersona);
+
+		return expedienteRepo.findAll(spec);
+	}
+
+	@Override
+	public List<Expediente> buscarPorRangoDeFechasYCircuitos(LocalDate startDate, LocalDate endDate) {
+		List<CircuitoExpediente> circuitos = Arrays.asList(
+				CircuitoExpediente.COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL,
+				CircuitoExpediente.COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA,
+				CircuitoExpediente.AMBAS_COMISIONES,
+				CircuitoExpediente.ARCHIVO,
+				CircuitoExpediente.DESPACHOS_DE_COMISION,
+				CircuitoExpediente.LEGISLACION
+		);
+		return expedienteRepo.findByUltimoMovimientoFechaBetweenAndCircuitoIn(startDate, endDate, circuitos);
 	}
 
 }

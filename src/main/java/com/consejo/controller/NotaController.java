@@ -52,8 +52,7 @@ public class NotaController {
             return "redirect:/notas/error";
         }
     }
-    
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CONCEJAL', 'ROLE_PRESIDENTE')")
+  
     @GetMapping("/notas/view/{id}")
     public ResponseEntity<byte[]> viewNota(@PathVariable Long id) {
         Nota nota = notaServi.BuscarNota(id);

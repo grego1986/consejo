@@ -46,12 +46,14 @@ public class DataInitializer implements CommandLineRunner {
             Rol rolMesa = new Rol();
             Usuario consejal = new Usuario();
             Password passConsejal = new Password();
-            Rol rolConsejal = new Rol();
+            Rol rolConcejalcomisionGobierno = new Rol();
             Usuario prensa = new Usuario();
             Password passPrensa = new Password();
             Rol rolPrensa = new Rol();
             Rol rolPresidencia = new Rol();
             Rol rolInactivo = new Rol();
+            Rol rolConsejalcomisiondesarrollourbano = new Rol();
+            Rol secAdministrativo = new Rol();
             
             //Administrador
             admin.setNombre("Jose");
@@ -64,7 +66,7 @@ public class DataInitializer implements CommandLineRunner {
             
             admin.setContra(passAdmin);
             
-            rolAdmin.setRol("ROLE_ADMIN");
+            rolAdmin.setRol("ROLE_SEC_PARLAMENTARIO");
             rolAdmin.getUsuarios().add(admin);
             
             admin.setRol(rolAdmin);
@@ -134,13 +136,13 @@ public class DataInitializer implements CommandLineRunner {
             
             consejal.setContra(passConsejal);
             
-            rolConsejal.setRol("ROLE_CONCEJAL");
-            rolConsejal.getUsuarios().add(consejal);
+            rolConcejalcomisionGobierno.setRol("ROLE_CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL");
+            rolConcejalcomisionGobierno.getUsuarios().add(consejal);
             
-            consejal.setRol(rolConsejal);
+            consejal.setRol(rolConcejalcomisionGobierno);
             consejal.setEsActivo(true);
             
-            rolRepo.save(rolConsejal);
+            rolRepo.save(rolConcejalcomisionGobierno);
             usuarioRepo.save(consejal);
             passRepo.save(passConsejal);
             
@@ -151,6 +153,16 @@ public class DataInitializer implements CommandLineRunner {
             rolInactivo.setRol("ROLE_INACTIVO");
             
             rolRepo.save(rolInactivo);
+            
+            rolConsejalcomisiondesarrollourbano.setRol("ROLE_CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA");
+            
+            rolRepo.save(rolConsejalcomisiondesarrollourbano);
+            
+            secAdministrativo.setRol("ROLE_SEC_ADMINISTRATIVO");
+            rolRepo.save(secAdministrativo);
+            
+            
+            
         }
 		
 		if (tipoNotaRepo.count() == 0) {

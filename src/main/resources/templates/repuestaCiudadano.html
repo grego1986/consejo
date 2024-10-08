@@ -52,7 +52,8 @@
                     </li>
 
                     <!-- Menú de Expedientes (visible solo para ADMIN) -->
-                    <li class="nav-item dropdown" sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                    <li class="nav-item dropdown"
+                        sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownExpedientes" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Expedientes
@@ -83,19 +84,26 @@
                         </ul>
                     </li>
 
-                    
-                    <li class="nav-item dropdown" sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+
+                    <li class="nav-item dropdown"
+                        sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownComisiones" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Comisiones
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownComisiones">
-                            <li sec:authorize="hasAnyRole('PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')"><a class="dropdown-item"
-                                    th:href="@{/comision/gobiernoYDesarrolloSocial}" >Gobierno y Desarrollo
-                                    Social</a></li>
-                            <li sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO')"><a class="dropdown-item"
+                            <li
+                                sec:authorize="hasAnyRole('PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                                <a class="dropdown-item" th:href="@{/comision/gobiernoYDesarrolloSocial}">Gobierno y
+                                    Desarrollo
+                                    Social</a>
+                            </li>
+                            <li
+                                sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO')">
+                                <a class="dropdown-item"
                                     th:href="@{/comision/desarrolloUrbanoAmbientalYEconomia}">Desarrollo Urbano
-                                    Ambiental y Economía</a></li>
+                                    Ambiental y Economía</a>
+                            </li>
                             <li><a class="dropdown-item" th:href="@{/comision/ambasComisiones}">Ambas
                                     Comisiones</a></li>
                             <li><a class="dropdown-item" th:href="@{/expediente/archivo}">Archivo</a></li>
@@ -103,7 +111,8 @@
                     </li>
 
 
-                    <li class="nav-item dropdown" sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                    <li class="nav-item dropdown"
+                        sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDespachoNotas" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Despacho y Notas de Comisión
@@ -121,50 +130,67 @@
     </nav>
 
 
-    <div class="container" sec:authorize="hasRole('SEC_PARLAMENTARIO')">
-        <h2>Buscar Usuarios</h2>
-        <form th:action="@{/secParlamentario/buscarUsuario/resultado}" th:object="${formBuscarCiudadano}" method="get">
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-            <input type="text" name="nombre" placeholder="Buscar por nombre" th:field="*{nombre}">
-            <input type="text" name="apellido" placeholder="Buscar por apellido" th:field="*{apellido}" />
-            <button type="submit" name="action" value="buscar">Buscar</button>
+    <div class="container mt-4">
+        <h1>Detalles del Expediente</h1>
+
+        <!-- Formulario para mostrar y editar el expediente /administrador/expediente/mover/{id}-->
+        <form action="#" th:action="@{${urlForm}(id=${expediente.id})}" method="post" enctype="multipart/form-data"
+            th:object="${frmExpedienteMover}">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+            <div class="mb-2"></div>
+            <label for="caratula" class="form-label">Expediente:</label>
+            <input type="text" id="idexpediente" name="idexpediente" class="form-control" th:value="${id}" readonly />
+
+
+            <!-- Campo para la carátula del expediente -->
+            <div class="mb-2">
+                <label for="caratula" class="form-label">Carátula:</label>
+                <input type="text" id="caratula" name="caratula" class="form-control" th:value="${caratula}" readonly />
+            </div>
+
+            <!-- Campo para la fecha de ingreso -->
+            <div class="mb-2">
+                <label for="fecha" class="form-label">Fecha de Ingreso:</label>
+                <input type="date" id="fecha" name="fecha" class="form-control" th:value="${fecha}" readonly />
+            </div>
+
+            <!-- Campo para el CUIT del ciudadano -->
+            <div class="mb-2">
+                <label for="cuit" class="form-label">Nombre:</label>
+                <input type="text" id="cuit" name="cuit" class="form-control" th:value="${nombre}" readonly />
+            </div>
+            <!-- Campo para la nota (archivo PDF) -->
+            <div class="mb-2">
+                <table class="table table-success table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>fecha</th>
+                            <th>detalle</th>
+                            <th>accion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="movimiento : ${movimientos}">
+                            <td th:text="${movimiento.id}"></td>
+                            <td th:text="${movimiento.fecha}"></td>
+                            <td th:text="${movimiento.detalle}"></td>
+                            <td>
+                                <a class="" th:if="${movimiento.nota != null}"
+                                    th:href="@{/notas/view/{id}(id=${movimiento.nota.id})}" target="_blank">Ver e Imprimir nota</a>
+                                <p class="" th:if="${movimiento.nota == null}">No hay nota asociada</p>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+                <button type="submit" class="btn btn-primary">Fin Expediente</button>
         </form>
-        <br>
-        <h2>Resultados de la búsqueda</h2>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Mail</th>
-                    <th>Rol</th>
-                    <th>Situación</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="usuario : ${usuarios}">
-                    <td th:text="${usuario.nombre}"></td>
-                    <td th:text="${usuario.apellido}"></td>
-                    <td th:text="${usuario.mail}"></td>
-                    <td th:text="${usuario.rol.toString}"></td>
-                    <td th:text="${usuario.esActivo ? 'Activo' : 'Inactivo'}"></td>
-                    <td>
-                        <!-- Condición para verificar si el usuario está activo -->
-                        <form th:action="@{/secParlamentario/modificarUsuario/{id}(id=${usuario.dni})}" method="get">
-                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                            <button type="submit" class="btn btn-primary">Modificar</button>
-                        </form>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-
-        <div th:if="${usuarios == null}">
-            <p>No se encontraron usuarios con los criterios de búsqueda.</p>
-        </div>
     </div>
+
     <script th:src="@{/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js}"></script>
     <script src="/static/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 </body>

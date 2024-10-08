@@ -36,6 +36,8 @@ public class Expediente {
 	@Enumerated(EnumType.STRING)
     @Column(name="estado")
     private CircuitoExpediente estado;
+	@Column(name="fincircuito")
+	private boolean fincircuito;
 	//Relaciones entre objetos
     @OneToMany(mappedBy = "expediente", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("fecha ASC")
@@ -48,9 +50,9 @@ public class Expediente {
     private Persona persona;
     @ManyToMany
     @JoinTable(
-        name = "expediente_usuarios",
-        joinColumns = @JoinColumn(name = "expediente_id"),
-        inverseJoinColumns = @JoinColumn(name = "usuario_id")
+    name = "expediente_usuarios",
+    joinColumns = @JoinColumn(name = "expediente_id"),
+    inverseJoinColumns = @JoinColumn(name = "usuario_id")
     )
     private List<Usuario> usuariosAsignados = new ArrayList<>();
     
@@ -137,4 +139,13 @@ public class Expediente {
         this.id = String.format("%s-%s-%s-%s", codigoAsunto, tipo, fecha.format(DateTimeFormatter.BASIC_ISO_DATE), nroOrdenDia);
     }
 
+	public boolean isFincircuito() {
+		return fincircuito;
+	}
+
+	public void setFincircuito(boolean fincircuito) {
+		this.fincircuito = fincircuito;
+	}
+
+	
 }

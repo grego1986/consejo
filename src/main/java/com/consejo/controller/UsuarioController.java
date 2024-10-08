@@ -45,8 +45,8 @@ public class UsuarioController {
 	// El formulario se inicializa aquí
 	private FrmRegistroUsuario form = new FrmRegistroUsuario();
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/administrador/registroUsuario")
+	@PreAuthorize("hasRole('ROLE_SEC_PARLAMENTARIO')")
+	@GetMapping("/secParlamentario/registroUsuario")
 	public String registroUsuario(Model modelo) {
 		modelo.addAttribute("formBean", form);
 		modelo.addAttribute("dni", form);
@@ -63,8 +63,8 @@ public class UsuarioController {
 		return "registroUsuario";
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PostMapping("/administrador/registroUsuario")
+	@PreAuthorize("hasRole('ROLE_SEC_PARLAMENTARIO')")
+	@PostMapping("/secParlamentario/registroUsuario")
 	public String registrarUsuario(@ModelAttribute("formBean") FrmRegistroUsuario registroUsuario, Model modelo,
 			@RequestParam String action) {
 		// Lógica para registrar al usuario
@@ -105,19 +105,19 @@ public class UsuarioController {
 
 		}
 
-		return "redirect:/administrador/registroUsuario";
+		return "redirect:/secParlamentario/registroUsuario";
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/administrador/buscarUsuario")
+	@PreAuthorize("hasRole('ROLE_SEC_PARLAMENTARIO')")
+	@GetMapping("/secParlamentario/buscarUsuario")
 	public String busacarUsuario(Model modelo) {
 		modelo.addAttribute("formBuscarCiudadano", buscarUser);
 
 		return "buscarUsuario";
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/administrador/buscarUsuario/resultado")
+	@PreAuthorize("hasRole('ROLE_SEC_PARLAMENTARIO')")
+	@GetMapping("/secParlamentario/buscarUsuario/resultado")
 	public String buscarUsuarios(Model modelo, @RequestParam String action,
 			@RequestParam(value = "nombre", required = false) String nombre,
 			@RequestParam(value = "apellido", required = false) String apellido) {
@@ -131,8 +131,8 @@ public class UsuarioController {
 		return "buscarUsuario"; // Volvemos a la misma vista con los resultados en la tabla
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/administrador/modificarUsuario/{id}")
+	@PreAuthorize("hasRole('ROLE_SEC_PARLAMENTARIO')")
+	@GetMapping("/secParlamentario/modificarUsuario/{id}")
 	public String modificarUsuario(@PathVariable Long id, Model modelo) {
 		Usuario usuario = usuarioServi.buscarUsuario(id);
 
@@ -147,8 +147,8 @@ public class UsuarioController {
 		return "modificarUsuario";
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PostMapping("/administrador/modificarUsuario/{id}")
+	@PreAuthorize("hasRole('ROLE_SEC_PARLAMENTARIO')")
+	@PostMapping("/secParlamentario/modificarUsuario/{id}")
 	public String modificarUsuariopost(@ModelAttribute("usuarioform") UsuarioForm usuarioForm, Model modelo) {
 
 		Usuario usuario = usuarioServi.buscarUsuario(usuarioForm.getDni());
@@ -160,7 +160,7 @@ public class UsuarioController {
 		if (usuarioServi.modificarUsuario(usuario)) {
 			return "home";
 		}
-		return "redirect:/administrador/error";
+		return "redirect:/secParlamentario/error";
 	}
 
 	@GetMapping ("/password/cambiarPassword")

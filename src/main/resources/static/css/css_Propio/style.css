@@ -27,3 +27,23 @@ a {
     margin-right: 10px;
 }
 
+.full-height {
+    height: 100vh; /* Altura completa de la ventana */
+}
+
+.watermark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; /* Ancho del 100% */
+    height: 100%; /* Alto del 100% */
+    opacity: 0.5; /* Ajusta la opacidad de la marca de agua */
+    pointer-events: none; /* Para que no interfiera con clics */
+    z-index: -1; /* Asegura que esté detrás del contenido */
+    object-fit: cover; /* Mantiene la relación de aspecto */
+}
+
+.evitardesplazamiento{
+    position: relative;
+    overflow: hidden;
+}

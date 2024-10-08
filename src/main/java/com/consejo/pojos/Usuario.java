@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import com.consejo.enumeraciones.Comisiones;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,6 +33,8 @@ public class Usuario {
 	private String mail;
 	@Column(name="activo")
 	private boolean esActivo;
+	@Column (name="comision")
+	private Comisiones comision;
 	//Relaciones entre Objetos
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Ingreso> ingreso = new ArrayList<>();
@@ -44,6 +48,7 @@ public class Usuario {
     private List<Expediente> expedientesAsignados = new ArrayList<>();
 	@OneToOne(mappedBy = "usuario")
     private PasswordResetToken passwordResetToken;
+	
 	
 	public Usuario(String string, String string2, boolean b, boolean c, boolean d, boolean e, List<SimpleGrantedAuthority> list) {
 		super();
@@ -158,6 +163,18 @@ public class Usuario {
 
 	public void setPasswordResetToken(PasswordResetToken passwordResetToken) {
 		this.passwordResetToken = passwordResetToken;
+	}
+
+
+
+	public Comisiones getComision() {
+		return comision;
+	}
+
+
+
+	public void setComision(Comisiones comision) {
+		this.comision = comision;
 	}
 	
 	

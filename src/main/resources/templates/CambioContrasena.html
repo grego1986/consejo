@@ -26,7 +26,8 @@
 
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navCambiar barDropdown">
-                            <li><a class="dropdown-item" href="#">Cambiar contraseña</a></li>
+                            <li><a class="dropdown-item" th:href="@{/password/cambiarPassword}">Cambiar contraseña</a>
+                            </li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -37,34 +38,31 @@
                         </ul>
                     </li>
                     <!-- Menú de Usuarios (visible solo para ADMIN) -->
-                    <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
+                    <li class="nav-item dropdown" sec:authorize="hasRole('SEC_PARLAMENTARIO')">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUsuarios" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Usuarios
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownUsuarios">
-                            <li><a class="dropdown-item" th:href="@{/administrador/registroUsuario}">Registrar
+                            <li><a class="dropdown-item" th:href="@{/secParlamentario/registroUsuario}">Registrar
                                     Usuario</a></li>
-                            <li><a class="dropdown-item" th:href="@{/administrador/buscarUsuario}">Buscar Usuario</a>
+                            <li><a class="dropdown-item" th:href="@{/secParlamentario/buscarUsuario}">Buscar Usuario</a>
                             </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" th:href="@{/administrador/resetearContraseña}">Resetear
-                                    contraseña</a></li>
                         </ul>
                     </li>
 
                     <!-- Menú de Expedientes (visible solo para ADMIN) -->
-                    <li class="nav-item dropdown" sec:authorize="hasAnyRole('CONSEJAL', 'ADMIN')">
+                    <li class="nav-item dropdown" sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownExpedientes" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Expedientes
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownExpedientes">
-                            <li><a class="dropdown-item" th:href="@{/administrador/expediente/ingresos}" sec:authorize="hasRole('ADMIN')">Ingresos</a>
+                            <li><a class="dropdown-item" th:href="@{/secParlamentario/expediente/ingresos}"
+                                    sec:authorize="hasRole('SEC_PARLAMENTARIO')">Ingresos</a>
                             </li>
-                            <li><a class="dropdown-item" th:href="@{/administrador/expediente/buscarExpediente}" sec:authorize="hasAnyRole('CONSEJAL', 'ADMIN')">Buscar
+                            <li><a class="dropdown-item" th:href="@{/expediente/buscarExpediente}"
+                                    sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">Buscar
                                     Expediente</a></li>
                         </ul>
                     </li>
@@ -85,43 +83,43 @@
                         </ul>
                     </li>
 
-                    <!-- Menú de Despacho y Notas de Comisión (visible solo para CONCEJAL) -->
-                    <li class="nav-item dropdown" sec:authorize="hasRole('CONCEJAL')">
+                    
+                    <li class="nav-item dropdown" sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownComisiones" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Comisiones
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownComisiones">
-                            <li><a class="dropdown-item"
-                                    th:href="@{/concejal/comision/gobiernoYDesarrolloSocial}">Gobierno y Desarrollo
+                            <li sec:authorize="hasAnyRole('PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')"><a class="dropdown-item"
+                                    th:href="@{/comision/gobiernoYDesarrolloSocial}" >Gobierno y Desarrollo
                                     Social</a></li>
-                            <li><a class="dropdown-item"
-                                    th:href="@{/concejal/comision/desarrolloUrbanoyEconomia}">Desarrollo Urbano
+                            <li sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO')"><a class="dropdown-item"
+                                    th:href="@{/comision/desarrolloUrbanoAmbientalYEconomia}">Desarrollo Urbano
                                     Ambiental y Economía</a></li>
-                            <li><a class="dropdown-item" th:href="@{/concejal/comision/ambasComisiones}">Ambas
+                            <li><a class="dropdown-item" th:href="@{/comision/ambasComisiones}">Ambas
                                     Comisiones</a></li>
-                            <li><a class="dropdown-item" th:href="@{/concejal/comision/archivo}">Archivo</a></li>
+                            <li><a class="dropdown-item" th:href="@{/expediente/archivo}">Archivo</a></li>
                         </ul>
                     </li>
 
 
-                    <li class="nav-item dropdown" sec:authorize="hasRole('CONCEJAL')">
+                    <li class="nav-item dropdown" sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDespachoNotas" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Despacho y Notas de Comisión
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownDespachoNotas">
-                            <li><a class="dropdown-item" th:href="@{/concejal/despachoDeComision}">Despacho de
+                            <li><a class="dropdown-item" th:href="@{/comision/despachoDeComision}">Despacho de
                                     Comisión</a></li>
-                            <li><a class="dropdown-item" th:href="@{/concejal/notaDeComision}">Notas de Comisión</a>
+                            <li><a class="dropdown-item" th:href="@{/comision/notaDeComision}">Notas de Comisión</a>
                             </li>
                         </ul>
                     </li>
-
                 </ul>
             </div>
         </div>
     </nav>
+
 
     <form th:action="@{/password/cambiarPassword}" method="post" class="needs-validation" novalidate>
         <div class="mb-3">
