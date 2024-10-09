@@ -179,11 +179,29 @@
         </div>
     </nav>
 
-    <div class="d-flex justify-content-center align-items-center full-height">
-        <div sec:authorize="hasRole('INACTIVO')" class="text-center">
-            <h1>USTED NO TIENE ACCESO AL SISTEMA, MIENTRAS NO SEA PARTE DEL CONSEJO</h1>
-        </div>
+    <div class="container mt-5">
+        <h2>Agregar Orden del Día</h2>
+        <form th:action="@{/notas/agregar}" method="post" enctype="multipart/form-data">
+            
+            <div class="mb-3">
+                <label for="fecha" class="form-label">Fecha</label>
+                <input type="date" class="form-control" id="fecha" name="fecha" th:field="*{fecha}" required>
+            </div>
+    
+            <div class="mb-3">
+                <label for="titulo" class="form-label">Título</label>
+                <input type="text" class="form-control" id="titulo" name="titulo" th:field="*{titulo}" placeholder="Título de la nota" required>
+            </div>
+    
+            <div class="mb-3">
+                <label for="nota" class="form-label">Subir PDF</label>
+                <input type="file" class="form-control" id="nota" name="nota" accept="application/pdf" required>
+            </div>
+    
+            <button type="submit" class="btn btn-primary">Agregar Nota</button>
+        </form>
     </div>
+
     <img th:src="@{/images/concejoImagen.jpeg}" alt="Marca de Agua" class="watermark">
     <script th:src="@{/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js}"></script>
     <script src="/static/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>

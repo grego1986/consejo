@@ -9,7 +9,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.consejo.pojos.Nota;
-import com.consejo.pojos.NotaModificacion;
 import com.consejo.repository.INotaRepository;
 
 @Service
@@ -85,12 +84,11 @@ public class NotaDaos implements INotaDaos {
 	}
 
 	@Override
-	public void modificarNota(NotaModificacion nuevaNota, Nota nota) throws IOException {
+	public void modificarNota( Nota nota) throws IOException {
 
 		try {
 			if (notaRepo.existsById(nota.getId())) {
-	            nota.setEsActiva(false);
-	            nota.getModificaciones().add(nuevaNota);
+	            nota.setEsActiva(true);
 	            notaRepo.save(nota);    
 	        }	
 

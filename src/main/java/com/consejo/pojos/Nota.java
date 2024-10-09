@@ -33,8 +33,6 @@ public class Nota {
 	//Relaciones entre objetos
 	@OneToOne(mappedBy = "nota", cascade = CascadeType.ALL, orphanRemoval = true)
     private Movimiento historial;
-	@OneToMany(mappedBy = "notaOriginal", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<NotaModificacion> modificaciones;
 	
 	public Nota() {
 		super();
@@ -80,15 +78,5 @@ public class Nota {
 	public void setHistorial(Movimiento historial) {
 		this.historial = historial;
 	}
-
-	public List<NotaModificacion> getModificaciones() {
-		return modificaciones;
-	}
-
-	public void setModificaciones(List<NotaModificacion> modificaciones) {
-		this.modificaciones = modificaciones;
-	}
-
-	
 	
 }

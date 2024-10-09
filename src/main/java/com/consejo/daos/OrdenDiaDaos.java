@@ -9,17 +9,17 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.consejo.pojos.Nota;
-import com.consejo.pojos.NotaModificacion;
-import com.consejo.repository.INotaModificacionRepository;
+import com.consejo.pojos.OrdenDia;
+import com.consejo.repository.IOrdenDiaRepository;
 
 @Service
-public class NotaModificacionDaos implements INotaModificacionDaos {
+public class OrdenDiaDaos implements IOrdenDiaDaos {
 
 	@Autowired
-	private INotaModificacionRepository notaModiRepo;
+	private IOrdenDiaRepository notaModiRepo;
 	
 	@Override
-	public List<NotaModificacion> listarNota() {
+	public List<OrdenDia> listarNota() {
 
 		try {
 
@@ -37,7 +37,7 @@ public class NotaModificacionDaos implements INotaModificacionDaos {
 	}
 
 	@Override
-	public NotaModificacion BuscarNota(Long id) {
+	public OrdenDia BuscarNota(Long id) {
 
 		try {
 			return notaModiRepo.findById(id).orElse(null);
@@ -53,13 +53,13 @@ public class NotaModificacionDaos implements INotaModificacionDaos {
 	}
 
 	@Override
-	public void eliminaNota(NotaModificacion nota) {
+	public void eliminaNota(OrdenDia nota) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void guardarNota(NotaModificacion nota) throws IOException {
+	public void guardarNota(OrdenDia nota) throws IOException {
 		try {
 
 			notaModiRepo.save(nota);
@@ -78,7 +78,7 @@ public class NotaModificacionDaos implements INotaModificacionDaos {
 	}
 
 	@Override
-	public void modificarNota(NotaModificacion nuevaNota, Nota nota) throws IOException {
+	public void modificarNota(OrdenDia nuevaNota, Nota nota) throws IOException {
 
 		/*
 		try {

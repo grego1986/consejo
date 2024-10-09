@@ -2,9 +2,9 @@ package com.consejo.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import com.consejo.pojos.NotaModificacion;
+import com.consejo.pojos.OrdenDia;
 
 @Repository
-public interface INotaModificacionRepository extends JpaRepository <NotaModificacion,Long> {
+public interface IOrdenDiaRepository extends JpaRepository <OrdenDia,Long> {
 
 }
