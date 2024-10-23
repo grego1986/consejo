@@ -11,5 +11,5 @@ import com.consejo.pojos.Movimiento;
 @Repository
 public interface IMovimientoRepository extends JpaRepository <Movimiento, String>{
 
-	List<Movimiento> findByExpediente(Expediente expediente);;
+	List<Movimiento> findByExpediente(Expediente expediente);
 }

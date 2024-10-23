@@ -238,7 +238,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverAComisionAmbientalYEconomia(Expediente expediente) throws IOException {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.NOTA_AL_MUNICIPIO)) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA);
 			expedienteRepo.save(expediente);
 		} else {
@@ -250,7 +250,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverAGobiernoYSocial(Expediente expediente) throws IOException {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.NOTA_AL_MUNICIPIO)) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL);
 			expedienteRepo.save(expediente);
 		} else {
@@ -262,7 +262,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverAAmbasComisiones(Expediente expediente) throws IOException {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.NOTA_AL_MUNICIPIO)) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.AMBAS_COMISIONES);
 			expedienteRepo.save(expediente);
 		} else {
@@ -274,7 +274,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverAArchivo(Expediente expediente) throws IOException {
 
-		if (expediente.getEstado() == CircuitoExpediente.INGRESO) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA) ){
 			expediente.setEstado(CircuitoExpediente.ARCHIVO);
 			expedienteRepo.save(expediente);
 		} else {
@@ -286,7 +286,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverAPresidencia(Expediente expediente) throws IOException {
 
-		if (expediente.getEstado() == CircuitoExpediente.INGRESO) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.PRESIDENCIA);
 			expedienteRepo.save(expediente);
 		} else {
@@ -298,7 +298,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverABloque_A(Expediente expediente) throws IOException {
 
-		if (expediente.getEstado() == CircuitoExpediente.INGRESO) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.BLOQUE_A);
 			expedienteRepo.save(expediente);
 		} else {
@@ -310,7 +310,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverABloque_B(Expediente expediente) throws IOException {
 
-		if (expediente.getEstado() == CircuitoExpediente.INGRESO) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.BLOQUE_B);
 			expedienteRepo.save(expediente);
 		} else {
@@ -322,7 +322,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverABloque_C(Expediente expediente) throws IOException {
 
-		if (expediente.getEstado() == CircuitoExpediente.INGRESO) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.BLOQUE_C);
 			expedienteRepo.save(expediente);
 		} else {
@@ -334,7 +334,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverATodosBloques(Expediente expediente) throws IOException {
 
-		if (expediente.getEstado() == CircuitoExpediente.INGRESO) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.TODOS_LOS_BLOQUES);
 			expedienteRepo.save(expediente);
 		} else {

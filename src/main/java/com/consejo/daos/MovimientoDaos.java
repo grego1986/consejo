@@ -58,6 +58,6 @@ public class MovimientoDaos implements IMovimientoDaos {
         int numeroMovimiento = expediente.getMovimientos().size() - 1;
         return expediente.getId() + "/" + String.format("%02d", numeroMovimiento);
     }
-		
+
 	}
 

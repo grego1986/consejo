@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.consejo.enumeraciones.CircuitoExpediente;
 import com.consejo.pojos.Expediente;
+import com.consejo.pojos.Movimiento;
 
 @Repository
 public interface IExpedienteRepository extends JpaRepository <Expediente,String>, JpaSpecificationExecutor<Expediente> {
@@ -26,5 +27,6 @@ public interface IExpedienteRepository extends JpaRepository <Expediente,String>
 		    @Param("startDate") LocalDate startDate,
 		    @Param("endDate") LocalDate endDate,
 		    @Param("estados") List<CircuitoExpediente> circuitos);
+	
 
 }

@@ -55,6 +55,7 @@ public class ExpedienteController {
 
 	private ExpedienteForm expedienteform;
 	private NroExpedienteForm nExpedeinteForm = new NroExpedienteForm();
+	private String movimiento;
 
 	/*
 	 * mesa entrada Ingreso de nota/expediente
@@ -133,6 +134,7 @@ public class ExpedienteController {
 	@GetMapping("/mesa-entrada/expedienteConfirmacion")
 	public String mostrarConfirmacion(Model modelo) {
 
+		modelo.addAttribute("titulo", "Numero de expediente asignado");
 		modelo.addAttribute("nExpediente", nExpedeinteForm.getnExpediente());
 		return "expedienteConfirmacion"; // Nombre del archivo Thymeleaf
 	}
@@ -233,8 +235,11 @@ public class ExpedienteController {
 
 			mov.generateId(expediente.getId(), expediente.getMovimientos().size());
 			expediente.getMovimientos().add(mov);
-
+			
+            //nExpedeinteForm.setnExpediente(expediente.getId());
+            movimiento = mov.getId();
 			expedienteServi.agregarMovimiento(id, mov, expMover.getCircuito());
+			
 
 			return "redirect:/secParlamentario/repuestaMunicipio/mover/expedienteConfirmacion";
 		}
@@ -246,7 +251,10 @@ public class ExpedienteController {
 	@GetMapping("/secParlamentario/repuestaMunicipio/mover/expedienteConfirmacion")
 	public String mostrarConfirmacionMovimientoofParlamentario(Model modelo) {
 
-		modelo.addAttribute("nExpediente", nExpedeinteForm.getnExpediente());
+		String titulo = "Numero de movimiento asignado";
+		modelo.addAttribute("titulo", titulo );
+		
+		modelo.addAttribute("nExpediente", movimiento);
 		return "expedienteConfirmacion"; // Nombre del archivo Thymeleaf
 	}
 	
@@ -345,6 +353,7 @@ public class ExpedienteController {
 
 			mov.generateId(expediente.getId(), expediente.getMovimientos().size());
 			expediente.getMovimientos().add(mov);
+			movimiento = mov.getId();
 
 			expedienteServi.agregarMovimiento(id, mov, expMover.getCircuito());
 
@@ -358,7 +367,10 @@ public class ExpedienteController {
 	@GetMapping("/secParlamentario/expediente/mover/expedienteConfirmacion")
 	public String mostrarConfirmacionMovimientoInicial(Model modelo) {
 
-		modelo.addAttribute("nExpediente", nExpedeinteForm.getnExpediente());
+		String titulo = "Numero de movimiento asignado";
+		modelo.addAttribute("titulo", titulo );
+		
+		modelo.addAttribute("nExpediente", movimiento);
 		return "expedienteConfirmacion"; // Nombre del archivo Thymeleaf
 	}
 
@@ -452,6 +464,7 @@ public class ExpedienteController {
 
 			mov.generateId(expediente.getId(), expediente.getMovimientos().size());
 			expediente.getMovimientos().add(mov);
+			movimiento = mov.getId();
 
 			expedienteServi.agregarMovimiento(id, mov, expMover.getCircuito());
 
@@ -465,7 +478,10 @@ public class ExpedienteController {
 	@GetMapping("/comision/gobiernoYDesarrolloSocial/expedienteConfirmacion")
 	public String confirmacionDesarrolloSocial(Model modelo) {
 
-		modelo.addAttribute("nExpediente", nExpedeinteForm.getnExpediente());
+		String titulo = "Numero de movimiento asignado";
+		modelo.addAttribute("titulo", titulo );
+		
+		modelo.addAttribute("nExpediente", movimiento);
 		return "expedienteConfirmacion"; // Nombre del archivo Thymeleaf
 	}
 
@@ -558,6 +574,7 @@ public class ExpedienteController {
 
 			mov.generateId(expediente.getId(), expediente.getMovimientos().size());
 			expediente.getMovimientos().add(mov);
+			movimiento = mov.getId();
 
 			expedienteServi.agregarMovimiento(id, mov, expMover.getCircuito());
 
@@ -571,7 +588,10 @@ public class ExpedienteController {
 	@GetMapping("/comision/desarrolloUrbanoAmbientalYEconomia/expedienteConfirmacion")
 	public String confirmacionUrbanoYEconomia(Model modelo) {
 
-		modelo.addAttribute("nExpediente", nExpedeinteForm.getnExpediente());
+		String titulo = "Numero de movimiento asignado";
+		modelo.addAttribute("titulo", titulo );
+		
+		modelo.addAttribute("nExpediente", movimiento);
 		return "expedienteConfirmacion"; // Nombre del archivo Thymeleaf
 	}
 
@@ -663,6 +683,7 @@ public class ExpedienteController {
 
 			mov.generateId(expediente.getId(), expediente.getMovimientos().size());
 			expediente.getMovimientos().add(mov);
+			movimiento = mov.getId();
 
 			expedienteServi.agregarMovimiento(id, mov, expMover.getCircuito());
 
@@ -676,7 +697,10 @@ public class ExpedienteController {
 	@GetMapping("/comision/ambasComisiones/expedienteConfirmacion")
 	public String confirmacionAmbasComisiones(Model modelo) {
 
-		modelo.addAttribute("nExpediente", nExpedeinteForm.getnExpediente());
+		String titulo = "Numero de movimiento asignado";
+		modelo.addAttribute("titulo", titulo );
+		
+		modelo.addAttribute("nExpediente", movimiento);
 		return "expedienteConfirmacion"; // Nombre del archivo Thymeleaf
 	}
 
@@ -768,6 +792,7 @@ public class ExpedienteController {
 
 			mov.generateId(expediente.getId(), expediente.getMovimientos().size());
 			expediente.getMovimientos().add(mov);
+			movimiento = mov.getId();
 
 			expedienteServi.agregarMovimiento(id, mov, expMover.getCircuito());
 
@@ -781,7 +806,10 @@ public class ExpedienteController {
 	@GetMapping("/expediente/archivo/expedienteConfirmacion")
 	public String confirmacionArchivo(Model modelo) {
 
-		modelo.addAttribute("nExpediente", nExpedeinteForm.getnExpediente());
+		String titulo = "Numero de movimiento asignado";
+		modelo.addAttribute("titulo", titulo );
+		
+		modelo.addAttribute("nExpediente", movimiento);
 		return "expedienteConfirmacion"; // Nombre del archivo Thymeleaf
 	}
 
@@ -872,6 +900,7 @@ public class ExpedienteController {
 
 			mov.generateId(expediente.getId(), expediente.getMovimientos().size());
 			expediente.getMovimientos().add(mov);
+			movimiento = mov.getId();
 
 			expedienteServi.agregarMovimiento(id, mov, expMover.getCircuito());
 
@@ -885,7 +914,10 @@ public class ExpedienteController {
 	@GetMapping("/comision/despachoDeComision/expedienteConfirmacion")
 	public String confirmacionDespachoComision(Model modelo) {
 
-		modelo.addAttribute("nExpediente", nExpedeinteForm.getnExpediente());
+		String titulo = "Numero de movimiento asignado";
+		modelo.addAttribute("titulo", titulo );
+		
+		modelo.addAttribute("nExpediente", movimiento);
 		return "expedienteConfirmacion"; // Nombre del archivo Thymeleaf
 	}
 
@@ -977,6 +1009,7 @@ public class ExpedienteController {
 
 			mov.generateId(expediente.getId(), expediente.getMovimientos().size());
 			expediente.getMovimientos().add(mov);
+			movimiento = mov.getId();
 
 			expedienteServi.agregarMovimiento(id, mov, expMover.getCircuito());
 
@@ -990,10 +1023,16 @@ public class ExpedienteController {
 	@GetMapping("/comision/notaDeComision/expedienteConfirmacion")
 	public String confirmacionNotaComision(Model modelo) {
 
-		modelo.addAttribute("nExpediente", nExpedeinteForm.getnExpediente());
+		String titulo = "Numero de movimiento asignado";
+		modelo.addAttribute("titulo", titulo );
+		
+		modelo.addAttribute("nExpediente", movimiento);
 		return "expedienteConfirmacion"; // Nombre del archivo Thymeleaf
 	}
 
+	/*
+	 * buscar expedientes
+	 */
 	@GetMapping("/expediente/buscarExpediente")
 	public String buscarExpedientes(Model modelo) {
 
@@ -1181,7 +1220,7 @@ public class ExpedienteController {
 
 			expedienteServi.agregarMovimiento(id, mov, expMover.getCircuito());
 
-			return "redirect:/mesa-entrada/repuestaACiudadano";
+			return "redirect:/home";
 		}
 
 		return "redirect:/error";
@@ -1322,39 +1361,40 @@ public class ExpedienteController {
 			List<CircuitoExpediente> circuitos = new ArrayList();
 			String urlForm = "";
 
-			switch (circuito) {
+			switch (expediente.getEstado()) {
 
 			case INGRESO:
-				circuitos = Arrays.asList(CircuitoExpediente.OFICINA_PARLAMENTARIA,
-						CircuitoExpediente.COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL,
+				circuitos = Arrays.asList(CircuitoExpediente.COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL,
 						CircuitoExpediente.COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA,
-						CircuitoExpediente.AMBAS_COMISIONES, CircuitoExpediente.ARCHIVO, CircuitoExpediente.PRESIDENCIA,
-						CircuitoExpediente.BLOQUE_A, CircuitoExpediente.BLOQUE_B, CircuitoExpediente.BLOQUE_C,
-						CircuitoExpediente.TODOS_LOS_BLOQUES);
-				urlForm = "/secParlamentario/expediente/mover/{id}";
+						CircuitoExpediente.AMBAS_COMISIONES, CircuitoExpediente.ARCHIVO);
+				urlForm = "redirect:/secParlamentario/expediente/mover/{id}";
 				break;
 
 			case COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL:
 				circuitos = Arrays.asList(CircuitoExpediente.DESPACHOS_DE_COMISION,
 						CircuitoExpediente.NOTAS_DE_COMISION);
 
-				urlForm = "/comision/gobiernoYDesarrolloSocial/{id}";
+				urlForm = "redirect:/comision/gobiernoYDesarrolloSocial/{id}";
 				break;
 
 			case COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA:
 				circuitos = Arrays.asList(CircuitoExpediente.DESPACHOS_DE_COMISION,
 						CircuitoExpediente.NOTAS_DE_COMISION);
-				urlForm = "/comision/desarrolloUrbanoAmbientalYEconomia/{id}";
+				urlForm = "redirect:/comision/desarrolloUrbanoAmbientalYEconomia/{id}";
 				break;
 
 			case AMBAS_COMISIONES:
 				circuitos = Arrays.asList(CircuitoExpediente.DESPACHOS_DE_COMISION,
 						CircuitoExpediente.NOTAS_DE_COMISION);
-				urlForm = "/comision/ambasComisiones/{id}";
+				urlForm = "redirect:/comision/ambasComisiones/{id}";
 				break;
 
 			case ARCHIVO:
 
+				circuitos = Arrays.asList(CircuitoExpediente.COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL,
+						CircuitoExpediente.COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA,
+						CircuitoExpediente.AMBAS_COMISIONES);
+				urlForm = "redirect:/expediente/archivo/{id}";
 				break;
 
 			case PRESIDENCIA:
@@ -1376,30 +1416,35 @@ public class ExpedienteController {
 			case TODOS_LOS_BLOQUES:
 
 				break;
+				
+			case FIN:
+				urlForm = "moverExpediente";
+				break;
 
 			case LEGISLACION:
 
+				urlForm = "moverExpediente";
 				break;
 
 			case DESPACHOS_DE_COMISION:
 				circuitos = Arrays.asList(CircuitoExpediente.LEGISLACION);
-				urlForm = "/comision/despachoDeComision/{id}";
+				urlForm = "redirect:redirect:/comision/despachoDeComision/{id}";
 				break;
 
 			case NOTAS_DE_COMISION:
 				circuitos = Arrays.asList(CircuitoExpediente.NOTA_AL_MUNICIPIO,
 						CircuitoExpediente.REPUESTA_AL_CIUDADANO);
-				urlForm = "/comision/notaDeComision/{id}";
+				urlForm = "redirect:/comision/notaDeComision/{id}";
 				break;
 
 			case REPUESTA_AL_CIUDADANO:
 				circuitos = Arrays.asList(CircuitoExpediente.FIN);
-				urlForm = "/home";
+				urlForm = "moverExpediente";
 				break;
 
 			case NOTA_AL_MUNICIPIO:
 				circuitos = Arrays.asList(CircuitoExpediente.REPUESTA_DEL_MUNICIPIO);
-				urlForm = "/mesa-entrada/notaAMunicipio/{id}";
+				urlForm = "moverExpediente";
 				break;
 
 			case REPUESTA_DEL_MUNICIPIO:
@@ -1409,7 +1454,7 @@ public class ExpedienteController {
 						CircuitoExpediente.AMBAS_COMISIONES,
 						CircuitoExpediente.ARCHIVO,
 						CircuitoExpediente.DESPACHOS_DE_COMISION);
-				urlForm = "/mesa-entrada/repuestaMunicipio/{id}";
+				urlForm = "moverExpediente";
 				break;
 
 			default:
@@ -1433,7 +1478,7 @@ public class ExpedienteController {
 			modelo.addAttribute("movimientos", movimientos);
 			modelo.addAttribute("circuitoDisponible", circuitos);
 
-			return "moverExpediente";
+			return urlForm;
 		} else {
 			return "redirect:/error"; // Redirige a una página de error o de lista
 		}

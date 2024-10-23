@@ -185,20 +185,25 @@
             </div>
         </div>
     </nav>
-    <div class="container-fluid">
+    <div class="container-fluid mt-5">
         <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
-                <div class="d-flex justify-content-center align-items-center full-height">
-                    <div sec:authorize="hasRole('INACTIVO')" class="text-center">
-                        <label for="nombre" class="form-label" th:text="${nExpediente}"></label>
-                        <a class="btn btn-primary botonLargo" th:href="@{/home}">Aceptar</a>
-                    </div>
-                </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 d-flex justify-content-center">
+                <h2 class="mb-4" th:text="${titulo}"></h2>
             </div>
         </div>
-    <script src="/static/css/node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="/static/css/node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
-    <script src="/static/css/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <div class="row">
+            <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4"></div>
+            <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4 justify-content-center ">
+                <div class="text-center">
+                    <h3 class="mb-4" th:text="${nExpediente}"></h3>
+                    <a class="btn btn-primary botonLargo" th:href="@{/home}">Aceptar</a>
+                </div>
+            </div>
+            <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4"></div>
+        </div>
+        <script src="/static/css/node_modules/jquery/dist/jquery.min.js"></script>
+        <script src="/static/css/node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+        <script src="/static/css/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

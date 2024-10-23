@@ -58,7 +58,6 @@ public class CiudadanoController {
         	frmExpediente.setTelefono(ciudadano.getTelefono());
         	frmExpediente.setMail(ciudadano.getMail());
         	frmExpediente.setNombre(ciudadano.getNombre());
-        	frmExpediente.setOrganizacion(ciudadano.isEsOrganizacion());
         	frmExpediente.setTipoCiudadano(ciudadano.getTipo().getId());
         	
         	//redirectAttributes.addFlashAttribute("formIngresoNota", frmExpediente);
@@ -100,7 +99,6 @@ public class CiudadanoController {
 		ciudadano.setDireccion(registroCiudadano.getDireccion());
 		ciudadano.setMail(registroCiudadano.getMail());
 		ciudadano.setTelefono(registroCiudadano.getTelefono());
-		ciudadano.setEsOrganizacion(registroCiudadano.getOrganizacion());
 		ciudadano.setTipo(tipoCiudadanoServi.buscarTipoCiudadano(registroCiudadano.getTipoCiudadano()));
 		
 		personaServi.guardarPersona(ciudadano);

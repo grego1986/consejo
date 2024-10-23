@@ -19,8 +19,6 @@ public class Persona {
 	private Long dni_Cuit;
 	@Column(name="nombre")
 	private String nombre;
-	@Column(name="organizacion")
-	private boolean esOrganizacion;
 	@Column(name="telefono")
 	private String telefono;
 	@Column(name="direccion")
@@ -56,16 +54,6 @@ public class Persona {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}
-
-
-	public boolean isEsOrganizacion() {
-		return esOrganizacion;
-	}
-
-
-	public void setEsOrganizacion(boolean esOrganizacion) {
-		this.esOrganizacion = esOrganizacion;
 	}
 
 
