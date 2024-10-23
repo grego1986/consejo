@@ -148,15 +148,15 @@ public class ExpedienteDaos implements IExpedienteDaos {
 				moverANotasComision(e);
 				break;
 
-			case REPUESTA_A_CIUDADANO:
+			case REPUESTA_AL_CIUDADANO:
 				moverARepuestaDestinatario(e);
 				break;
 
-			case NOTA_MUNICIPIO:
+			case NOTA_AL_MUNICIPIO:
 				moverANotaMunicipio(e);
 				break;
 
-			case REPUESTA_MUNICIPIO:
+			case REPUESTA_DEL_MUNICIPIO:
 				moverARepuestaMunicipio(e);
 				break;
 			case FIN:
@@ -226,7 +226,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverAOficinaParlamentaria(Expediente expediente) throws IOException {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.REPUESTA_MUNICIPIO)) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.REPUESTA_DEL_MUNICIPIO)) {
 			expediente.setEstado(CircuitoExpediente.OFICINA_PARLAMENTARIA);
 			expedienteRepo.save(expediente);
 		} else {
@@ -238,7 +238,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverAComisionAmbientalYEconomia(Expediente expediente) throws IOException {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.NOTA_MUNICIPIO)) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.NOTA_AL_MUNICIPIO)) {
 			expediente.setEstado(CircuitoExpediente.COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA);
 			expedienteRepo.save(expediente);
 		} else {
@@ -250,7 +250,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverAGobiernoYSocial(Expediente expediente) throws IOException {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.NOTA_MUNICIPIO)) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.NOTA_AL_MUNICIPIO)) {
 			expediente.setEstado(CircuitoExpediente.COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL);
 			expedienteRepo.save(expediente);
 		} else {
@@ -262,7 +262,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverAAmbasComisiones(Expediente expediente) throws IOException {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.NOTA_MUNICIPIO)) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.NOTA_AL_MUNICIPIO)) {
 			expediente.setEstado(CircuitoExpediente.AMBAS_COMISIONES);
 			expedienteRepo.save(expediente);
 		} else {
@@ -404,7 +404,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	public void moverARepuestaDestinatario(Expediente expediente) throws IOException {
 
 		if (expediente.getEstado() == CircuitoExpediente.NOTAS_DE_COMISION) {
-			expediente.setEstado(CircuitoExpediente.REPUESTA_A_CIUDADANO);
+			expediente.setEstado(CircuitoExpediente.REPUESTA_AL_CIUDADANO);
 			expediente.setFincircuito(true);
 			expedienteRepo.save(expediente);
 		} else {
@@ -415,10 +415,10 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverAFin(Expediente expediente) throws IOException {
 
-		if ((expediente.getEstado() == CircuitoExpediente.REPUESTA_A_CIUDADANO)
+		if ((expediente.getEstado() == CircuitoExpediente.REPUESTA_AL_CIUDADANO)
 				|| (expediente.getEstado() == CircuitoExpediente.LEGISLACION)
-				|| (expediente.getEstado() == CircuitoExpediente.REPUESTA_MUNICIPIO)
-				|| (expediente.getEstado() == CircuitoExpediente.NOTA_MUNICIPIO)) {
+				|| (expediente.getEstado() == CircuitoExpediente.REPUESTA_DEL_MUNICIPIO)
+				|| (expediente.getEstado() == CircuitoExpediente.NOTA_AL_MUNICIPIO)) {
 			expediente.setEstado(CircuitoExpediente.FIN);
 			expedienteRepo.save(expediente);
 		} else {
@@ -430,7 +430,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverANotaMunicipio(Expediente expediente) throws IOException {
 		if (expediente.getEstado() == CircuitoExpediente.NOTAS_DE_COMISION) {
-			expediente.setEstado(CircuitoExpediente.NOTA_MUNICIPIO);
+			expediente.setEstado(CircuitoExpediente.NOTA_AL_MUNICIPIO);
 			expedienteRepo.save(expediente);
 		} else {
 			throw new IllegalStateException("El expediente no se encuentra en la etapa correcta");
@@ -440,8 +440,8 @@ public class ExpedienteDaos implements IExpedienteDaos {
 
 	@Override
 	public void moverARepuestaMunicipio(Expediente expediente) throws IOException {
-		if (expediente.getEstado() == CircuitoExpediente.NOTA_MUNICIPIO) {
-			expediente.setEstado(CircuitoExpediente.REPUESTA_MUNICIPIO);
+		if (expediente.getEstado() == CircuitoExpediente.NOTA_AL_MUNICIPIO) {
+			expediente.setEstado(CircuitoExpediente.REPUESTA_DEL_MUNICIPIO);
 			expedienteRepo.save(expediente);
 		} else {
 			throw new IllegalStateException("El expediente no se encuentra en la etapa correcta");

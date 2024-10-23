@@ -32,12 +32,12 @@ a {
 }
 
 .watermark {
-    position: absolute;
-    top: 0;
+    position: fixed;
+    top: 35%;
     left: 0;
-    width: 100%; /* Ancho del 100% */
-    height: 100%; /* Alto del 100% */
-    opacity: 0.5; /* Ajusta la opacidad de la marca de agua */
+    width: 90%; /* Ancho del 100% */
+    height: 50%; /* Alto del 100% */
+    opacity: 0.2; /* Ajusta la opacidad de la marca de agua */
     pointer-events: none; /* Para que no interfiera con clics */
     z-index: -1; /* Asegura que esté detrás del contenido */
     object-fit: cover; /* Mantiene la relación de aspecto */
@@ -46,4 +46,74 @@ a {
 .evitardesplazamiento{
     position: relative;
     overflow: hidden;
+}
+
+.imgMenu{
+
+    width: 100%; /* Ancho del 100% */
+    height: 100%; /* Alto del 100% */
+}
+
+.aMenu{
+    max-height: 38,92rem; /* Ajusta esta altura según el tamaño que desees */
+    width: 50.5rem;      /* Mantiene la proporción de la imagen */
+}
+
+.barra {
+    height: 3rem;
+    width: 10rem;
+    overflow: hidden;
+    align-items: center;
+}
+
+.botonLargo{
+    width: 100%;
+}
+
+H1{
+    color: #16018d !important;
+}
+
+H2{
+    color: #16018d !important;
+}
+
+H3{
+    color: #16018d !important;
+}
+
+H4{
+    color: #16018d !important;
+}
+
+H5{
+    color: #16018d !important;
+}
+
+.tam-10{
+    width: 10%;
+}
+
+.tam-20{
+    width: 20%;
+}
+
+.tam-30{
+    width: 30%;
+}
+
+.tam-40{
+    width: 40%;
+}
+
+.tam-50{
+    width: 50%;
+}
+
+hr{
+    border: 1px solid black;
+}
+
+table{
+    margin-bottom: 0% !important;
 }

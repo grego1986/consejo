@@ -918,8 +918,8 @@ public class ExpedienteController {
 			FrmExpedienteMover expedientemover = new FrmExpedienteMover();
 			List<Movimiento> movimientos = expediente.getMovimientos();
 
-			List<CircuitoExpediente> circuitos = Arrays.asList(CircuitoExpediente.REPUESTA_A_CIUDADANO,
-					CircuitoExpediente.NOTA_MUNICIPIO);
+			List<CircuitoExpediente> circuitos = Arrays.asList(CircuitoExpediente.REPUESTA_AL_CIUDADANO,
+					CircuitoExpediente.NOTA_AL_MUNICIPIO);
 
 			expedientemover.setId(expediente.getId());
 			expedientemover.setFecha(expediente.getFecha());
@@ -1012,10 +1012,10 @@ public class ExpedienteController {
 	public String notaAMunicipio(Model modelo) {
 
 		String url = "/mesa-entrada/notaAMunicipio/mover/{id}";
-		String s = "Expedientes - Ingresos";
+		String s = "Expedientes - Nota al Municipio";
 
 		modelo.addAttribute("titulo", s);
-		modelo.addAttribute("expedientes", expedienteServi.listarExpedientes(CircuitoExpediente.NOTA_MUNICIPIO));
+		modelo.addAttribute("expedientes", expedienteServi.listarExpedientes(CircuitoExpediente.NOTA_AL_MUNICIPIO));
 		modelo.addAttribute("urlMover", url);
 
 		return "expedienteConsulta";
@@ -1032,7 +1032,7 @@ public class ExpedienteController {
 			FrmExpedienteMover expedientemover = new FrmExpedienteMover();
 			List<Movimiento> movimientos = expediente.getMovimientos();
 
-			List<CircuitoExpediente> circuitos = Arrays.asList(CircuitoExpediente.REPUESTA_MUNICIPIO,
+			List<CircuitoExpediente> circuitos = Arrays.asList(CircuitoExpediente.REPUESTA_DEL_MUNICIPIO,
 			CircuitoExpediente.FIN
 			// CircuitoExpediente.BLOQUE_A,
 			// CircuitoExpediente.BLOQUE_B,
@@ -1113,10 +1113,10 @@ public class ExpedienteController {
 	@GetMapping("/mesa-entrada/repuestaACiudadano")
 	public String repuestaCiudadano(Model modelo) {
 
-		String s = "Expedientes - Despacho de Comisíon";
+		String s = "Expedientes - Repuesta al ciudadano";
 		String url = "/mesa-entrada/repuestaACiudadano/{id}";
 
-		modelo.addAttribute("expedientes", expedienteServi.listarExpedientes(CircuitoExpediente.REPUESTA_A_CIUDADANO));
+		modelo.addAttribute("expedientes", expedienteServi.listarExpedientes(CircuitoExpediente.REPUESTA_AL_CIUDADANO));
 		modelo.addAttribute("urlMover", url);
 		modelo.addAttribute("titulo", s);
 
@@ -1195,10 +1195,10 @@ public class ExpedienteController {
 	@GetMapping("/mesa-entrada/repuestaMunicipio")
 	public String repuestaMunicipio(Model modelo) {
 
-		String s = "Expedientes - Despacho de Comisíon";
+		String s = "Expedientes - Repuesta del Municipio";
 		String url = "/mesa-entrada/repuestaMunicipio/{id}";
 
-		modelo.addAttribute("expedientes", expedienteServi.listarExpedientes(CircuitoExpediente.REPUESTA_MUNICIPIO));
+		modelo.addAttribute("expedientes", expedienteServi.listarExpedientes(CircuitoExpediente.REPUESTA_DEL_MUNICIPIO));
 		modelo.addAttribute("urlMover", url);
 		modelo.addAttribute("titulo", s);
 
@@ -1383,23 +1383,33 @@ public class ExpedienteController {
 
 			case DESPACHOS_DE_COMISION:
 				circuitos = Arrays.asList(CircuitoExpediente.LEGISLACION);
+				urlForm = "/comision/despachoDeComision/{id}";
 				break;
 
 			case NOTAS_DE_COMISION:
-				circuitos = Arrays.asList(CircuitoExpediente.REPUESTA_A_CIUDADANO,
-						CircuitoExpediente.REPUESTA_MUNICIPIO);
+				circuitos = Arrays.asList(CircuitoExpediente.NOTA_AL_MUNICIPIO,
+						CircuitoExpediente.REPUESTA_AL_CIUDADANO);
+				urlForm = "/comision/notaDeComision/{id}";
 				break;
 
-			case REPUESTA_A_CIUDADANO:
-
+			case REPUESTA_AL_CIUDADANO:
+				circuitos = Arrays.asList(CircuitoExpediente.FIN);
+				urlForm = "/home";
 				break;
 
-			case NOTA_MUNICIPIO:
-				circuitos = Arrays.asList(CircuitoExpediente.REPUESTA_MUNICIPIO);
+			case NOTA_AL_MUNICIPIO:
+				circuitos = Arrays.asList(CircuitoExpediente.REPUESTA_DEL_MUNICIPIO);
+				urlForm = "/mesa-entrada/notaAMunicipio/{id}";
 				break;
 
-			case REPUESTA_MUNICIPIO:
-				circuitos = Arrays.asList(CircuitoExpediente.NOTA_MUNICIPIO);
+			case REPUESTA_DEL_MUNICIPIO:
+				circuitos = Arrays.asList(CircuitoExpediente.NOTA_AL_MUNICIPIO,
+						CircuitoExpediente.COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA,
+						CircuitoExpediente.COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL,
+						CircuitoExpediente.AMBAS_COMISIONES,
+						CircuitoExpediente.ARCHIVO,
+						CircuitoExpediente.DESPACHOS_DE_COMISION);
+				urlForm = "/mesa-entrada/repuestaMunicipio/{id}";
 				break;
 
 			default:

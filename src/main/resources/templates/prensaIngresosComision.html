@@ -10,13 +10,19 @@
     <title>Concejo</title>
 </head>
 
-<body >
-    <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark">
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" th:href="@{'/home'}">Concejo Recreo</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            <a class="navbar-brand" th:href="@{/home}" title="Pàgina de inicio">
+                <div class="barra">
+                    <img th:src="@{/images/concejo.jpg}" alt="Marca de Agua" class="img-fluid imgMenu">
+                </div>
+            </a>
+
+            <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon aMenu"></span>
+
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
@@ -68,6 +74,7 @@
                             <li><a class="dropdown-item" th:href="@{/expediente/buscarExpediente}"
                                     sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">Buscar
                                     Expediente</a></li>
+
                         </ul>
                     </li>
 
@@ -90,14 +97,15 @@
                         </ul>
                     </li>
 
-                     <!-- Menú de Mesa de Entrada (visible solo para PRENSA) -->
-                     <li class="nav-item dropdown" sec:authorize="hasRole('PRENSA')">
+                    <!-- Menú de Mesa de Entrada (visible solo para PRENSA) -->
+                    <li class="nav-item dropdown" sec:authorize="hasRole('PRENSA')">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMesaEntrada" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Expedientes
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMesaEntrada">
-                            <li><a class="dropdown-item" th:href="@{/prensa/ingresosAComision}">Ingreso a comision</a></li>
+                            <li><a class="dropdown-item" th:href="@{/prensa/ingresosAComision}">Ingreso a comision</a>
+                            </li>
                             <li><a class="dropdown-item" th:href="@{/prensa/legislacion}">Legislación</a></li>
                         </ul>
                     </li>
@@ -142,60 +150,106 @@
                             </li>
                         </ul>
                     </li>
+
+
+                    <li class="nav-item dropdown" sec:authorize="hasRole('SEC_ADMINISTRATIVO')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDespachoNotas" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Despacho
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownDespachoNotas">
+                            <li><a class="dropdown-item"
+                                    th:href="@{/secretarioAdministrativo/despachoDeComision}">Despacho de
+                                    Comisión</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown"
+                        sec:authorize="hasAnyRole('SEC_ADMINISTRATIVO','CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDespachoNotas" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Orden del día
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownDespachoNotas">
+                            <li sec:authorize="hasRole('SEC_ADMINISTRATIVO')"><a class="dropdown-item"
+                                    th:href="@{/secretarioAdministrativo/subirOrdenDelDia}">Subir Orden del Día</a></li>
+                            <li
+                                sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                                <a class="dropdown-item" th:href="@{/ordenDelDia/ver}">Ver
+                                    Orden del Día</a>
+                            </li>
+                        </ul>
+                    </li>
+
                 </ul>
             </div>
         </div>
-    </nav>
+    </nav>s
 
 
-    <div class="container mt-1">
-        <h2 class="text-center">Búsqueda de Expedientes</h2>
-        
-        <!-- Formulario de búsqueda -->
-        <form th:action="@{/prensa/ingresosAComision}" method="get" class="row g-3 mt-2">
-            <div class="col-md-4">
-                <label for="startDate" class="form-label">Desde</label>
-                <input type="date" class="form-control" id="startDate" name="startDate" th:value="${startDate}" required>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 d-flex justify-content-center">
+                <h2 class="text-center">Búsqueda de Expedientes</h2>
             </div>
-            <div class="col-md-4 align-self-end">
-                <button type="submit" class="btn btn-primary w-100">Buscar</button>
-            </div>
-        </form>
+        </div>
 
-        <!-- Tabla de resultados -->
-        
-        <!-- Tabla de Resultados -->
-        <table class="table table-striped mt-4">
-            <thead>
-            <tr>
-                <th>Número de Expediente</th>
-                <th>Carátula</th>
-                <th>Ciudadano</th>
-                <th>Fecha de Ingreso</th>
-                <th>Estado</th>
-                <th>Acción</th>
-            </tr>
-            </thead>
-            <tbody>
-            <!-- Itera sobre la lista de expedientes y muestra los resultados -->
-            <tr th:each="expediente : ${expedientes}">
-                <td th:text="${expediente.id}"></td>
-                <td th:text="${expediente.caratula}"></td>
-                <td th:text="${expediente.persona.nombre}"></td>
-                <td th:text="${expediente.fecha}"></td>
-                <td th:text="${expediente.estado}"></td>
-                <td>
-                    <a th:href="@{/prensa/expediente/ver/{id}(id=${expediente.id})}" class="btn btn-info btn-sm">Ver</a>
-                </td>
-            </tr>
-            <!-- Muestra un mensaje si no hay expedientes que coincidan con la búsqueda -->
-            <tr th:if="${#lists.isEmpty(expedientes)}">
-                <td colspan="6" class="text-center">No se encontraron expedientes.</td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="row">
+            <div class="col-sm-2 col-md-3 col-lg-3 col-xl-3 col-xxl-3"></div>
+            <div class="col-sm-8 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                <!-- Formulario de búsqueda -->
+                <form th:action="@{/prensa/ingresosAComision}" method="get" class="row g-3 mt-2">
+                    <div class="col-md-4">
+                        <label for="startDate" class="form-label">Desde</label>
+                        <input type="date" class="form-control" id="startDate" name="startDate" th:value="${startDate}"
+                            required>
+                    </div>
+                    <div class="col-md-4 align-self-end">
+                        <button type="submit" class="btn btn-primary w-100">Buscar</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-2 col-md-3 col-lg-3 col-xl-3 col-xxl-3"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
+
+                <!-- Tabla de Resultados -->
+                <table class="table table-success table-striped mt-4">
+                    <thead>
+                        <tr>
+                            <th class="tam-20">Número de Expediente</th>
+                            <th class="tam-20">Carátula</th>
+                            <th class="tam-20">Ciudadano</th>
+                            <th class="tam-10">Fecha de Ingreso</th>
+                            <th class="tam-20">Estado</th>
+                            <th class="tam-10">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Itera sobre la lista de expedientes y muestra los resultados -->
+                        <tr th:each="expediente : ${expedientes}">
+                            <td class="tam-20" th:text="${expediente.id}"></td>
+                            <td class="tam-20" th:text="${expediente.caratula}"></td>
+                            <td class="tam-20" th:text="${expediente.persona.nombre}"></td>
+                            <td class="tam-10" th:text="${expediente.fecha}"></td>
+                            <td class="tam-20" th:text="${expediente.estado}"></td>
+                            <td class="tam-10">
+                                <a th:href="@{/prensa/expediente/ver/{id}(id=${expediente.id})}"
+                                    class="btn btn-info btn-sm botonLargo">Ver</a>
+                            </td>
+                        </tr>
+                        <!-- Muestra un mensaje si no hay expedientes que coincidan con la búsqueda -->
+                        <tr th:if="${#lists.isEmpty(expedientes)}">
+                            <td colspan="6" class="text-center">No se encontraron expedientes.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-    
+
 
     <script th:src="@{/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js}"></script>
     <script src="/static/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>

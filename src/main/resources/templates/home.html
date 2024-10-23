@@ -10,13 +10,19 @@
     <title>Concejo</title>
 </head>
 
-<body class="evitardesplazamiento">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark">
+<body class="evitardesplazamiento ">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" th:href="@{'/home'}">Concejo Recreo</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            <a class="navbar-brand" th:href="@{/home}" title="Pàgina de inicio">
+                <div class="barra">
+                    <img th:src="@{/images/concejo.jpg}" alt="Marca de Agua" class="img-fluid imgMenu">
+                </div>
+            </a>
+
+            <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon aMenu"></span>
+
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
@@ -170,7 +176,8 @@
                             <li
                                 sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
                                 <a class="dropdown-item" th:href="@{/ordenDelDia/ver}">Ver
-                                    Orden del Día</a></li>
+                                    Orden del Día</a>
+                            </li>
                         </ul>
                     </li>
 
@@ -178,13 +185,18 @@
             </div>
         </div>
     </nav>
-
-    <div class="d-flex justify-content-center align-items-center full-height">
-        <div sec:authorize="hasRole('INACTIVO')" class="text-center">
-            <h1>USTED NO TIENE ACCESO AL SISTEMA, MIENTRAS NO SEA PARTE DEL CONSEJO</h1>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
+                <div class="d-flex justify-content-center align-items-center full-height">
+                    <div sec:authorize="hasRole('INACTIVO')" class="text-center">
+                        <h1>USTED NO TIENE ACCESO AL SISTEMA, MIENTRAS NO SEAS PARTE DEL CONCEJO</h1>
+                    </div>
+                </div>
+                <img th:src="@{/images/concejo.jpg}" alt="Marca de Agua" class="watermark">
+            </div>
         </div>
     </div>
-    <img th:src="@{/images/concejoImagen.jpeg}" alt="Marca de Agua" class="watermark">
     <script th:src="@{/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js}"></script>
     <script src="/static/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 

@@ -9,13 +9,20 @@
     <link href="/static/css/style.css" rel="stylesheet">
     <title>Concejo</title>
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" th:href="@{'/home'}">Concejo Recreo</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            <a class="navbar-brand" th:href="@{/home}" title="Pàgina de inicio">
+                <div class="barra">
+                    <img th:src="@{/images/concejo.jpg}" alt="Marca de Agua" class="img-fluid imgMenu">
+                </div>
+            </a>
+
+            <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon aMenu"></span>
+
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
@@ -51,7 +58,8 @@
                     </li>
 
                     <!-- Menú de Expedientes (visible solo para ADMIN) -->
-                    <li class="nav-item dropdown" sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                    <li class="nav-item dropdown"
+                        sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownExpedientes" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Expedientes
@@ -60,9 +68,13 @@
                             <li><a class="dropdown-item" th:href="@{/secParlamentario/expediente/ingresos}"
                                     sec:authorize="hasRole('SEC_PARLAMENTARIO')">Ingresos</a>
                             </li>
+                            <li><a class="dropdown-item" th:href="@{/secParlamentario/repuestaMunicipio}"
+                                    sec:authorize="hasRole('SEC_PARLAMENTARIO')">Repuesta del municipio</a>
+                            </li>
                             <li><a class="dropdown-item" th:href="@{/expediente/buscarExpediente}"
                                     sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">Buscar
                                     Expediente</a></li>
+
                         </ul>
                     </li>
 
@@ -75,26 +87,49 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMesaEntrada">
                             <li><a class="dropdown-item" th:href="@{/mesa-entrada/ciudadanoBuscar}">Recepción de Nota
                                     (Por el ciudadano)</a></li>
-                            <li><a class="dropdown-item" th:href="@{/mesa-entrada/registroSalida}">Registrar Salida a
+                            <li><a class="dropdown-item" th:href="@{/mesa-entrada/repuestaACiudadano}">registrar
+                                    repuesta
+                                    al ciudadano</a></li>
+                            <li><a class="dropdown-item" th:href="@{/mesa-entrada/notaAMunicipio}">Registrar Salida a
                                     Municipalidad</a></li>
-                            <li><a class="dropdown-item" th:href="@{/mesa-entrada/registroEntrada}">Registrar repuesta
+                            <li><a class="dropdown-item" th:href="@{/mesa-entrada/repuestaMunicipio}">Registrar repuesta
                                     desde la Municipalidad</a></li>
                         </ul>
                     </li>
 
-                    
-                    <li class="nav-item dropdown" sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                    <!-- Menú de Mesa de Entrada (visible solo para PRENSA) -->
+                    <li class="nav-item dropdown" sec:authorize="hasRole('PRENSA')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMesaEntrada" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Expedientes
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMesaEntrada">
+                            <li><a class="dropdown-item" th:href="@{/prensa/ingresosAComision}">Ingreso a comision</a>
+                            </li>
+                            <li><a class="dropdown-item" th:href="@{/prensa/legislacion}">Legislación</a></li>
+                        </ul>
+                    </li>
+
+
+                    <li class="nav-item dropdown"
+                        sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownComisiones" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Comisiones
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownComisiones">
-                            <li sec:authorize="hasAnyRole('PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')"><a class="dropdown-item"
-                                    th:href="@{/comision/gobiernoYDesarrolloSocial}" >Gobierno y Desarrollo
-                                    Social</a></li>
-                            <li sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO')"><a class="dropdown-item"
+                            <li
+                                sec:authorize="hasAnyRole('PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                                <a class="dropdown-item" th:href="@{/comision/gobiernoYDesarrolloSocial}">Gobierno y
+                                    Desarrollo
+                                    Social</a>
+                            </li>
+                            <li
+                                sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO')">
+                                <a class="dropdown-item"
                                     th:href="@{/comision/desarrolloUrbanoAmbientalYEconomia}">Desarrollo Urbano
-                                    Ambiental y Economía</a></li>
+                                    Ambiental y Economía</a>
+                            </li>
                             <li><a class="dropdown-item" th:href="@{/comision/ambasComisiones}">Ambas
                                     Comisiones</a></li>
                             <li><a class="dropdown-item" th:href="@{/expediente/archivo}">Archivo</a></li>
@@ -102,7 +137,8 @@
                     </li>
 
 
-                    <li class="nav-item dropdown" sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                    <li class="nav-item dropdown"
+                        sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDespachoNotas" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Despacho y Notas de Comisión
@@ -114,18 +150,55 @@
                             </li>
                         </ul>
                     </li>
+
+
+                    <li class="nav-item dropdown" sec:authorize="hasRole('SEC_ADMINISTRATIVO')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDespachoNotas" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Despacho
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownDespachoNotas">
+                            <li><a class="dropdown-item"
+                                    th:href="@{/secretarioAdministrativo/despachoDeComision}">Despacho de
+                                    Comisión</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown"
+                        sec:authorize="hasAnyRole('SEC_ADMINISTRATIVO','CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDespachoNotas" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Orden del día
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownDespachoNotas">
+                            <li sec:authorize="hasRole('SEC_ADMINISTRATIVO')"><a class="dropdown-item"
+                                    th:href="@{/secretarioAdministrativo/subirOrdenDelDia}">Subir Orden del Día</a></li>
+                            <li
+                                sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                                <a class="dropdown-item" th:href="@{/ordenDelDia/ver}">Ver
+                                    Orden del Día</a>
+                            </li>
+                        </ul>
+                    </li>
+
                 </ul>
             </div>
         </div>
     </nav>
-
-    <label for="nombre" class="form-label" th:text="${nExpediente}"></label>
-
-    <a class="btn btn-primary" th:href="@{/home}">Aceptar</a>
-    
-
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
+                <div class="d-flex justify-content-center align-items-center full-height">
+                    <div sec:authorize="hasRole('INACTIVO')" class="text-center">
+                        <label for="nombre" class="form-label" th:text="${nExpediente}"></label>
+                        <a class="btn btn-primary botonLargo" th:href="@{/home}">Aceptar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     <script src="/static/css/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/static/css/node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
     <script src="/static/css/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

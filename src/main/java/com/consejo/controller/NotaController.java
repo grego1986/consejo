@@ -27,12 +27,12 @@ public class NotaController {
     private NotaDaos notaServi;
     
 
-    @GetMapping("/administrador/nota")
+   /* @GetMapping("/secParlamentario/nota")
     public String getAllNotas(Model model) {
         model.addAttribute("notas", notaServi.listarNota());
         return "notas";
     }
-
+*/
     @GetMapping("/notas/upload")
     public String showUploadForm() {
         return "uploadNota";
@@ -78,4 +78,6 @@ public class NotaController {
 
         return "success";
     }
+    
+    
 }

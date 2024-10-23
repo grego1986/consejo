@@ -185,93 +185,42 @@
             </div>
         </div>
     </nav>
-
-
-    <div class="container" sec:authorize="hasRole('SEC_PARLAMENTARIO')">
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 d-flex justify-content-center">
-                    <h2>Buscar Usuarios</h2>
-                </div>
+    <div class="container mt-5">
+        <div class="Row">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 d-flex justify-content-center">
+                <h2 class="mt-4">Lista de Expedientes</h2>
             </div>
-            <div class="row">
-                <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3"></div>
-                <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
-                    <form th:action="@{/secParlamentario/buscarUsuario/resultado}" th:object="${formBuscarCiudadano}"
-                        method="get">
-                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-                        <div class="row">
-                            <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-">
-                                <input type="text" name="nombre" class="form-control" placeholder="Buscar por nombre" th:field="*{nombre}">
-                            </div>
-                            <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-">
-                                <input type="text" name="apellido" class="form-control" placeholder="Buscar por apellido"
-                                    th:field="*{apellido}" />
-                            </div>
-                            <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-">
-                                <button type="submit" name="action" value="buscar" class="btn btn-primary botonLargo">Buscar</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3"></div>
-            </div>
-
-            <br>
-            <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
-                    <h5>Resultados de la búsqueda</h5>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
-                    <table class="table table-success table-striped mt-1">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>Mail</th>
-                                <th>Rol</th>
-                                <th>Situación</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="usuario : ${usuarios}">
-                                <td th:text="${usuario.nombre}"></td>
-                                <td th:text="${usuario.apellido}"></td>
-                                <td th:text="${usuario.mail}"></td>
-                                <td th:text="${usuario.rol.toString}"></td>
-                                <td th:text="${usuario.esActivo ? 'Activo' : 'Inactivo'}"></td>
-                                <td>
-                                    <!-- Condición para verificar si el usuario está activo -->
-                                    <form th:action="@{/secParlamentario/modificarUsuario/{id}(id=${usuario.dni})}"
-                                        method="get">
-                                        <input type="hidden" th:name="${_csrf.parameterName}"
-                                            th:value="${_csrf.token}" />
-                                        <div class="row">
-                                            <div
-                                                class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 d-flex justify-content-center align-items-end">
-                                                <button type="submit"
-                                                    class="btn btn-info botonLargo">Modificar</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div th:if="${usuarios == null}">
-                <p>No se encontraron usuarios con los criterios de búsqueda.</p>
+        </div>
+        <div class="Row">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 ">
+                <table class="table table-success table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Carátula</th>
+                            <th class="tam-20">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Iteramos sobre la lista de expedientes -->
+                        <tr th:each="expediente : ${expedientes}">
+                            <td th:text="${expediente.id}">ID</td>
+                            <td th:text="${expediente.caratula}">Carátula</td>
+                            <td class="tam-20">
+                                <!-- Enlace para ver los detalles del expediente -->
+                                <a th:href="@{/expediente/ver/{id}(id=${expediente.id})}"
+                                    class="btn btn-info botonLargo">Ver Expediente</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+
     <script th:src="@{/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js}"></script>
     <script src="/static/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+
 </body>
 
 </html>

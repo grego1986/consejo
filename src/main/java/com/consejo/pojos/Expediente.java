@@ -55,7 +55,8 @@ public class Expediente {
     inverseJoinColumns = @JoinColumn(name = "usuario_id")
     )
     private List<Usuario> usuariosAsignados = new ArrayList<>();
-    
+    @ManyToMany(mappedBy = "expedientes")
+    private List<OrdenDia> ordenDia = new ArrayList<>();
 	
 	public Expediente() {
 		super();
@@ -147,5 +148,17 @@ public class Expediente {
 		this.fincircuito = fincircuito;
 	}
 
-	
+	public List<OrdenDia> getOrdenDia() {
+		return ordenDia;
+	}
+
+	public void setOrdenDia(List<OrdenDia> ordenDia) {
+		this.ordenDia = ordenDia;
+	}
+
+	@Override
+	public String toString() {
+		return "Expediente Nro. " + id + " - " + caratula;
+	}
+
 }

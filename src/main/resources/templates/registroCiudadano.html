@@ -11,12 +11,18 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" th:href="@{'/home'}">Concejo Recreo</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            <a class="navbar-brand" th:href="@{/home}" title="Pàgina de inicio">
+                <div class="barra">
+                    <img th:src="@{/images/concejo.jpg}" alt="Marca de Agua" class="img-fluid imgMenu">
+                </div>
+            </a>
+
+            <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon aMenu"></span>
+
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
@@ -52,7 +58,8 @@
                     </li>
 
                     <!-- Menú de Expedientes (visible solo para ADMIN) -->
-                    <li class="nav-item dropdown" sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                    <li class="nav-item dropdown"
+                        sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownExpedientes" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Expedientes
@@ -61,9 +68,13 @@
                             <li><a class="dropdown-item" th:href="@{/secParlamentario/expediente/ingresos}"
                                     sec:authorize="hasRole('SEC_PARLAMENTARIO')">Ingresos</a>
                             </li>
+                            <li><a class="dropdown-item" th:href="@{/secParlamentario/repuestaMunicipio}"
+                                    sec:authorize="hasRole('SEC_PARLAMENTARIO')">Repuesta del municipio</a>
+                            </li>
                             <li><a class="dropdown-item" th:href="@{/expediente/buscarExpediente}"
                                     sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">Buscar
                                     Expediente</a></li>
+
                         </ul>
                     </li>
 
@@ -76,26 +87,49 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMesaEntrada">
                             <li><a class="dropdown-item" th:href="@{/mesa-entrada/ciudadanoBuscar}">Recepción de Nota
                                     (Por el ciudadano)</a></li>
-                            <li><a class="dropdown-item" th:href="@{/mesa-entrada/registroSalida}">Registrar Salida a
+                            <li><a class="dropdown-item" th:href="@{/mesa-entrada/repuestaACiudadano}">registrar
+                                    repuesta
+                                    al ciudadano</a></li>
+                            <li><a class="dropdown-item" th:href="@{/mesa-entrada/notaAMunicipio}">Registrar Salida a
                                     Municipalidad</a></li>
-                            <li><a class="dropdown-item" th:href="@{/mesa-entrada/registroEntrada}">Registrar repuesta
+                            <li><a class="dropdown-item" th:href="@{/mesa-entrada/repuestaMunicipio}">Registrar repuesta
                                     desde la Municipalidad</a></li>
                         </ul>
                     </li>
 
-                    
-                    <li class="nav-item dropdown" sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                    <!-- Menú de Mesa de Entrada (visible solo para PRENSA) -->
+                    <li class="nav-item dropdown" sec:authorize="hasRole('PRENSA')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMesaEntrada" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Expedientes
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMesaEntrada">
+                            <li><a class="dropdown-item" th:href="@{/prensa/ingresosAComision}">Ingreso a comision</a>
+                            </li>
+                            <li><a class="dropdown-item" th:href="@{/prensa/legislacion}">Legislación</a></li>
+                        </ul>
+                    </li>
+
+
+                    <li class="nav-item dropdown"
+                        sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownComisiones" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Comisiones
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownComisiones">
-                            <li sec:authorize="hasAnyRole('PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')"><a class="dropdown-item"
-                                    th:href="@{/comision/gobiernoYDesarrolloSocial}" >Gobierno y Desarrollo
-                                    Social</a></li>
-                            <li sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO')"><a class="dropdown-item"
+                            <li
+                                sec:authorize="hasAnyRole('PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                                <a class="dropdown-item" th:href="@{/comision/gobiernoYDesarrolloSocial}">Gobierno y
+                                    Desarrollo
+                                    Social</a>
+                            </li>
+                            <li
+                                sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO')">
+                                <a class="dropdown-item"
                                     th:href="@{/comision/desarrolloUrbanoAmbientalYEconomia}">Desarrollo Urbano
-                                    Ambiental y Economía</a></li>
+                                    Ambiental y Economía</a>
+                            </li>
                             <li><a class="dropdown-item" th:href="@{/comision/ambasComisiones}">Ambas
                                     Comisiones</a></li>
                             <li><a class="dropdown-item" th:href="@{/expediente/archivo}">Archivo</a></li>
@@ -103,7 +137,8 @@
                     </li>
 
 
-                    <li class="nav-item dropdown" sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                    <li class="nav-item dropdown"
+                        sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDespachoNotas" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Despacho y Notas de Comisión
@@ -115,65 +150,130 @@
                             </li>
                         </ul>
                     </li>
+
+
+                    <li class="nav-item dropdown" sec:authorize="hasRole('SEC_ADMINISTRATIVO')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDespachoNotas" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Despacho
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownDespachoNotas">
+                            <li><a class="dropdown-item"
+                                    th:href="@{/secretarioAdministrativo/despachoDeComision}">Despacho de
+                                    Comisión</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown"
+                        sec:authorize="hasAnyRole('SEC_ADMINISTRATIVO','CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDespachoNotas" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Orden del día
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownDespachoNotas">
+                            <li sec:authorize="hasRole('SEC_ADMINISTRATIVO')"><a class="dropdown-item"
+                                    th:href="@{/secretarioAdministrativo/subirOrdenDelDia}">Subir Orden del Día</a></li>
+                            <li
+                                sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                                <a class="dropdown-item" th:href="@{/ordenDelDia/ver}">Ver
+                                    Orden del Día</a>
+                            </li>
+                        </ul>
+                    </li>
+
                 </ul>
             </div>
         </div>
     </nav>
 
-
-    <form th:action="@{/mesa-entrada/ciudadanoRegistrado}" method="post" enctype="multipart/form-data" th:object="${formCiudadano}">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-
-        <div class="form-check mb-1">
-            <label for="cuit" class="form-label">DNI o CUIT</label>
-            <label for="nombre" class="form-label" th:text="${dni}"></label>
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 d-flex justify-content-center">
+                <h2>Registro del ciudadano</h2>
+            </div>
         </div>
 
-        <div class="mb-1">
-            <label for="cuit" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="nombre del ciudadano" th:field="*{nombre}" required>
+        <div class="row mt-1">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 ">
+                <form th:action="@{/mesa-entrada/ciudadanoRegistrado}" method="post" enctype="multipart/form-data"
+                    th:object="${formCiudadano}">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                    <div class="row">
+                        <div class=" col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 mb-2"></div>
+                        <div class=" col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 mb-2">
+                            <label for="cuit" class="form-label">DNI o CUIT:</label>
+                            <input type="text" id="dni" name="dni" class="form-control" th:value="${dni}" readonly />
+                        </div>
+                        <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 mb-2">
+                            <label for="cuit" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre"
+                                placeholder="nombre del ciudadano" th:field="*{nombre}" required>
+                        </div>
+                        <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 mb-2"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 mb-2"></div>
+                        <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 mb-2">
+                            <label for="cuit" class="form-label">Dirección</label>
+                            <input type="text" class="form-control" id="direccion" name="direccion"
+                                placeholder="dirección" th:field="*{direccion}" required>
+                        </div>
+                        <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 mb-2">
+                            <label for="cuit" class="form-label">Teléfono</label>
+                            <input type="text" class="form-control" id="telefono" name="telefono" placeholder="teléfono"
+                                th:field="*{telefono}" required>
+                        </div>
+                        <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 mb-2"></div>
+                        <div class="row">
+                            <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 mb-2"></div>
+                            <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 mb-2">
+                                <label for="cuit" class="form-label">E-mail</label>
+                                <input type="email" class="form-control" id="mail" name="mail"
+                                    placeholder="correo electronico" th:field="*{mail}" required>
+                            </div>
+                            <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 mb-2"></div>
+                            <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 mb-2"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 mb-2"></div>
+                            <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 mb-2">
+                                <label for="tipoCiudadano" class="form-label">Tipo de Ciudadano</label>
+                                <select class="form-select" id="tipoCiudadano" name="tipoCiudadano" required>
+                                    <option th:each="tipo : ${tipoCiudadanos}" th:value="${tipo.id}"
+                                        th:text="${tipo.toString}">
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 mb-2">
+                                <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 mb-2"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 mb-2"></div>
+                        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-2">
+                            <div class="form-check mb-1">
+                                <button type="submit" class="btn btn-primary botonLargo" name="action"
+                                    value="guardarCiudadano">Guardar
+                                    Ciudadano</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 mb-2"></div>
+                    </div>
+
+                </form>
+
+            </div>
         </div>
 
-        <div class="mb-1">
-            <label for="cuit" class="form-label">Dirección</label>
-            <input type="text" class="form-control" id="direccion" name="direccion" placeholder="dirección" th:field="*{direccion}" required>
-        </div>
+    </div>
 
-        <div class="mb-1">
-            <label for="cuit" class="form-label">Teléfono</label>
-            <input type="text" class="form-control" id="telefono" name="telefono" placeholder="teléfono" th:field="*{telefono}" required>
-        </div>
-
-        <div class="mb-1">
-            <label for="cuit" class="form-label">E-mail</label>
-            <input type="email" class="form-control" id="mail" name="mail" placeholder="correo electronico" th:field="*{mail}" required>
-        </div>
-    
-        <div class="mb-1">
-            <label for="tipoCiudadano" class="form-label">Tipo de Ciudadano</label>
-            <select class="form-select" id="tipoCiudadano" name="tipoCiudadano" required>
-                <option th:each="tipo : ${tipoCiudadanos}" th:value="${tipo.id}" th:text="${tipo.toString}"></option>
-            </select>
-        </div>
-
-        <div class="form-check mb-1">
-            <input class="form-check-input" type="checkbox" id="organizacion" th:field="*{organizacion}">
-            <label class="form-check-label" for="organizacion">
-                Organización (Persona Jurídica)
-            </label>
-        </div>
-
-        <div class="form-check mb-1">
-            <button type="submit" class="btn btn-primary" name="action" value="guardarCiudadano">Guardar Ciudadano</button>
-        </div>
-        </div>
-
-    </form>
-
-    
     <script th:src="@{/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js}"></script>
     <script src="/static/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
-    
+
 </body>
 
 </html>
