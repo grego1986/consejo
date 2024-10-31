@@ -167,7 +167,7 @@ public class UsuarioController {
 	public String cambiarPasswordGet (Model modelo) {
 		
 		
-		return "cambiocontrasena";
+		return "CambioContrasena";
 	}
 	
 	@PostMapping("/password/cambiarPassword")

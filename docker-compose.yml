@@ -1,0 +1,33 @@
+
+
+services:
+  # Servicio de la aplicación Spring Boot
+  consejo:
+    build:
+      context: .
+      dockerfile: Dockerfile  # Asegúrate de tener este Dockerfile en la raíz del proyecto
+    ports:
+      - "8080:8080"  # Mapea el puerto 8080 del contenedor al 8080 de la máquina host
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/concejorecreo  # URL de conexión a la base de datos
+      SPRING_DATASOURCE_USERNAME: GregoDev  # Usuario de la base de datos
+      SPRING_DATASOURCE_PASSWORD: Grego_53  # Contraseña de la base de datos
+    depends_on:
+      - db  # Espera a que el servicio de la base de datos esté disponible
+
+  # Servicio de la base de datos MySQL
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: concejorecreo
+      MYSQL_ROOT_PASSWORD: Grego_53@Grego
+      MYSQL_USER: GregoDev
+      MYSQL_PASSWORD: Grego_53
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql  # Persistencia de datos
+
+# Definición del volumen para la base de datos
+volumes:
+  db_data:
