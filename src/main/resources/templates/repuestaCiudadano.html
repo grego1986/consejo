@@ -186,6 +186,101 @@
     </div>
 </nav>
 
+
+<div class="container-fluid mt-5">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 d-flex justify-content-center">
+            <h2>Detalle del Expediente</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 ">
+            <form action="#" th:action="@{${urlForm}(id=${expediente.id})}" method="post"
+                enctype="multipart/form-data" th:object="${frmExpedienteMover}">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                <div class="mb-2 row">
+                    <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4"></div>
+                    <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4 d-flex justify-content-center">
+                        <label for="caratula" class="form-label">Expediente:&nbsp;&nbsp;</label>
+                        <input type="text" id="idexpediente" name="idexpediente" class="form-control"
+                            th:value="${id}" readonly />
+                    </div>
+                    <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4"></div>
+                </div>
+
+                <div class="row mb-2">
+                    <!-- Campo para la carátula del expediente -->
+                    <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
+                        <label for="caratula" class="form-label">Carátula:</label>
+                        <input type="text" id="caratula" name="caratula" class="form-control" th:value="${caratula}"
+                            readonly />
+                    </div>
+                    <!-- Campo para la fecha de ingreso -->
+                    <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
+                        <label for="fecha" class="form-label">Fecha de Ingreso:</label>
+                        <input type="date" id="fecha" name="fecha" class="form-control" th:value="${fecha}"
+                            readonly />
+                    </div>
+
+                    <!-- Campo para el CUIT del ciudadano -->
+                    <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
+                        <label for="cuit" class="form-label">Nombre:</label>
+                        <input type="text" id="cuit" name="cuit" class="form-control" th:value="${nombre}"
+                            readonly />
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
+                        <table class="table table-success table-striped mt-1">
+                            <thead>
+                                <tr>
+                                    <th class="tam-20">ID</th>
+                                    <th class="tam-10">fecha</th>
+                                    <th class="tam-50">detalle</th>
+                                    <th class="tam-20">accion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="movimiento : ${movimientos}">
+                                    <td class="tam-20" th:text="${movimiento.id}"></td>
+                                    <td class="tam-10" th:text="${movimiento.fecha}"></td>
+                                    <td class="tam-50" th:text="${movimiento.detalle}"></td>
+                                    <td class="tam-20">
+                                        <a class="btn btn-info botonLargo" th:if="${movimiento.nota != null}"
+                                            th:href="@{/notas/view/{id}(id=${movimiento.nota.id})}"
+                                            target="_blank">Ver
+                                            e
+                                            Imprimir nota</a>
+                                        <p class="" th:if="${movimiento.nota == null}">No hay nota asociada</p>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3  mb-2">
+                        <label for="estado" class="form-label">Nuevo estado del Expediente:</label>
+                        <select id="circuito" name="circuito" class="form-select">
+                            <option th:each="estado : ${circuitoDisponible}" th:value="${estado}"
+                                th:text="${estado}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-3">
+                        <button type="submit" class="btn btn-primary botonLargo">Aceptar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
     <script th:src="@{/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js}"></script>
     <script src="/static/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 </body>

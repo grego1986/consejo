@@ -1316,8 +1316,6 @@ public class ExpedienteController {
 
 			expedienteServi.agregarMovimiento(id, mov, expMover.getCircuito());
 
-			expedienteServi.agregarMovimiento(id, mov, expMover.getCircuito());
-
 			return "redirect:/mesa-entrada/repuestaMunicipio";
 		}
 
@@ -1546,5 +1544,41 @@ public class ExpedienteController {
 		
 	}
 	
-	
+	/*@PreAuthorize("hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO' , 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL', 'ENTRADA')")
+	@GetMapping("/expediente/ordendia/ver/{id}")
+	public String Expedientever(@PathVariable String id, Model modelo) {
+
+		Optional<Expediente> expedienteop = expedienteServi.buscarExpedienteOptional(id);
+
+		if (expedienteop.isPresent()) {
+			Expediente expediente = expedienteServi.buscarExpediente(id);
+			FrmExpedienteMover expedientemover = new FrmExpedienteMover();
+			List<Movimiento> movimientos = expediente.getMovimientos();
+
+			expedientemover.setId(expediente.getId());
+			expedientemover.setFecha(expediente.getFecha());
+			expedientemover.setCaratula(expediente.getCaratula());
+			expedientemover.setNombre(expediente.getPersona().getNombre());
+
+
+			List<CircuitoExpediente> circuitos = new ArrayList();
+			circuitos = Arrays.asList(CircuitoExpediente.LEGISLACION);
+			
+			String urlForm = "redirect:/comision/despachoDeComision/{id}"; 
+			
+			modelo.addAttribute("frmExpedienteMover", expedientemover);
+			modelo.addAttribute("expediente", expedientemover);
+			modelo.addAttribute("caratula", expedientemover.getCaratula());
+			modelo.addAttribute("fecha", expedientemover.getFecha());
+			modelo.addAttribute("nombre", expedientemover.getNombre());
+			modelo.addAttribute("estadoActual", expediente.getEstado());
+			modelo.addAttribute("movimientos", movimientos);
+			modelo.addAttribute("circuitoDisponible", circuitos);
+			modelo.addAttribute("urlForm", urlForm);
+
+			return "moverExpediente";
+		} else {
+			return "redirect:/error"; // Redirige a una página de error o de lista
+		}
+	}*/
 }

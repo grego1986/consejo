@@ -208,8 +208,8 @@
                             <td th:text="${expediente.caratula}">Carátula</td>
                             <td class="tam-20">
                                 <!-- Enlace para ver los detalles del expediente -->
-                                <a th:href="@{/expediente/ver/{id}(id=${expediente.id})}"
-                                    class="btn btn-info botonLargo">Ver Expediente</a>
+                                <a th:href="@{/comision/despachoDeComision/{id}(id=${expediente.id})}"
+                                                class="btn btn-info btn-sm botonLargo">Ver</a>
                             </td>
                         </tr>
                     </tbody>
