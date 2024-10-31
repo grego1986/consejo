@@ -7,7 +7,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://${MYSQLHOST}:${MYSQLPORT}/${MYSQL_DATABASE}  # Usar las variables de entorno
+      SPRING_DATASOURCE_URL: jdbc:mysql://${MYSQLHOST}:${MYSQLPORT}/${MYSQLDATABASE}  # Usar las variables de entorno
       SPRING_DATASOURCE_USERNAME: ${MYSQLUSER}  # Usar las variables de entorno
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}  # Usar las variables de entorno
     depends_on:
