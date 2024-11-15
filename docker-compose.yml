@@ -15,7 +15,7 @@ services:
 
   # Servicio de la base de datos MySQL
   db:
-    image: mysql:latest
+    image: mysql:5.7
     environment:
       MYSQL_DATABASE: concejorecreo
       MYSQL_ROOT_PASSWORD: Grego_53@Grego
