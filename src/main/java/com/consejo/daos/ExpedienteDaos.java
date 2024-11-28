@@ -493,6 +493,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public List<Expediente> buscarPorRangoDeFechasYCircuitos(LocalDate startDate, LocalDate endDate) {
 		List<CircuitoExpediente> circuitos = Arrays.asList(
+				CircuitoExpediente.INGRESO,
 				CircuitoExpediente.COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL,
 				CircuitoExpediente.COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA,
 				CircuitoExpediente.AMBAS_COMISIONES,
