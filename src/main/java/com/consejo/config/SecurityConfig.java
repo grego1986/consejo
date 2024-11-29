@@ -18,7 +18,12 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/secParlamentario/**")
-				.hasRole("SEC_PARLAMENTARIO").requestMatchers("/expediente/**")	.hasAnyRole("CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL", "PRESIDENTE", "SEC_PARLAMENTARIO",
+				.hasRole("SEC_PARLAMENTARIO")
+				.requestMatchers("/expediente/**").hasAnyRole("CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL", "PRESIDENTE", "SEC_PARLAMENTARIO",
+						"CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA", "PRENSA")
+				.requestMatchers("/concejal/**").hasAnyRole("CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL", "PRESIDENTE",
+						"CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA")
+				.requestMatchers("/expediente/ver/**").hasAnyRole("CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL", "PRESIDENTE", "SEC_PARLAMENTARIO",
 						"CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA", "PRENSA")
 				.requestMatchers("/comision/gobiernoYDesarrolloSocial/**").hasAnyRole("PRESIDENTE", "SEC_PARLAMENTARIO", "CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL")
 				.requestMatchers("/secretarioAdministrativo/**").hasAnyRole("SEC_ADMINISTRATIVO")

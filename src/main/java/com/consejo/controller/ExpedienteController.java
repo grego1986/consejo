@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.consejo.daos.ExpedienteDaos;
 import com.consejo.daos.IngresoDiarioDaos;
@@ -1326,6 +1329,7 @@ public class ExpedienteController {
 	 * Buscar expediente
 	 */
 
+	
 	@GetMapping("/expediente/buscarExpediente/resultado")
 	public String buscarExpedientes(@RequestParam(required = false) LocalDate fecha,
 			@RequestParam(required = false) String detalle, @RequestParam(required = false) String id,
@@ -1343,7 +1347,7 @@ public class ExpedienteController {
 		return "buscarExpediente";
 	}
 
-	@PreAuthorize("hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO' , 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')")
+	@PreAuthorize("hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO' , 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL', 'PRENSA')")
 	@GetMapping("/expediente/ver/{id}")
 	public String verExpediente(@PathVariable String id, Model modelo) {
 
@@ -1362,10 +1366,28 @@ public class ExpedienteController {
 			switch (expediente.getEstado()) {
 
 			case INGRESO:
+				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
 				circuitos = Arrays.asList(CircuitoExpediente.COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL,
 						CircuitoExpediente.COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA,
 						CircuitoExpediente.AMBAS_COMISIONES, CircuitoExpediente.ARCHIVO);
-				urlForm = "redirect:/secParlamentario/expediente/mover/{id}";
+				if (authentication.getAuthorities().stream()
+				        .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_PRENSA"))) {
+					 urlForm = "redirect:/prensa/expediente/ver/{id}";
+			        } else if (authentication.getAuthorities().stream()
+					        .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_SEC_PARLAMENTARIO"))) {
+			        	urlForm = "redirect:/secParlamentario/expediente/mover/{id}";
+			        } else if (authentication.getAuthorities().stream()
+					        .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA"))) {
+			        	urlForm = "redirect:/concejal/expediente/ver/{id}";
+			        } else if (authentication.getAuthorities().stream()
+					        .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL"))) {
+			        	urlForm = "redirect:/concejal/expediente/ver/{id}";
+			        } else if (authentication.getAuthorities().stream()
+					        .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_PRESIDENTE"))) {
+			        	urlForm = "redirect:/concejal/expediente/ver/{id}";
+			        }
+				
 				break;
 
 			case COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL:
@@ -1545,4 +1567,33 @@ public class ExpedienteController {
 	}
 	
 
+	@PreAuthorize("hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')")
+	@GetMapping("/concejal/expediente/ver/{id}")
+	public String concejalVerExpediente(@PathVariable String id, Model modelo) {
+
+		Optional<Expediente> expedienteop = expedienteServi.buscarExpedienteOptional(id);
+
+		if (expedienteop.isPresent()) {
+			Expediente expediente = expedienteServi.buscarExpediente(id);
+			FrmExpedienteMover expedientemover = new FrmExpedienteMover();
+			List<Movimiento> movimientos = expediente.getMovimientos();
+
+			expedientemover.setId(expediente.getId());
+			expedientemover.setFecha(expediente.getFecha());
+			expedientemover.setCaratula(expediente.getCaratula());
+			expedientemover.setNombre(expediente.getPersona().getNombre());
+
+			modelo.addAttribute("frmExpedienteMover", expedientemover);
+			modelo.addAttribute("expediente", expedientemover);
+			modelo.addAttribute("caratula", expedientemover.getCaratula());
+			modelo.addAttribute("fecha", expedientemover.getFecha());
+			modelo.addAttribute("nombre", expedientemover.getNombre());
+			modelo.addAttribute("estadoActual", expediente.getEstado());
+			modelo.addAttribute("movimientos", movimientos);
+
+			return "moverExpediente";
+		} else {
+			return "redirect:/error"; // Redirige a una página de error o de lista
+		}
+	}
 }
