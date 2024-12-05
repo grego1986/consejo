@@ -48,7 +48,7 @@ public class ExpedienteSpecification {
             }
 
             // Ordenar por fecha de ingreso
-            query.orderBy(criteriaBuilder.asc(root.get("fecha")));
+            query.orderBy(criteriaBuilder.desc(root.get("fecha")));
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
