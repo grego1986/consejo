@@ -203,7 +203,7 @@
                         <div class=" col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 mb-2"></div>
                         <div class=" col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 mb-2">
                             <label for="cuit" class="form-label">DNI o CUIT:</label>
-                            <input type="text" id="dni" name="dni" class="form-control" th:value="${dni}" readonly />
+                            <input type="text" id="dni" name="dni" class="form-control" th:field="*{dni}" />
                         </div>
                         <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 mb-2">
                             <label for="cuit" class="form-label">Nombre</label>

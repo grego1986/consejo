@@ -1,5 +1,6 @@
 package com.consejo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ public class CiudadanoController {
 	private PersonaDaos personaServi;
 	@Autowired
 	private TipoCiudadanoDaos tipoCiudadanoServi;
+	List <Persona> ciudadanos = new ArrayList<>();
 	
 	
 	private BusquedaForm form = new BusquedaForm();
@@ -45,35 +47,14 @@ public class CiudadanoController {
 
 	@PreAuthorize("hasRole('ROLE_ENTRADA')")
 	@PostMapping("/mesa-entrada/ciudadanoBuscar")
-	public String buscarCiudadano (Model modelo, @RequestParam("dni") Long dni, HttpSession session) {
+	public String buscarCiudadano (Model modelo, @RequestParam("nombre") String nombre, HttpSession session) {
 		
 		modelo.addAttribute("formBean", form);
-		// Buscar en la base de datos usando el DNI
-        Persona ciudadano = personaServi.buscarPersona(dni);
+        ciudadanos = personaServi.listarPersonas(nombre);
         
+        modelo.addAttribute("personas", ciudadanos);
         
-        if (ciudadano != null) {
-        	frmExpediente.setDni(ciudadano.getDni_Cuit());
-        	frmExpediente.setDireccion(ciudadano.getDireccion());
-        	frmExpediente.setTelefono(ciudadano.getTelefono());
-        	frmExpediente.setMail(ciudadano.getMail());
-        	frmExpediente.setNombre(ciudadano.getNombre());
-        	frmExpediente.setTipoCiudadano(ciudadano.getTipo().getId());
-        	
-        	//redirectAttributes.addFlashAttribute("formIngresoNota", frmExpediente);
-        	session.setAttribute("formIngresoNota", frmExpediente);
-        	
-        	return "redirect:/mesa-entrada/ingresoNota";
-        	
-        	
-        } else {
-            // Si no existe, pasamos un ciudadano vacío¿
-            modelo.addAttribute("formCiudadano", new ExpedienteForm ());
-            frmExpediente.setDni(dni);
-            return "redirect:/mesa-entrada/registroCiudadano";
-        }
-		
-		
+        return "ciudadanoBuscar";
 	}
 	
 	
@@ -94,7 +75,7 @@ public class CiudadanoController {
 		
 		Persona ciudadano = new Persona();
 		
-		ciudadano.setDni_Cuit(frmExpediente.getDni());
+		ciudadano.setDni_Cuit(registroCiudadano.getDni());
 		ciudadano.setNombre(registroCiudadano.getNombre());
 		ciudadano.setDireccion(registroCiudadano.getDireccion());
 		ciudadano.setMail(registroCiudadano.getMail());
@@ -102,11 +83,9 @@ public class CiudadanoController {
 		ciudadano.setTipo(tipoCiudadanoServi.buscarTipoCiudadano(registroCiudadano.getTipoCiudadano()));
 		
 		personaServi.guardarPersona(ciudadano);
-		
-		registroCiudadano.setDni(frmExpediente.getDni());
-		
+				
 		session.setAttribute("formIngresoNota", registroCiudadano);
-    	return "redirect:/mesa-entrada/ingresoNota";
+    	return "redirect:/mesa-entrada/ingresoNota/" + ciudadano.getDni_Cuit();
 
 	}
 	

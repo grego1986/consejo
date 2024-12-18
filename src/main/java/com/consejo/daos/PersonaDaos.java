@@ -15,9 +15,9 @@ public class PersonaDaos implements IPersonaDaos {
 	private IPersonaRepository personaRepo;
 	
 	@Override
-	public List<Persona> listarPersonas() {
+	public List<Persona> listarPersonas(String nombre) {
 		
-		return personaRepo.findAll();
+		return personaRepo.findByNombreContaining(nombre);
 	}
 
 	@Override
@@ -28,7 +28,6 @@ public class PersonaDaos implements IPersonaDaos {
 
 	@Override
 	public void guardarPersona(Persona ciudadano) {
-		
 		personaRepo.save(ciudadano);
 		
 	}

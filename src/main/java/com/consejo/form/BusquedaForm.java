@@ -3,19 +3,19 @@ package com.consejo.form;
 public class BusquedaForm {
 
 	
-	private Long dni;
+	private String nombre;
 
 	public BusquedaForm() {
 		super();
 	}
 
-	public Long getDni() {
-		return dni;
+	public String getNombre() {
+		return nombre;
 	}
 
-	public void setDni(Long dni) {
-		this.dni = dni;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
-	
+
 	
 }
