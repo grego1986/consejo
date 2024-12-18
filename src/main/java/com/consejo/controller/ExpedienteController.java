@@ -56,7 +56,7 @@ public class ExpedienteController {
 	@Autowired
 	private IngresoDiarioDaos ingDiarioServi;
 
-	private ExpedienteForm expedienteform;
+	private ExpedienteForm expedienteform = new ExpedienteForm();
 	private NroExpedienteForm nExpedeinteForm = new NroExpedienteForm();
 	private String movimiento;
 
@@ -64,11 +64,19 @@ public class ExpedienteController {
 	 * mesa entrada Ingreso de nota/expediente
 	 */
 	@PreAuthorize("hasRole('ROLE_ENTRADA')")
-	@GetMapping("/mesa-entrada/ingresoNota")
-	public String mostrarDatosCiudadano(HttpSession session, Model modelo) {
+	@GetMapping("/mesa-entrada/ingresoNota/{id}")
+	public String mostrarDatosCiudadano(@PathVariable("id") Long id, Model modelo) {
 
 		List<TipoNota> tiponotas = tipoNotaServi.listarTipoNota();
-		expedienteform = (ExpedienteForm) session.getAttribute("formIngresoNota");
+		
+		Persona persona = ciudadanoServi.buscarPersona(id);
+		expedienteform.setDni(persona.getDni_Cuit());
+    	expedienteform.setDireccion(persona.getDireccion());
+    	expedienteform.setTelefono(persona.getTelefono());
+    	expedienteform.setMail(persona.getMail());
+    	expedienteform.setNombre(persona.getNombre());
+    	expedienteform.setTipoCiudadano(persona.getTipo().getId());
+    	
 		modelo.addAttribute("formIngresoNota", expedienteform);
 		modelo.addAttribute("dni", expedienteform.getDni());
 		modelo.addAttribute("nombre", expedienteform.getNombre());
@@ -77,7 +85,6 @@ public class ExpedienteController {
 		modelo.addAttribute("mail", expedienteform.getMail());
 		modelo.addAttribute("tipociudadano",
 				tipoCiudadanoServi.buscarTipoCiudadano(expedienteform.getTipoCiudadano()).toString());
-		modelo.addAttribute("organizacion", expedienteform.getOrganizacion());
 		modelo.addAttribute("tiposNota", tiponotas);
 		return "ingresoNota"; // Nombre de la plantilla Thymeleaf
 	}
@@ -173,6 +180,7 @@ public class ExpedienteController {
 			List<Movimiento> movimientos = expediente.getMovimientos();
 
 			List<CircuitoExpediente> circuitos = Arrays.asList(
+					CircuitoExpediente.OFICINA_PARLAMENTARIA,
 					CircuitoExpediente.COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL,
 					CircuitoExpediente.COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA,
 					CircuitoExpediente.AMBAS_COMISIONES, CircuitoExpediente.ARCHIVO
@@ -217,10 +225,15 @@ public class ExpedienteController {
 			Nota nota = new Nota();
 			mov.setFecha(LocalDate.now());
 
+			
 			if (expMover.getDetalleMovimiento() != null) {
 
 				mov.setDetalle(expMover.getDetalleMovimiento());
-			} else {
+			} else if ((expMover.getDetalleMovimiento() == null) && (expediente.getEstado() == expMover.getCircuito())) {
+				CircuitoExpediente cir = expMover.getCircuito();
+				String estado = cir.toString();
+				mov.setDetalle("se agrego un documento al expediente");
+			}else {
 				CircuitoExpediente cir = expMover.getCircuito();
 				String estado = cir.toString();
 				mov.setDetalle("Ingresó a " + estado.replace("_", " "));
@@ -291,6 +304,7 @@ public class ExpedienteController {
 			List<Movimiento> movimientos = expediente.getMovimientos();
 
 			List<CircuitoExpediente> circuitos = Arrays.asList(
+					CircuitoExpediente.INGRESO,
 					CircuitoExpediente.COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL,
 					CircuitoExpediente.COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA,
 					CircuitoExpediente.AMBAS_COMISIONES, CircuitoExpediente.ARCHIVO
@@ -338,7 +352,9 @@ public class ExpedienteController {
 			if (expMover.getDetalleMovimiento() != null) {
 
 				mov.setDetalle(expMover.getDetalleMovimiento());
-			} else {
+			} else if ((expMover.getDetalleMovimiento() == null) && (expediente.getEstado() == expMover.getCircuito())) {
+				mov.setDetalle("se agrego un documento al expediente");
+			}else {
 				CircuitoExpediente cir = expMover.getCircuito();
 				String estado = cir.toString();
 				mov.setDetalle("Ingresó a " + estado.replace("_", " "));
@@ -407,7 +423,8 @@ public class ExpedienteController {
 			FrmExpedienteMover expedientemover = new FrmExpedienteMover();
 			List<Movimiento> movimientos = expediente.getMovimientos();
 
-			List<CircuitoExpediente> circuitos = Arrays.asList(CircuitoExpediente.DESPACHOS_DE_COMISION,
+			List<CircuitoExpediente> circuitos = Arrays.asList(CircuitoExpediente.COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL,
+					CircuitoExpediente.DESPACHOS_DE_COMISION,
 					CircuitoExpediente.NOTAS_DE_COMISION);
 
 			expedientemover.setId(expediente.getId());
@@ -449,7 +466,9 @@ public class ExpedienteController {
 			if (expMover.getDetalleMovimiento() != null) {
 
 				mov.setDetalle(expMover.getDetalleMovimiento());
-			} else {
+			} else if ((expMover.getDetalleMovimiento() == null) && (expediente.getEstado() == expMover.getCircuito())) {
+				mov.setDetalle("se agrego un documento al expediente");
+			}else {
 				CircuitoExpediente cir = expMover.getCircuito();
 				String estado = cir.toString();
 				mov.setDetalle("Ingresó a " + estado.replace("_", " "));
@@ -518,7 +537,8 @@ public class ExpedienteController {
 			FrmExpedienteMover expedientemover = new FrmExpedienteMover();
 			List<Movimiento> movimientos = expediente.getMovimientos();
 
-			List<CircuitoExpediente> circuitos = Arrays.asList(CircuitoExpediente.DESPACHOS_DE_COMISION,
+			List<CircuitoExpediente> circuitos = Arrays.asList(CircuitoExpediente.COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA,
+					CircuitoExpediente.DESPACHOS_DE_COMISION,
 					CircuitoExpediente.NOTAS_DE_COMISION);
 
 			expedientemover.setId(expediente.getId());
@@ -559,7 +579,9 @@ public class ExpedienteController {
 			if (expMover.getDetalleMovimiento() != null) {
 
 				mov.setDetalle(expMover.getDetalleMovimiento());
-			} else {
+			} else if ((expMover.getDetalleMovimiento() == null) && (expediente.getEstado() == expMover.getCircuito())) {
+				mov.setDetalle("se agrego un documento al expediente");
+			}else {
 				CircuitoExpediente cir = expMover.getCircuito();
 				String estado = cir.toString();
 				mov.setDetalle("Ingresó a " + estado.replace("_", " "));
@@ -627,7 +649,8 @@ public class ExpedienteController {
 			FrmExpedienteMover expedientemover = new FrmExpedienteMover();
 			List<Movimiento> movimientos = expediente.getMovimientos();
 
-			List<CircuitoExpediente> circuitos = Arrays.asList(CircuitoExpediente.DESPACHOS_DE_COMISION,
+			List<CircuitoExpediente> circuitos = Arrays.asList(CircuitoExpediente.AMBAS_COMISIONES,
+					CircuitoExpediente.DESPACHOS_DE_COMISION,
 					CircuitoExpediente.NOTAS_DE_COMISION);
 
 			expedientemover.setId(expediente.getId());
@@ -668,7 +691,9 @@ public class ExpedienteController {
 			if (expMover.getDetalleMovimiento() != null) {
 
 				mov.setDetalle(expMover.getDetalleMovimiento());
-			} else {
+			} else if ((expMover.getDetalleMovimiento() == null) && (expediente.getEstado() == expMover.getCircuito())) {
+				mov.setDetalle("se agrego un documento al expediente");
+			}else {
 				CircuitoExpediente cir = expMover.getCircuito();
 				String estado = cir.toString();
 				mov.setDetalle("Ingresó a " + estado.replace("_", " "));
@@ -736,7 +761,8 @@ public class ExpedienteController {
 			FrmExpedienteMover expedientemover = new FrmExpedienteMover();
 			List<Movimiento> movimientos = expediente.getMovimientos();
 
-			List<CircuitoExpediente> circuitos = Arrays.asList(CircuitoExpediente.DESPACHOS_DE_COMISION,
+			List<CircuitoExpediente> circuitos = Arrays.asList(CircuitoExpediente.ARCHIVO,
+					CircuitoExpediente.DESPACHOS_DE_COMISION,
 					CircuitoExpediente.NOTAS_DE_COMISION);
 
 			expedientemover.setId(expediente.getId());
@@ -777,7 +803,9 @@ public class ExpedienteController {
 			if (expMover.getDetalleMovimiento() != null) {
 
 				mov.setDetalle(expMover.getDetalleMovimiento());
-			} else {
+			} else if ((expMover.getDetalleMovimiento() == null) && (expediente.getEstado() == expMover.getCircuito())) {
+				mov.setDetalle("se agrego un documento al expediente");
+			}else {
 				CircuitoExpediente cir = expMover.getCircuito();
 				String estado = cir.toString();
 				mov.setDetalle("Ingresó a " + estado.replace("_", " "));
@@ -845,7 +873,8 @@ public class ExpedienteController {
 			FrmExpedienteMover expedientemover = new FrmExpedienteMover();
 			List<Movimiento> movimientos = expediente.getMovimientos();
 
-			List<CircuitoExpediente> circuitos = Arrays.asList(CircuitoExpediente.LEGISLACION);
+			List<CircuitoExpediente> circuitos = Arrays.asList(CircuitoExpediente.DESPACHOS_DE_COMISION,
+					CircuitoExpediente.LEGISLACION);
 
 			expedientemover.setId(expediente.getId());
 			expedientemover.setFecha(expediente.getFecha());
@@ -885,7 +914,9 @@ public class ExpedienteController {
 			if (expMover.getDetalleMovimiento() != null) {
 
 				mov.setDetalle(expMover.getDetalleMovimiento());
-			} else {
+			} else if ((expMover.getDetalleMovimiento() == null) && (expediente.getEstado() == expMover.getCircuito())) {
+				mov.setDetalle("se agrego un documento al expediente");
+			}else {
 				CircuitoExpediente cir = expMover.getCircuito();
 				String estado = cir.toString();
 				mov.setDetalle("Ingresó a " + estado.replace("_", " "));

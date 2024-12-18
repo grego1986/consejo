@@ -97,19 +97,38 @@ public class ExpedienteDaos implements IExpedienteDaos {
 			switch (circuito) {
 
 			case OFICINA_PARLAMENTARIA:
-				moverAOficinaParlamentaria(e);
+				if (circuito != e.getEstado()) {
+					moverAOficinaParlamentaria(e);
+				}else {
+					expedienteRepo.save(e);
+				}
 				break;
 
 			case COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL:
-				moverAGobiernoYSocial(e);
+				if (circuito != e.getEstado()) {
+					moverAGobiernoYSocial(e);
+				} else {
+					expedienteRepo.save(e);
+				}
+				
 				break;
 
 			case COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA:
-				moverAComisionAmbientalYEconomia(e);
+				if (circuito != e.getEstado()) {
+					moverAComisionAmbientalYEconomia(e);
+				}else {
+					expedienteRepo.save(e);
+				}
+				
 				break;
 
 			case AMBAS_COMISIONES:
-				moverAAmbasComisiones(e);
+				if (circuito != e.getEstado()) {
+					moverAAmbasComisiones(e);
+				}else {
+					expedienteRepo.save(e);
+				}
+				
 				break;
 
 			case ARCHIVO:
@@ -117,35 +136,75 @@ public class ExpedienteDaos implements IExpedienteDaos {
 				break;
 
 			case PRESIDENCIA:
-				moverAPresidencia(e);
+				if (circuito != e.getEstado()) {
+					moverAPresidencia(e);
+				}else {
+					expedienteRepo.save(e);
+				}
+				
 				break;
 
 			case BLOQUE_A:
-				moverABloque_A(e);
+				if (circuito != e.getEstado()) {
+					moverABloque_A(e);
+				}else {
+					expedienteRepo.save(e);
+				}
+				
 				break;
 
 			case BLOQUE_B:
-				moverABloque_B(e);
+				if (circuito != e.getEstado()) {
+					moverABloque_B(e);
+				}else {
+					expedienteRepo.save(e);
+				}
+				
 				break;
 
 			case BLOQUE_C:
-				moverABloque_B(e);
+				if (circuito != e.getEstado()) {
+					moverABloque_B(e);
+				}else {
+					expedienteRepo.save(e);
+				}
+				
 				break;
 
 			case TODOS_LOS_BLOQUES:
-				moverATodosBloques(e);
+				if (circuito != e.getEstado()) {
+					moverATodosBloques(e);
+				}else {
+					expedienteRepo.save(e);
+				}
+				
 				break;
 
 			case LEGISLACION:
-				moverALegislacion(e);
+				if (circuito != e.getEstado()) {
+					moverALegislacion(e);
+				}else {
+					expedienteRepo.save(e);
+				}
+				
 				break;
 
 			case DESPACHOS_DE_COMISION:
-				moverADespachoComision(e);
+				if (circuito != e.getEstado()) {
+					moverADespachoComision(e);
+				}else {
+					expedienteRepo.save(e);
+				}
+				
 				break;
 
 			case NOTAS_DE_COMISION:
-				moverANotasComision(e);
+				if (circuito != e.getEstado()) {
+					moverANotasComision(e);
+				}else {
+					expedienteRepo.save(e);
+				}
+				
 				break;
 
 			case REPUESTA_AL_CIUDADANO:
@@ -503,5 +562,6 @@ public class ExpedienteDaos implements IExpedienteDaos {
 		);
 		return expedienteRepo.findByUltimoMovimientoFechaBetweenAndCircuitoIn(startDate, endDate, circuitos);
 	}
+
 
 }

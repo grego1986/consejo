@@ -40,7 +40,7 @@ public class Expediente {
 	private boolean fincircuito;
 	//Relaciones entre objetos
     @OneToMany(mappedBy = "expediente", cascade = CascadeType.ALL, orphanRemoval = true)
-    @OrderBy("fecha ASC")
+    @OrderBy("fecha DESC")
     private List<Movimiento> movimientos = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "tipo_expediente")
