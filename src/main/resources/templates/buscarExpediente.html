@@ -106,7 +106,8 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMesaEntrada">
                             <li><a class="dropdown-item" th:href="@{/prensa/ingresosAComision}">Ingreso a comision</a>
                             </li>
-                            <li><a class="dropdown-item" th:href="@{/expediente/buscarExpediente}">Buscar Expediente</a></li>
+                            <li><a class="dropdown-item" th:href="@{/expediente/buscarExpediente}">Buscar Expediente</a>
+                            </li>
                         </ul>
                     </li>
 
@@ -181,6 +182,42 @@
                         </ul>
                     </li>
 
+                    <li class="nav-item dropdown"
+                        sec:authorize="hasAnyRole('SEC_ADMINISTRATIVO','CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDespachoNotas" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Asuntos Entrados
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownDespachoNotas">
+                            <li sec:authorize="hasRole('SEC_ADMINISTRATIVO')"><a class="dropdown-item"
+                                    th:href="@{/secretarioAdministrativo/subirAsuntosEntrados}">Subir Asuntos
+                                    Entrados</a></li>
+                            <li
+                                sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                                <a class="dropdown-item" th:href="@{/asuntosEntrados/ver}">Ver
+                                    Asuntos Entrados</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown"
+                        sec:authorize="hasAnyRole('SEC_ADMINISTRATIVO','CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDespachoNotas" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Asuntos Entrados
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownDespachoNotas">
+                            <li sec:authorize="hasRole('SEC_ADMINISTRATIVO')"><a class="dropdown-item"
+                                    th:href="@{/secretarioAdministrativo/subirAsuntosEntrados}">Subir Asuntos
+                                    Entrados</a></li>
+                            <li
+                                sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                                <a class="dropdown-item" th:href="@{/asuntosEntrados/ver}">Ver
+                                    Asuntos Entrados</a>
+                            </li>
+                        </ul>
+                    </li>
+                    
                 </ul>
             </div>
         </div>
@@ -198,20 +235,20 @@
                 <form th:action="@{/expediente/buscarExpediente/resultado}" method="get" class="row g-3"
                     th:object="${formBuscarExpediente}">
 
-                        <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
-                            <label for="fecha" class="form-label">Fecha de Ingreso</label>
-                            <input type="date" class="form-control" id="fecha" name="fecha" th:value="${fecha}">
-                        </div>
-                        <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
-                            <label for="detalle" class="form-label">Detalle</label>
-                            <input type="text" class="form-control" id="detalle" name="detalle"
-                                placeholder="Buscar por detalle" th:value="${detalle}">
-                        </div>
-                        <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
-                            <label for="id" class="form-label">Número de Expediente</label>
-                            <input type="text" class="form-control" id="id" name="id" placeholder="Buscar por número"
-                                th:value="${id}">
-                        </div>
+                    <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
+                        <label for="fecha" class="form-label">Fecha de Ingreso</label>
+                        <input type="date" class="form-control" id="fecha" name="fecha" th:value="${fecha}">
+                    </div>
+                    <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
+                        <label for="detalle" class="form-label">Detalle</label>
+                        <input type="text" class="form-control" id="detalle" name="detalle"
+                            placeholder="Buscar por detalle" th:value="${detalle}">
+                    </div>
+                    <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
+                        <label for="id" class="form-label">Número de Expediente</label>
+                        <input type="text" class="form-control" id="id" name="id" placeholder="Buscar por número"
+                            th:value="${id}">
+                    </div>
                     <div class="row mt-2">
                         <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
                             <label for="caratula" class="form-label">Carátula</label>

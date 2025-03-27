@@ -181,6 +181,24 @@
                         </ul>
                     </li>
 
+                    <li class="nav-item dropdown"
+                        sec:authorize="hasAnyRole('SEC_ADMINISTRATIVO','CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDespachoNotas" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Asuntos Entrados
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownDespachoNotas">
+                            <li sec:authorize="hasRole('SEC_ADMINISTRATIVO')"><a class="dropdown-item"
+                                    th:href="@{/secretarioAdministrativo/subirAsuntosEntrados}">Subir Asuntos
+                                    Entrados</a></li>
+                            <li
+                                sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                                <a class="dropdown-item" th:href="@{/asuntosEntrados/ver}">Ver
+                                    Asuntos Entrados</a>
+                            </li>
+                        </ul>
+                    </li>
+
                 </ul>
             </div>
         </div>
@@ -213,8 +231,8 @@
                             <td class="tam-20" th:text="${expediente.persona.nombre}"></td>
                             <td class="tam-10">
                                 <!-- Botón Mover a... /concejal/expediente/mover/{id}     -->
-                                <a class="btn btn-info botonLargo"
-                                    th:href="@{${urlMover}(id=${expediente.id})}">Mover a...</a>
+                                <a class="btn btn-info botonLargo" th:href="@{${urlMover}(id=${expediente.id})}">Mover
+                                    a...</a>
                             </td>
                         </tr>
                         <tr th:if="${#lists.isEmpty(expedientes)}">

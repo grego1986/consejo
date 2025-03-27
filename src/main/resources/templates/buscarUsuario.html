@@ -181,6 +181,24 @@
                         </ul>
                     </li>
 
+                    <li class="nav-item dropdown"
+                        sec:authorize="hasAnyRole('SEC_ADMINISTRATIVO','CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDespachoNotas" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Asuntos Entrados
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownDespachoNotas">
+                            <li sec:authorize="hasRole('SEC_ADMINISTRATIVO')"><a class="dropdown-item"
+                                    th:href="@{/secretarioAdministrativo/subirAsuntosEntrados}">Subir Asuntos
+                                    Entrados</a></li>
+                            <li
+                                sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                                <a class="dropdown-item" th:href="@{/asuntosEntrados/ver}">Ver
+                                    Asuntos Entrados</a>
+                            </li>
+                        </ul>
+                    </li>
+
                 </ul>
             </div>
         </div>
@@ -202,14 +220,16 @@
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                         <div class="row">
                             <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-">
-                                <input type="text" name="nombre" class="form-control" placeholder="Buscar por nombre" th:field="*{nombre}">
+                                <input type="text" name="nombre" class="form-control" placeholder="Buscar por nombre"
+                                    th:field="*{nombre}">
                             </div>
                             <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-">
-                                <input type="text" name="apellido" class="form-control" placeholder="Buscar por apellido"
-                                    th:field="*{apellido}" />
+                                <input type="text" name="apellido" class="form-control"
+                                    placeholder="Buscar por apellido" th:field="*{apellido}" />
                             </div>
                             <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-">
-                                <button type="submit" name="action" value="buscar" class="btn btn-primary botonLargo">Buscar</button>
+                                <button type="submit" name="action" value="buscar"
+                                    class="btn btn-primary botonLargo">Buscar</button>
                             </div>
                         </div>
                     </form>
@@ -253,8 +273,7 @@
                                         <div class="row">
                                             <div
                                                 class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 d-flex justify-content-center align-items-end">
-                                                <button type="submit"
-                                                    class="btn btn-info botonLargo">Modificar</button>
+                                                <button type="submit" class="btn btn-info botonLargo">Modificar</button>
                                             </div>
                                         </div>
                                     </form>
