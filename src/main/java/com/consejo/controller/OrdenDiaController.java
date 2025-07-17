@@ -20,6 +20,7 @@ import com.consejo.daos.ExpedienteDaos;
 import com.consejo.daos.OrdenDiaDaos;
 import com.consejo.enumeraciones.CircuitoExpediente;
 import com.consejo.form.OrdenForm;
+import com.consejo.pojos.AsuntosEntrados;
 import com.consejo.pojos.Expediente;
 import com.consejo.pojos.Nota;
 import com.consejo.pojos.OrdenDia;
@@ -43,6 +44,7 @@ public class OrdenDiaController {
 		List<Expediente> expedientes = expedienteServi.listarExpedientes(CircuitoExpediente.DESPACHOS_DE_COMISION);
 		modelo.addAttribute("frmOrden", frmOrden);
 		modelo.addAttribute("expedientes", expedientes);
+		modelo.addAttribute("ruta", "/secretarioAdministrativo/subirOrdenDelDia");
 		return "ordenDelDia";
 	}
 
@@ -71,7 +73,10 @@ public class OrdenDiaController {
 	public String verOrdenDia(Model modelo) {
 
 		List<OrdenDia> ordenesDelDia = ordenServi.listarNota();
+		modelo.addAttribute("titulo", "Órdenes del Día - Desde hoy en adelante");
 		modelo.addAttribute("ordenesDelDia", ordenesDelDia);
+		modelo.addAttribute("pdf", "/notas/ordenDia/{id}");
+		modelo.addAttribute("ruta", "/expediente/ordenDia/{id}");
 
 		return "verOrdenDia";
 	}
@@ -97,12 +102,24 @@ public class OrdenDiaController {
 	@GetMapping("/expediente/ordenDia/{id}")
 	public String ordenExpedientes (@PathVariable Long id, Model modelo) {
 		
+		OrdenDia orden = ordenServi.BuscarNota(id);
 		List<Expediente> expedientes = ordenServi.BuscarNota(id).getExpedientes();
 		modelo.addAttribute("expedientes", expedientes);
+		modelo.addAttribute("orden", orden);
+		modelo.addAttribute("ruta", "/ordenDelDia/tratado/{id}");
 		
 		return "expedienteOrdendia";
 		
 	}
 	
-	
+	@PreAuthorize("hasRole('SEC_PARLAMENTARIO')")
+	@PostMapping("/ordenDelDia/tratado/{id}")
+	public String tratado (@PathVariable Long id) throws IOException {
+		
+		OrdenDia orden = ordenServi.BuscarNota(id);
+		orden.setTratado(true);
+		ordenServi.modificarOrden(orden);
+		
+		return "redirect:/home";
+	}
 }

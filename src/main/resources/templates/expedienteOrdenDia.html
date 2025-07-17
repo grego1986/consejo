@@ -235,6 +235,14 @@
                 </table>
             </div>
         </div>
+        <div class="container mt-2">
+            <div class="row">
+                <form th:action="@{${ruta}(id=${orden.id})}" method="post" th:object="${orden}">
+                    <input type="hidden" th:field="*{id}" />
+                    <button type="submit" class="btn btn-success btn-sm">Marcar como tratado</button>
+                </form>
+            </div>
+        </div>
     </div>
 
     <script th:src="@{/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js}"></script>

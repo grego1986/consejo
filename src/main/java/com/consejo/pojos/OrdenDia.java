@@ -26,6 +26,8 @@ public class OrdenDia {
 	private LocalDate fecha;
 	@Column(name = "titulo")
 	private String titulo;
+	@Column(name = "tratado")
+	private boolean tratado;
 	@Lob
 	@Column(name = "nota", columnDefinition = "LONGBLOB")
 	private byte[] nota;
@@ -48,6 +50,14 @@ public class OrdenDia {
 
 	public String getTitulo() {
 		return titulo;
+	}
+
+	public boolean isTratado() {
+		return tratado;
+	}
+
+	public void setTratado(boolean tratado) {
+		this.tratado = tratado;
 	}
 
 	public void setTitulo(String titulo) {
@@ -78,5 +88,4 @@ public class OrdenDia {
 		this.expedientes = expedientes;
 	}
 
-	
 }

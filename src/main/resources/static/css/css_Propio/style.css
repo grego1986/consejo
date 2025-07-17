@@ -117,3 +117,8 @@ hr{
 table{
     margin-bottom: 0% !important;
 }
+.cards-tam{
+    height: 20rem;
+    width: 18rem;
+    margin-right: 0.5rem;
+}

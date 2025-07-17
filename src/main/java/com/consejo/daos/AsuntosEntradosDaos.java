@@ -9,7 +9,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.consejo.pojos.AsuntosEntrados;
-import com.consejo.pojos.Nota;
 import com.consejo.repository.IAsuntosEntradosRepository;
 
 @Service
@@ -63,6 +62,7 @@ public class AsuntosEntradosDaos implements IAsuntosEntradosDaos {
 
 		try {
 
+			nota.setTratado(false);
 			entradosRepo.save(nota);
 
 		} catch (DataAccessException dae) {
@@ -79,14 +79,12 @@ public class AsuntosEntradosDaos implements IAsuntosEntradosDaos {
 	}
 
 	@Override
-	public void modificarNota(AsuntosEntrados nuevaNota, Nota nota) throws IOException {
+	public void modificarAsunto(AsuntosEntrados asunto) throws IOException {
 
-		/*
+		
 		try {
-			if (notaModiRepo.existsById(nota.getId())) {
-	            nota.setEsActiva(false);
-	            nota.getModificaciones().add(nuevaNota);
-	            notaRepo.save(nota);    
+			if (entradosRepo.existsById(asunto.getId())) {		
+	            entradosRepo.save(asunto);    
 	        }	
 
 		} catch (DataAccessException dae) {
@@ -99,8 +97,25 @@ public class AsuntosEntradosDaos implements IAsuntosEntradosDaos {
 			// Manejo general de excepciones
 			throw new IOException("Error al guardar el expediente: " + ex.getMessage(), ex);
 		}
-		*/
 		
+	}
+
+	@Override
+	public List<AsuntosEntrados> listarTatadosFalse() {
+		
+		try {
+
+			return entradosRepo.findAllByTratadoFalse();
+
+		} catch (DataAccessException dae) {
+			// Manejar la excepción de acceso a la base de datos
+			System.err.println("Error al acceder a la base de datos: " + dae.getMessage());
+			return new ArrayList<>(); // O retornar null si prefieres, pero es mejor devolver una lista vacía.
+		} catch (Exception ex) {
+			// Manejar cualquier otra excepción
+			System.err.println("Ocurrió un error: " + ex.getMessage());
+			return new ArrayList<>();
+		}
 	}
 
 }

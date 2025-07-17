@@ -211,7 +211,8 @@
                 <h2 class="mb-4" th:text="${titulo}">Órdenes del Día - Desde hoy en adelante</h2>
             </div>
         </div>
-
+    </div>
+    <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 ">
                 <table class="table table-success table-striped">
@@ -232,11 +233,9 @@
 
                             <td class="tam-30">
 
-                                <a th:href="@{/notas/ordenDia/{id}(id=${orden.id})}" class="btn btn-sm btn-info tam-40"
+                                <a th:href="@{${pdf}(id=${orden.id})}" class="btn btn-sm btn-info tam-40"
                                     target="_blank">Ver PDF</a>
-
-                                <a th:href="@{/expediente/ordenDia/{id}(id=${orden.id})}"
-                                    class="btn btn-sm btn-secondary tam-40">Ver
+                                <a th:href="@{${ruta}(id=${orden.id})}" class="btn btn-sm btn-secondary tam-40">Ver
                                     Expedientes</a>
                             </td>
                         </tr>
@@ -245,7 +244,6 @@
             </div>
         </div>
     </div>
-
     <script th:src="@{/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js}"></script>
     <script src="/static/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 

@@ -24,12 +24,14 @@ public class AsuntosEntrados {
 	private LocalDate fecha;
 	@Column(name = "titulo")
 	private String titulo;
+	@Column (name = "tratado")
+	private boolean tratado;
 	@Lob
 	@Column(name = "nota", columnDefinition = "LONGBLOB")
 	private byte[] nota;
 	// relacion con otros objetos
 	@ManyToMany
-	@JoinTable(name = "orden_expedientes", joinColumns = @JoinColumn(name = "orden_id"), inverseJoinColumns = @JoinColumn(name = "expediente_id"))
+	@JoinTable(name = "entrado_expedientes", joinColumns = @JoinColumn(name = "entrado_id"), inverseJoinColumns = @JoinColumn(name = "expediente_id"))
 	private List<Expediente> expedientes = new ArrayList<>();
 	
 	public AsuntosEntrados() {
@@ -43,7 +45,13 @@ public class AsuntosEntrados {
 	public void setId(Long id) {
 		this.id = id;
 	}
+public boolean isTratado() {
+		return tratado;
+	}
 
+	public void setTratado(boolean tratado) {
+		this.tratado = tratado;
+	}
 	public LocalDate getFecha() {
 		return fecha;
 	}

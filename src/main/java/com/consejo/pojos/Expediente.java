@@ -57,6 +57,9 @@ public class Expediente {
     private List<Usuario> usuariosAsignados = new ArrayList<>();
     @ManyToMany(mappedBy = "expedientes")
     private List<OrdenDia> ordenDia = new ArrayList<>();
+    @ManyToMany(mappedBy = "expedientes")
+    private List<AsuntosEntrados> asuntos = new ArrayList<>();
+    
 	
 	public Expediente() {
 		super();
@@ -154,6 +157,15 @@ public class Expediente {
 
 	public void setOrdenDia(List<OrdenDia> ordenDia) {
 		this.ordenDia = ordenDia;
+	}
+
+	
+	public List<AsuntosEntrados> getAsuntos() {
+		return asuntos;
+	}
+
+	public void setAsuntos(List<AsuntosEntrados> asuntos) {
+		this.asuntos = asuntos;
 	}
 
 	@Override

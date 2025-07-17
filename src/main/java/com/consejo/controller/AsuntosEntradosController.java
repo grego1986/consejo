@@ -33,6 +33,8 @@ public class AsuntosEntradosController {
 	private IExpedienteRepository expedienteRepo;
 	@Autowired
 	private AsuntosEntradosDaos asuntosServi;
+	@Autowired
+	private HomeController homeController;
 	
 	@PreAuthorize("hasRole('ROLE_SEC_ADMINISTRATIVO')")
 	@GetMapping("/secretarioAdministrativo/subirAsuntosEntrados")
@@ -43,6 +45,7 @@ public class AsuntosEntradosController {
 		modelo.addAttribute("titulo", "Asuntos Entrados");
 		modelo.addAttribute("frmOrden", frmOrden);
 		modelo.addAttribute("expedientes", expedientes);
+		modelo.addAttribute("ruta", "/secretarioAdministrativo/subirAsuntosEntrados");
 		return "ordenDelDia";
 	}
 
@@ -72,6 +75,8 @@ public class AsuntosEntradosController {
 
 		List<AsuntosEntrados> ordenesDelDia = asuntosServi.listarNota();
 		modelo.addAttribute("ordenesDelDia", ordenesDelDia);
+		modelo.addAttribute("pdf", "/notas/asuntosEntrados/{id}");
+		modelo.addAttribute("ruta", "/expediente/asuntosEntrados/{id}");
 
 		return "verOrdenDia";
 	}
@@ -97,10 +102,24 @@ public class AsuntosEntradosController {
 	@GetMapping("/expediente/asuntosEntrados/{id}")
 	public String ordenExpedientes (@PathVariable Long id, Model modelo) {
 		
+		AsuntosEntrados asunto = asuntosServi.BuscarNota(id);
 		List<Expediente> expedientes = asuntosServi.BuscarNota(id).getExpedientes();
+		
 		modelo.addAttribute("expedientes", expedientes);
+		modelo.addAttribute("orden", asunto);
+		modelo.addAttribute("ruta", "/asuntosEntrados/tratado/{id}");
 		
 		return "expedienteOrdendia";
 		
+	}
+	
+	@PreAuthorize("hasRole('SEC_PARLAMENTARIO')")
+	@PostMapping("/asuntosEntrados/tratado/{id}")
+	public String tratado (@PathVariable Long id) throws IOException {
+		
+		AsuntosEntrados asunto = asuntosServi.BuscarNota(id);
+		asunto.setTratado(true);
+		asuntosServi.modificarAsunto(asunto);
+		return "redirect:/home";
 	}
 }
