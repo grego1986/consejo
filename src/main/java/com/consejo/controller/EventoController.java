@@ -24,7 +24,7 @@ public class EventoController {
 		
 		eventoForm evento = new eventoForm();
 		modelo.addAttribute("evento", evento);
-		return "eventosingresar";
+		return "eventosIngresar";
 	}
 	
 	@PreAuthorize("hasRole('ENTRADA')")
