@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/css/css_Propio/style.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <title>Concejo</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/home}" title="Pàgina de inicio">
+                <div class="barra">
+                    <img th:src="@{/images/concejo.jpg}" alt="Marca de Agua" class="img-fluid imgMenu">
+                </div>
+            </a>
+
+            <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon aMenu"></span>
+
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false" sec:authentication="principal.username">
+
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navCambiar barDropdown">
+                            <li><a class="dropdown-item" th:href="@{/password/cambiarPassword}"><i
+                                        class="bi bi-key"></i>&nbsp;&nbsp;&nbsp;Cambiar contraseña</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <form th:action="@{/logout}" method="post">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <li><button type="submit" class="dropdown-item"><i
+                                            class="bi bi-box-arrow-left"></i>&nbsp;&nbsp;&nbsp;Cerrar sesión</button>
+                                </li>
+                            </form>
+                        </ul>
+                    </li>
+                    <!-- Menú de Usuarios (visible solo para ADMIN) -->
+                    <li class="nav-item dropdown" sec:authorize="hasRole('SEC_PARLAMENTARIO')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUsuarios" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Usuarios
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownUsuarios">
+                            <li><a class="dropdown-item" th:href="@{/secParlamentario/registroUsuario}"><i
+                                        class="bi bi-person-plus"></i>&nbsp;&nbsp;&nbsp;Registrar
+                                    Usuario</a></li>
+                            <li><a class="dropdown-item" th:href="@{/secParlamentario/buscarUsuario}"><i
+                                        class="bi bi-people"></i>&nbsp;&nbsp;&nbsp;Buscar Usuario</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Menú de Expedientes (visible solo para ADMIN) -->
+                    <li class="nav-item dropdown"
+                        sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownExpedientes" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Expedientes
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownExpedientes">
+                            <li><a class="dropdown-item" th:href="@{/secParlamentario/expediente/ingresos}"
+                                    sec:authorize="hasRole('SEC_PARLAMENTARIO')"><i
+                                        class="bi bi-inbox"></i>&nbsp;&nbsp;&nbsp;Ingresos</a>
+                            </li>
+                            <li><a class="dropdown-item" th:href="@{/secParlamentario/repuestaMunicipio}"
+                                    sec:authorize="hasRole('SEC_PARLAMENTARIO')"><i
+                                        class="bi bi-arrow-return-right"></i>&nbsp;&nbsp;&nbsp;Repuesta del
+                                    municipio</a>
+                            </li>
+                            <li><a class="dropdown-item" th:href="@{/expediente/buscarExpediente}"
+                                    sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')"><i
+                                        class="bi bi-search"></i>&nbsp;&nbsp;&nbsp;Buscar
+                                    Expediente</a></li>
+
+                        </ul>
+                    </li>
+
+                    <!-- Menú de Mesa de Entrada (visible solo para ENTRADA) -->
+                    <li class="nav-item dropdown" sec:authorize="hasRole('ENTRADA')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMesaEntrada" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Mesa de Entrada
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMesaEntrada">
+                            <li><a class="dropdown-item" th:href="@{/mesa-entrada/ciudadanoBuscar}"><i
+                                        class="bi bi-file-earmark-plus"></i>&nbsp;&nbsp;&nbsp;Recepción de Nota
+                                    (Por el ciudadano)</a></li>
+                            <li><a class="dropdown-item" th:href="@{/mesa-entrada/repuestaACiudadano}"><i
+                                        class="bi bi-send">&nbsp;&nbsp;&nbsp;</i>registrar
+                                    repuesta
+                                    al ciudadano</a></li>
+                            <li><a class="dropdown-item" th:href="@{/mesa-entrada/notaAMunicipio}"><i
+                                        class="bi bi-arrow-return-left"></i>&nbsp;&nbsp;&nbsp;Registrar Salida a
+                                    Municipalidad</a></li>
+                            <li><a class="dropdown-item" th:href="@{/mesa-entrada/repuestaMunicipio}"><i
+                                        class="bi bi-arrow-return-right"></i>&nbsp;&nbsp;&nbsp;Registrar repuesta
+                                    desde la Municipalidad</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown" sec:authorize="hasRole('ENTRADA')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMesaEntrada" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Eventos
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMesaEntrada">
+                            <li><a class="dropdown-item" th:href="@{/mesa-entrada/eventos/agregar}"><i
+                                        class="bi bi-calendar-date"></i></i>&nbsp;&nbsp;&nbsp;Agregar un evento</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Menú de Mesa de Entrada (visible solo para PRENSA) -->
+                    <li class="nav-item dropdown" sec:authorize="hasRole('PRENSA')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMesaEntrada" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Expedientes
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMesaEntrada">
+                            <li><a class="dropdown-item" th:href="@{/prensa/ingresosAComision}"><i
+                                        class="bi bi-file-check"></i>&nbsp;&nbsp;&nbsp;Ingreso a comision</a>
+                            </li>
+                            <li><a class="dropdown-item" th:href="@{/expediente/buscarExpediente}"><i
+                                        class="bi bi-search"></i>&nbsp;&nbsp;&nbsp;Buscar Expediente</a>
+                            </li>
+                        </ul>
+                    </li>
+
+
+                    <li class="nav-item dropdown"
+                        sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownComisiones" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Comisiones
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownComisiones">
+                            <li
+                                sec:authorize="hasAnyRole('PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                                <a class="dropdown-item" th:href="@{/comision/gobiernoYDesarrolloSocial}"><i
+                                        class="bi bi-bank"></i>&nbsp;&nbsp;&nbsp;Gobierno y
+                                    Desarrollo
+                                    Social</a>
+                            </li>
+                            <li
+                                sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO')">
+                                <a class="dropdown-item" th:href="@{/comision/desarrolloUrbanoAmbientalYEconomia}"><i
+                                        class="bi bi-tree"></i>&nbsp;&nbsp;&nbsp;Desarrollo Urbano
+                                    Ambiental y Economía</a>
+                            </li>
+                            <li><a class="dropdown-item" th:href="@{/comision/ambasComisiones}"><i
+                                        class="bi bi-globe2"></i>&nbsp;&nbsp;&nbsp;Ambas
+                                    Comisiones</a></li>
+                            <li><a class="dropdown-item" th:href="@{/expediente/archivo}"><i
+                                        class="bi bi-archive"></i>&nbsp;&nbsp;&nbsp;Archivo</a></li>
+                        </ul>
+                    </li>
+
+
+                    <li class="nav-item dropdown"
+                        sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDespachoNotas" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Despacho y Notas de Comisión
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownDespachoNotas">
+                            <li><a class="dropdown-item" th:href="@{/comision/despachoDeComision}"><i
+                                        class="bi bi-folder-check"></i>&nbsp;&nbsp;&nbsp;Despacho de
+                                    Comisión</a></li>
+                            <li><a class="dropdown-item" th:href="@{/comision/notaDeComision}"><i
+                                        class="bi bi-journal"></i>&nbsp;&nbsp;&nbsp;Notas de Comisión</a>
+                            </li>
+                        </ul>
+                    </li>
+
+
+                    <li class="nav-item dropdown" sec:authorize="hasRole('SEC_ADMINISTRATIVO')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDespachoNotas" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Despacho
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownDespachoNotas">
+                            <li><a class="dropdown-item" th:href="@{/secretarioAdministrativo/despachoDeComision}"><i
+                                        class="bi bi-folder-check"></i>&nbsp;&nbsp;&nbsp;Despacho de
+                                    Comisión</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown"
+                        sec:authorize="hasAnyRole('SEC_ADMINISTRATIVO','CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDespachoNotas" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Orden del día
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownDespachoNotas">
+                            <li sec:authorize="hasRole('SEC_ADMINISTRATIVO')"><a class="dropdown-item"
+                                    th:href="@{/secretarioAdministrativo/subirOrdenDelDia}"><i
+                                        class="bi bi-journal-arrow-up"></i>&nbsp;&nbsp;&nbsp;Subir Orden del Día</a>
+                            </li>
+                            <li
+                                sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                                <a class="dropdown-item" th:href="@{/ordenDelDia/ver}"><i
+                                        class="bi bi-view-stacked"></i>&nbsp;&nbsp;&nbsp;Ver
+                                    Orden del Día</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown"
+                        sec:authorize="hasAnyRole('SEC_ADMINISTRATIVO','CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDespachoNotas" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Asuntos Entrados
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownDespachoNotas">
+                            <li sec:authorize="hasRole('SEC_ADMINISTRATIVO')"><a class="dropdown-item"
+                                    th:href="@{/secretarioAdministrativo/subirAsuntosEntrados}"><i
+                                        class="bi bi-journal-arrow-up"></i>&nbsp;&nbsp;&nbsp;Subir Asuntos
+                                    Entrados</a></li>
+                            <li
+                                sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                                <a class="dropdown-item" th:href="@{/asuntosEntrados/ver}"><i
+                                        class="bi bi-view-stacked"></i>&nbsp;&nbsp;&nbsp;Ver
+                                    Asuntos Entrados</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="d-flex align-items-center justify-content-center  mt-5">
+        <div class="card p-4 shadow" style="min-width: 400px;">
+            <h2 class="text-center mb-2">Agregar Evento</h2>
+            <form th:action="@{/mesa-entrada/eventos/agregar}" th:object="${evento}" method="post">
+
+                <div class="mb-2">
+                    <label for="evento" class="form-label">Nombre del Evento</label>
+                    <textarea th:field="*{evento}" id="evento" class="form-control" rows="3" required></textarea>
+                </div>
+
+                <div class="mb-2">
+                    <label for="fecha" class="form-label">Fecha</label>
+                    <input type="date" th:field="*{fecha}" id="fecha" class="form-control" required>
+                </div>
+
+                <div class="mb-2">
+                    <label for="hora" class="form-label">Hora</label>
+                    <input type="time" th:field="*{hora}" id="hora" class="form-control" required>
+                </div>
+
+                <div class="mb-2">
+                    <label for="direccion" class="form-label">Dirección</label>
+                    <input type="text" th:field="*{direccion}" id="direccion" class="form-control" required>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center align-items-center full-height">
+        <img th:src="@{/images/concejo.jpg}" alt="Marca de Agua" class="watermark">
+    </div>
+    <script th:src="@{/css/node_modules/bootstrap/dist/js/bootstrap.bundle.js}"></script>
+</body>
+
+</html>
