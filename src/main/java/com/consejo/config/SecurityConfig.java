@@ -1,19 +1,25 @@
 package com.consejo.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import com.consejo.daos.CustomUserDetailsService;
 
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+	@Autowired
+	private CustomUserDetailsService customUserDetailsService;
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -46,16 +52,28 @@ public class SecurityConfig {
 				.requestMatchers("/notas/**").hasAnyRole("CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL", "PRESIDENTE", "SEC_PARLAMENTARIO",
 						"CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA", "ENTRADA", "PRENSA", "SEC_ADMINISTRATIVO")
 				.requestMatchers("/", "/home", "/login", "/login?error=true", "/logout", "/login?logout",
-						"/password/cambiarPassword", "/forgot-password", "/resetearPassword/**")
+						"/password/cambiarPassword", "/forgot-password", "/resetearPassword/**","/api/**")
 				.permitAll().requestMatchers("/css/**", "/js/**", "/images/**").permitAll())
 				.formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/home", true)
 						.failureUrl("/login?error=true"))
 				.logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/login?logout")
 						.invalidateHttpSession(true).clearAuthentication(true).deleteCookies("JSESSIONID"))
-				.csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
+				.csrf(csrf -> csrf.ignoringRequestMatchers("/api/**")
+						.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
 		return http.build();
 	}
 
+    @SuppressWarnings("removal")
+	@Bean
+    AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+                .userDetailsService(customUserDetailsService)
+                .passwordEncoder(passwordEncoder())
+                .and()
+                .build();
+    }
+
+	
 	@Bean
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
