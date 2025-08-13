@@ -52,7 +52,12 @@ public class SecurityConfig {
 				.requestMatchers("/notas/**").hasAnyRole("CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL", "PRESIDENTE", "SEC_PARLAMENTARIO",
 						"CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA", "ENTRADA", "PRENSA", "SEC_ADMINISTRATIVO")
 				.requestMatchers("/", "/home", "/login", "/login?error=true", "/logout", "/login?logout",
-						"/password/cambiarPassword", "/forgot-password", "/resetearPassword/**","/api/**")
+						"/password/cambiarPassword", "/forgot-password", "/resetearPassword/**","/api/**", "/swagger-ui/**",
+		                "/v3/api-docs/**",
+		                "/swagger-ui.html",
+		                "/v3/api-docs.yaml",
+		                "/swagger-resources/**",
+		                "/webjars/**", "/error/**")
 				.permitAll().requestMatchers("/css/**", "/js/**", "/images/**").permitAll())
 				.formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/home", true)
 						.failureUrl("/login?error=true"))
