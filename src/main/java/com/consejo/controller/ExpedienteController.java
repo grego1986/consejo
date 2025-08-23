@@ -1546,7 +1546,7 @@ public class ExpedienteController {
     		@RequestParam(required = false) LocalDate startDate,
         Model model) {
 
-        List<Expediente> expedientes = expedienteServi.buscarPorRangoDeFechasYCircuitos(startDate, LocalDate.now());
+        List<Expediente> expedientes = expedienteServi.buscarPorRangoDeFechasYCircuitos(startDate);
         model.addAttribute("expedientes", expedientes);
         return "prensaIngresosComision";
     }
