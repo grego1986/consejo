@@ -14,9 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(description = "Datos para crear o actualizar un Asunto Entrado")
 public class AsuntosEntradosDto extends RepresentationModel<AsuntosEntradosDto> {
 
-	@Schema(description = "Lista de IDs de expedientes asociados al asunto", example = "[1, 2, 3]")
-	//@JsonIgnore
-	private List<EntityModel<ExpedienteExportDto>> expedientes;
+	
 	@Schema(description = "Fecha de ingreso del asunto (YYYY-MM-DD)", example = "2025-08-10")
 	private LocalDate fecha;
 	@Schema(description = "ID del asunto (solo se usa en actualización)", example = "1")
@@ -25,6 +23,8 @@ public class AsuntosEntradosDto extends RepresentationModel<AsuntosEntradosDto> 
 	private String titulo;
 	@Schema(description = "Indica si el asunto ya fue tratado", example = "false")
 	private Boolean tratado;
+	@Schema(description = "Lista de IDs de expedientes asociados al asunto", example = "[1, 2, 3]")
+	private List<EntityModel<ExpedienteExportDto>> expedientes;
 	@Schema(description = "Contenido o nota asociada al asunto", example = "Pedido realizado por vecinos del barrio San Martín")
 	private String nota;
 

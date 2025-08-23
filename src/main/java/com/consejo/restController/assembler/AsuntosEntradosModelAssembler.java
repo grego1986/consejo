@@ -46,14 +46,14 @@ public class AsuntosEntradosModelAssembler implements RepresentationModelAssembl
 	        dto.setExpedientes(expedientesReducidos);
 		
 			return EntityModel.of(dto,  
-					linkTo(methodOn(AsuntosEntradosRestController.class).obtener(dto.getId())).withSelfRel(),
+					linkTo(methodOn(AsuntosEntradosRestController.class).obtener(dto.getId())).withRel("obtener"),
 			        linkTo(methodOn(AsuntosEntradosRestController.class).listar()).withRel("todos"),
 			        linkTo(methodOn(AsuntosEntradosRestController.class).noTratados()).withRel("noTratados"),
 			        linkTo(methodOn(AsuntosEntradosRestController.class).actualizar(dto.getId(), entity)).withRel("editar"),
 			        linkTo(methodOn(AsuntosEntradosRestController.class).eliminar(dto.getId())).withRel("eliminar"),
 			        linkTo(methodOn(AsuntosEntradosRestController.class).descargarNota(dto.getId())).withRel("descargar"),
 			        linkTo(methodOn(AsuntosEntradosRestController.class).verNota(dto.getId())).withRel("ver"),
-			        linkTo(methodOn(AsuntosEntradosRestController.class).crear(null)).withRel("crear")
+			        linkTo(methodOn(AsuntosEntradosRestController.class).crear(entity)).withRel("crear")
 			);
 		
 	}
