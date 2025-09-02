@@ -41,4 +41,9 @@ public class GlobalExceptionHandler {
 	        ApiError apiError = new ApiError(LocalDateTime.now(), status.value(), error, message, path);
 	        return ResponseEntity.status(status).body(apiError);
 	    }
+	    
+	    @ExceptionHandler(ArchivoNoProcesadoException.class)
+	    public ResponseEntity<ApiError> handleArchivo(ArchivoNoProcesadoException ex, HttpServletRequest request) {
+	        return buildResponse(HttpStatus.BAD_REQUEST, "Error procesando archivo", ex.getMessage(), request.getRequestURI());
+	    }
 }
