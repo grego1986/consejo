@@ -34,7 +34,13 @@ public class PersonaDaos implements IPersonaDaos {
 
 	@Override
 	public void eliminaPersona(Persona ciudadano) {
-		// TODO Auto-generated method stub
+		personaRepo.deleteById(null);
+	}
+
+	@Override
+	public void modificarPersona(Persona ciudadano) {
+		
+		personaRepo.save(ciudadano);
 		
 	}
 

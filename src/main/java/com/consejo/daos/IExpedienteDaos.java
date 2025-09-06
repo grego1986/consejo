@@ -39,6 +39,6 @@ public interface IExpedienteDaos {
 	public void moverARepuestaMunicipio (Expediente expediente) throws IOException;
 	public void moverAFin(Expediente expediente) throws IOException;
 	public List<Expediente> buscarExpediente (LocalDate fecha, String detalle, String id, String caratula, String nombrePersona);
-	public List<Expediente> buscarPorRangoDeFechasYCircuitos(LocalDate startDate, LocalDate endDate);
+	public List<Expediente> buscarPorRangoDeFechasYCircuitos(LocalDate startDate);
 
 }

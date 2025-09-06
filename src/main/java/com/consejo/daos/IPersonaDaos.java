@@ -12,4 +12,5 @@ public interface IPersonaDaos {
 	public Persona buscarPersona(Long id);
 	public void guardarPersona(Persona ciudadano);
 	public void eliminaPersona(Persona ciudadano);
+	public void modificarPersona (Persona ciudadano);
 }

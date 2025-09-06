@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.Consumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -11,6 +12,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.consejo.enumeraciones.CircuitoExpediente;
+import com.consejo.exceptions.BadRequestException;
+import com.consejo.exceptions.InternalServerErrorException;
+import com.consejo.exceptions.ResourceNotFoundException;
 import com.consejo.pojos.Expediente;
 import com.consejo.pojos.Movimiento;
 import com.consejo.pojos.Persona;
@@ -23,6 +27,32 @@ public class ExpedienteDaos implements IExpedienteDaos {
 
 	@Autowired
 	private IExpedienteRepository expedienteRepo;
+	private final Map<CircuitoExpediente, Consumer<Expediente>> acciones = new HashMap<>();
+
+	public ExpedienteDaos() {
+		inicializarAcciones();
+	}
+
+	private void inicializarAcciones() {
+		acciones.put(CircuitoExpediente.OFICINA_PARLAMENTARIA, this::moverAOficinaParlamentaria);
+		acciones.put(CircuitoExpediente.COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL, this::moverAGobiernoYSocial);
+		acciones.put(CircuitoExpediente.COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA,
+				this::moverAComisionAmbientalYEconomia);
+		acciones.put(CircuitoExpediente.AMBAS_COMISIONES, this::moverAAmbasComisiones);
+		acciones.put(CircuitoExpediente.ARCHIVO, this::moverAArchivo);
+		acciones.put(CircuitoExpediente.PRESIDENCIA, this::moverAPresidencia);
+		acciones.put(CircuitoExpediente.BLOQUE_A, this::moverABloque_A);
+		acciones.put(CircuitoExpediente.BLOQUE_B, this::moverABloque_B);
+		acciones.put(CircuitoExpediente.BLOQUE_C, this::moverABloque_C);
+		acciones.put(CircuitoExpediente.TODOS_LOS_BLOQUES, this::moverATodosBloques);
+		acciones.put(CircuitoExpediente.LEGISLACION, this::moverALegislacion);
+		acciones.put(CircuitoExpediente.DESPACHOS_DE_COMISION, this::moverADespachoComision);
+		acciones.put(CircuitoExpediente.NOTAS_DE_COMISION, this::moverANotasComision);
+		acciones.put(CircuitoExpediente.REPUESTA_AL_CIUDADANO, this::moverARepuestaDestinatario);
+		acciones.put(CircuitoExpediente.NOTA_AL_MUNICIPIO, this::moverANotaMunicipio);
+		acciones.put(CircuitoExpediente.REPUESTA_DEL_MUNICIPIO, this::moverARepuestaMunicipio);
+		acciones.put(CircuitoExpediente.FIN, this::moverAFin);
+	}
 
 	@Override
 	public List<Expediente> listarExpedientes() {
@@ -31,13 +61,9 @@ public class ExpedienteDaos implements IExpedienteDaos {
 			return expedienteRepo.findAll();
 
 		} catch (DataAccessException dae) {
-			// Manejar la excepción de acceso a la base de datos
-			System.err.println("Error al acceder a la base de datos: " + dae.getMessage());
-			return new ArrayList<>(); // O retornar null si prefieres, pero es mejor devolver una lista vacía.
+			throw new InternalServerErrorException("Error al acceder a la base de datos.");
 		} catch (Exception ex) {
-			// Manejar cualquier otra excepción
-			System.err.println("Ocurrió un error: " + ex.getMessage());
-			return new ArrayList<>();
+			throw new InternalServerErrorException("Error inesperado al listar los Expedientes.");
 		}
 
 	}
@@ -45,15 +71,12 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public Expediente buscarExpediente(String id) {
 		try {
-			return expedienteRepo.findById(id).orElse(null);
+			return expedienteRepo.findById(id)
+					.orElseThrow(() -> new ResourceNotFoundException("Expediente con ID " + id + " no encontrado."));
 		} catch (DataAccessException dae) {
-			// Manejar la excepción de acceso a la base de datos
-			System.err.println("Error al acceder a la base de datos: " + dae.getMessage());
-			return null; // O retornar null si prefieres, pero es mejor devolver una lista vacía.
+			throw new InternalServerErrorException("Error al acceder a la base de datos.");
 		} catch (Exception ex) {
-			// Manejar cualquier otra excepción
-			System.err.println("Ocurrió un error: " + ex.getMessage());
-			return null;
+			throw new InternalServerErrorException("Error inesperado al buscar el Expediente.");
 		}
 
 	}
@@ -66,202 +89,74 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	}
 
 	@Override
-	public void guardarExpediente(Expediente expediente) throws IOException {
+	public void guardarExpediente(Expediente expediente) {
 
 		try {
 			expedienteRepo.save(expediente);
 
 		} catch (DataAccessException dae) {
-			// Manejo de errores específicos de la base de datos
-			throw new IOException("Error al acceder a la base de datos: " + dae.getMessage(), dae);
+			throw new InternalServerErrorException("Error al acceder a la base de datos.");
 		} catch (IllegalArgumentException iae) {
-			// Manejo de argumentos inválidos pasados a la entidad o al repositorio
-			throw new IOException("Argumento inválido: " + iae.getMessage(), iae);
+			throw new BadRequestException("Datos inválidos: " + iae.getMessage());
 		} catch (Exception ex) {
-			// Manejo general de excepciones
-			throw new IOException("Error al guardar el expediente: " + ex.getMessage(), ex);
+			throw new InternalServerErrorException("Error inesperado al modificar el expediente.");
 		}
 
 	}
 
 	@Override
-	public void agregarMovimiento(String id, Movimiento movimiento, CircuitoExpediente circuito) throws IOException {
+	public void agregarMovimiento(String id, Movimiento movimiento, CircuitoExpediente circuito){
 
 		try {
-
 			Expediente e = expedienteRepo.findById(id)
 					.orElseThrow(() -> new Exception("Expediente no encontrado con ID: " + id));
+
 			movimiento.setExpediente(e);
 			movimiento.setId(generateMovimientoId(e));
 			e.getMovimientos().add(movimiento);
-			switch (circuito) {
 
-			case OFICINA_PARLAMENTARIA:
-				if (circuito != e.getEstado()) {
-					moverAOficinaParlamentaria(e);
-				}else {
-					expedienteRepo.save(e);
-				}
-				break;
-
-			case COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL:
-				if (circuito != e.getEstado()) {
-					moverAGobiernoYSocial(e);
-				} else {
-					expedienteRepo.save(e);
-				}
-				
-				break;
-
-			case COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA:
-				if (circuito != e.getEstado()) {
-					moverAComisionAmbientalYEconomia(e);
-				}else {
-					expedienteRepo.save(e);
-				}
-				
-				break;
-
-			case AMBAS_COMISIONES:
-				if (circuito != e.getEstado()) {
-					moverAAmbasComisiones(e);
-				}else {
-					expedienteRepo.save(e);
-				}
-				
-				break;
-
-			case ARCHIVO:
-				moverAArchivo(e);
-				break;
-
-			case PRESIDENCIA:
-				if (circuito != e.getEstado()) {
-					moverAPresidencia(e);
-				}else {
-					expedienteRepo.save(e);
-				}
-				
-				break;
-
-			case BLOQUE_A:
-				if (circuito != e.getEstado()) {
-					moverABloque_A(e);
-				}else {
-					expedienteRepo.save(e);
-				}
-				
-				break;
-
-			case BLOQUE_B:
-				if (circuito != e.getEstado()) {
-					moverABloque_B(e);
-				}else {
-					expedienteRepo.save(e);
-				}
-				
-				break;
-
-			case BLOQUE_C:
-				if (circuito != e.getEstado()) {
-					moverABloque_B(e);
-				}else {
-					expedienteRepo.save(e);
-				}
-				
-				break;
-
-			case TODOS_LOS_BLOQUES:
-				if (circuito != e.getEstado()) {
-					moverATodosBloques(e);
-				}else {
-					expedienteRepo.save(e);
-				}
-				
-				break;
-
-			case LEGISLACION:
-				if (circuito != e.getEstado()) {
-					moverALegislacion(e);
-				}else {
-					expedienteRepo.save(e);
-				}
-				
-				break;
-
-			case DESPACHOS_DE_COMISION:
-				if (circuito != e.getEstado()) {
-					moverADespachoComision(e);
-				}else {
-					expedienteRepo.save(e);
-				}
-				
-				break;
-
-			case NOTAS_DE_COMISION:
-				if (circuito != e.getEstado()) {
-					moverANotasComision(e);
-				}else {
-					expedienteRepo.save(e);
-				}
-				
-				break;
-
-			case REPUESTA_AL_CIUDADANO:
-				moverARepuestaDestinatario(e);
-				break;
-
-			case NOTA_AL_MUNICIPIO:
-				moverANotaMunicipio(e);
-				break;
-
-			case REPUESTA_DEL_MUNICIPIO:
-				moverARepuestaMunicipio(e);
-				break;
-			case FIN:
-				moverAFin(e);
-				break;
-
-			default:
-				System.out.println("Estado no reconocido.");
-				break;
-
+			if (circuito != e.getEstado()) {
+				acciones.getOrDefault(circuito, exp -> {
+					throw new IllegalArgumentException("Estado no reconocido");
+				}).accept(e);
+			} else {
+				expedienteRepo.save(e);
 			}
 
 		} catch (DataAccessException dae) {
-			// Manejo de errores específicos de la base de datos
-			throw new IOException("Error al acceder a la base de datos: " + dae.getMessage(), dae);
+			throw new InternalServerErrorException("Error al acceder a la base de datos.");
 		} catch (IllegalArgumentException iae) {
-			// Manejo de argumentos inválidos pasados a la entidad o al repositorio
-			throw new IOException("Argumento inválido: " + iae.getMessage(), iae);
+			throw new BadRequestException("Datos inválidos: " + iae.getMessage());
 		} catch (Exception ex) {
-			// Manejo general de excepciones
-			throw new IOException("Error al guardar el expediente: " + ex.getMessage(), ex);
+			throw new InternalServerErrorException("Error inesperado al modificar el expediente.");
 		}
 
 	}
 
 	@Override
-	public void modificarExpediente(Expediente e, String id) throws IOException {
+	public void modificarExpediente(Expediente e, String id) {
 
 		try {
 
 			Expediente exp = expedienteRepo.findById(id)
 					.orElseThrow(() -> new Exception("Expediente no encontrado con ID: " + id));
+			if (exp == null || exp.getId() == null) {
+				throw new BadRequestException("El expediente o su ID no pueden ser nulos.");
+			}
+			if (!expedienteRepo.existsById(id)) {
+				throw new ResourceNotFoundException("No se puede modificar: el expediente no existe.");
+			}
 			exp.setCaratula(e.getCaratula());
 			exp.setDetalle(e.getDetalle());
 			exp.setTipo(e.getTipo());
-			expedienteRepo.save(e);
+			expedienteRepo.save(exp);
 
 		} catch (DataAccessException dae) {
-			// Manejo de errores específicos de la base de datos
-			throw new IOException("Error al acceder a la base de datos: " + dae.getMessage(), dae);
+			throw new InternalServerErrorException("Error al acceder a la base de datos.");
 		} catch (IllegalArgumentException iae) {
-			// Manejo de argumentos inválidos pasados a la entidad o al repositorio
-			throw new IOException("Argumento inválido: " + iae.getMessage(), iae);
+			throw new BadRequestException("Datos inválidos: " + iae.getMessage());
 		} catch (Exception ex) {
-			// Manejo general de excepciones
-			throw new IOException("Error al guardar el expediente: " + ex.getMessage(), ex);
+			throw new InternalServerErrorException("Error inesperado al modificar el expediente.");
 		}
 
 	}
@@ -283,9 +178,10 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	}
 
 	@Override
-	public void moverAOficinaParlamentaria(Expediente expediente) throws IOException {
+	public void moverAOficinaParlamentaria(Expediente expediente) {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.REPUESTA_DEL_MUNICIPIO)) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)
+				|| (expediente.getEstado() == CircuitoExpediente.REPUESTA_DEL_MUNICIPIO)) {
 			expediente.setEstado(CircuitoExpediente.OFICINA_PARLAMENTARIA);
 			expedienteRepo.save(expediente);
 		} else {
@@ -295,9 +191,10 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	}
 
 	@Override
-	public void moverAComisionAmbientalYEconomia(Expediente expediente) throws IOException {
+	public void moverAComisionAmbientalYEconomia(Expediente expediente) {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)
+				|| (expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA);
 			expedienteRepo.save(expediente);
 		} else {
@@ -307,9 +204,10 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	}
 
 	@Override
-	public void moverAGobiernoYSocial(Expediente expediente) throws IOException {
+	public void moverAGobiernoYSocial(Expediente expediente) {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)
+				|| (expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL);
 			expedienteRepo.save(expediente);
 		} else {
@@ -319,9 +217,10 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	}
 
 	@Override
-	public void moverAAmbasComisiones(Expediente expediente) throws IOException {
+	public void moverAAmbasComisiones(Expediente expediente) {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)
+				|| (expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.AMBAS_COMISIONES);
 			expedienteRepo.save(expediente);
 		} else {
@@ -331,9 +230,10 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	}
 
 	@Override
-	public void moverAArchivo(Expediente expediente) throws IOException {
+	public void moverAArchivo(Expediente expediente) {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA) ){
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)
+				|| (expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.ARCHIVO);
 			expedienteRepo.save(expediente);
 		} else {
@@ -343,9 +243,10 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	}
 
 	@Override
-	public void moverAPresidencia(Expediente expediente) throws IOException {
+	public void moverAPresidencia(Expediente expediente) {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)
+				|| (expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.PRESIDENCIA);
 			expedienteRepo.save(expediente);
 		} else {
@@ -355,9 +256,10 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	}
 
 	@Override
-	public void moverABloque_A(Expediente expediente) throws IOException {
+	public void moverABloque_A(Expediente expediente) {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)
+				|| (expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.BLOQUE_A);
 			expedienteRepo.save(expediente);
 		} else {
@@ -367,9 +269,10 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	}
 
 	@Override
-	public void moverABloque_B(Expediente expediente) throws IOException {
+	public void moverABloque_B(Expediente expediente) {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)
+				|| (expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.BLOQUE_B);
 			expedienteRepo.save(expediente);
 		} else {
@@ -379,9 +282,10 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	}
 
 	@Override
-	public void moverABloque_C(Expediente expediente) throws IOException {
+	public void moverABloque_C(Expediente expediente) {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)
+				|| (expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.BLOQUE_C);
 			expedienteRepo.save(expediente);
 		} else {
@@ -391,9 +295,10 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	}
 
 	@Override
-	public void moverATodosBloques(Expediente expediente) throws IOException {
+	public void moverATodosBloques(Expediente expediente) {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)
+				|| (expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.TODOS_LOS_BLOQUES);
 			expedienteRepo.save(expediente);
 		} else {
@@ -403,7 +308,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	}
 
 	@Override
-	public void moverADespachoComision(Expediente expediente) throws IOException {
+	public void moverADespachoComision(Expediente expediente) {
 
 		if ((expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)
 				|| (expediente.getEstado() == CircuitoExpediente.COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA)
@@ -425,7 +330,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	}
 
 	@Override
-	public void moverALegislacion(Expediente expediente) throws IOException {
+	public void moverALegislacion(Expediente expediente) {
 
 		if (expediente.getEstado() == CircuitoExpediente.DESPACHOS_DE_COMISION) {
 			expediente.setEstado(CircuitoExpediente.LEGISLACION);
@@ -438,7 +343,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	}
 
 	@Override
-	public void moverANotasComision(Expediente expediente) throws IOException {
+	public void moverANotasComision(Expediente expediente) {
 
 		if ((expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)
 				|| (expediente.getEstado() == CircuitoExpediente.COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA)
@@ -460,7 +365,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	}
 
 	@Override
-	public void moverARepuestaDestinatario(Expediente expediente) throws IOException {
+	public void moverARepuestaDestinatario(Expediente expediente) {
 
 		if (expediente.getEstado() == CircuitoExpediente.NOTAS_DE_COMISION) {
 			expediente.setEstado(CircuitoExpediente.REPUESTA_AL_CIUDADANO);
@@ -472,7 +377,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	}
 
 	@Override
-	public void moverAFin(Expediente expediente) throws IOException {
+	public void moverAFin(Expediente expediente) {
 
 		if ((expediente.getEstado() == CircuitoExpediente.REPUESTA_AL_CIUDADANO)
 				|| (expediente.getEstado() == CircuitoExpediente.LEGISLACION)
@@ -487,7 +392,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	}
 
 	@Override
-	public void moverANotaMunicipio(Expediente expediente) throws IOException {
+	public void moverANotaMunicipio(Expediente expediente) {
 		if (expediente.getEstado() == CircuitoExpediente.NOTAS_DE_COMISION) {
 			expediente.setEstado(CircuitoExpediente.NOTA_AL_MUNICIPIO);
 			expedienteRepo.save(expediente);
@@ -498,7 +403,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	}
 
 	@Override
-	public void moverARepuestaMunicipio(Expediente expediente) throws IOException {
+	public void moverARepuestaMunicipio(Expediente expediente) {
 		if (expediente.getEstado() == CircuitoExpediente.NOTA_AL_MUNICIPIO) {
 			expediente.setEstado(CircuitoExpediente.REPUESTA_DEL_MUNICIPIO);
 			expedienteRepo.save(expediente);
@@ -514,13 +419,9 @@ public class ExpedienteDaos implements IExpedienteDaos {
 			return expedienteRepo.findByEstado(estado);
 
 		} catch (DataAccessException dae) {
-			// Manejar la excepción de acceso a la base de datos
-			System.err.println("Error al acceder a la base de datos: " + dae.getMessage());
-			return new ArrayList<>(); // O retornar null si prefieres, pero es mejor devolver una lista vacía.
+			throw new InternalServerErrorException("Error al acceder a la base de datos.");
 		} catch (Exception ex) {
-			// Manejar cualquier otra excepción
-			System.err.println("Ocurrió un error: " + ex.getMessage());
-			return new ArrayList<>();
+			throw new InternalServerErrorException("Error inesperado al listar los Expedientes.");
 		}
 	}
 
@@ -543,25 +444,39 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	public List<Expediente> buscarExpediente(LocalDate fecha, String detalle, String id, String caratula,
 			String nombrePersona) {
 
-		Specification<Expediente> spec = ExpedienteSpecification.buscarExpedientes(fecha, detalle, id, caratula,
-				nombrePersona);
+		try {
+			Specification<Expediente> spec = ExpedienteSpecification.buscarExpedientes(fecha, detalle, id, caratula,
+					nombrePersona);
 
-		return expedienteRepo.findAll(spec);
+			List<Expediente> resultados = expedienteRepo.findAll(spec);
+
+			return resultados;
+
+		} catch (IllegalArgumentException e) {
+			throw new RuntimeException("Error en los parámetros de búsqueda: " + e.getMessage());
+		} catch (Exception e) {
+			throw new RuntimeException("Error inesperado al buscar expedientes", e);
+		}
 	}
 
 	@Override
-	public List<Expediente> buscarPorRangoDeFechasYCircuitos(LocalDate startDate, LocalDate endDate) {
-		List<CircuitoExpediente> circuitos = Arrays.asList(
-				CircuitoExpediente.INGRESO,
+	public List<Expediente> buscarPorRangoDeFechasYCircuitos(LocalDate startDate) {
+		
+		List<CircuitoExpediente> circuitos = Arrays.asList(CircuitoExpediente.INGRESO,
 				CircuitoExpediente.COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL,
 				CircuitoExpediente.COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA,
-				CircuitoExpediente.AMBAS_COMISIONES,
-				CircuitoExpediente.ARCHIVO,
-				CircuitoExpediente.DESPACHOS_DE_COMISION,
-				CircuitoExpediente.LEGISLACION
-		);
-		return expedienteRepo.findByUltimoMovimientoFechaBetweenAndCircuitoIn(startDate, endDate, circuitos);
-	}
+				CircuitoExpediente.AMBAS_COMISIONES, CircuitoExpediente.ARCHIVO,
+				CircuitoExpediente.DESPACHOS_DE_COMISION, CircuitoExpediente.LEGISLACION);
 
+		try {
+
+			return expedienteRepo.findByUltimoMovimientoFechaBetweenAndCircuitoIn(startDate, LocalDate.now(), circuitos);
+
+		} catch (IllegalArgumentException e) {
+			throw new RuntimeException("Error en los parámetros de búsqueda: " + e.getMessage());
+		} catch (Exception e) {
+			throw new RuntimeException("Error inesperado al buscar expedientes", e);
+		}
+	}
 
 }
