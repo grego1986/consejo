@@ -30,7 +30,7 @@ public class SecurityConfig {
 				.requestMatchers("/comision/gobiernoYDesarrolloSocial/**").hasAnyRole("PRESIDENTE", "SEC_PARLAMENTARIO", "CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL", "PRENSA")
 				.requestMatchers("/secretarioAdministrativo/**").hasAnyRole("SEC_ADMINISTRATIVO")
 				.requestMatchers("/comision/desarrolloUrbanoAmbientalYEconomia/**").hasAnyRole("CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA", "PRESIDENTE",
-						"SEC_PARLAMENTARIO", "PRENSA")
+						"SEC_PARLAMENTARIO",  "PRENSA")
 				.requestMatchers("/ordenDelDia/**").hasAnyRole("CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA", "PRESIDENTE",
 						"SEC_PARLAMENTARIO", "CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL")
 				.requestMatchers("/asuntosEntrados/**").hasAnyRole("CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA", "PRESIDENTE",
