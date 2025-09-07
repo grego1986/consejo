@@ -245,7 +245,7 @@
         <div class="row">
             <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-xxl-3 p-3  mt-5">
                 <aside class="border-end"
-                    sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL')">
+                    sec:authorize="hasAnyRole('CONCEJAL_COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA', 'PRESIDENTE', 'SEC_PARLAMENTARIO', 'CONCEJAL_COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL', 'PRENSA')">
                     <h5>Órdenes del Día</h5>
                     <ul class="list-unstyled">
                         <li th:each="orden : ${ordenesDelDia}"> <span th:text="${orden.titulo}"></span>&nbsp;
