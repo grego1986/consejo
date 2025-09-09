@@ -28,5 +28,16 @@ public interface IExpedienteRepository extends JpaRepository <Expediente,String>
 		    @Param("endDate") LocalDate endDate,
 		    @Param("estados") List<CircuitoExpediente> circuitos);
 	
+	 List<Expediente> findByFechaBetweenAndEstadoNotIn(
+	            LocalDate desde,
+	            LocalDate hasta,
+	            List<CircuitoExpediente> estadosExcluidos);
+	 
+	 
+	 List<Expediente> findByFechaBeforeAndEstadoNotIn(
+	            LocalDate fecha,
+	            List<CircuitoExpediente> estadosExcluidos
+	    );
+	
 
 }

@@ -99,7 +99,7 @@ public class ExpedienteDaos implements IExpedienteDaos {
 			case OFICINA_PARLAMENTARIA:
 				if (circuito != e.getEstado()) {
 					moverAOficinaParlamentaria(e);
-				}else {
+				} else {
 					expedienteRepo.save(e);
 				}
 				break;
@@ -110,25 +110,25 @@ public class ExpedienteDaos implements IExpedienteDaos {
 				} else {
 					expedienteRepo.save(e);
 				}
-				
+
 				break;
 
 			case COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA:
 				if (circuito != e.getEstado()) {
 					moverAComisionAmbientalYEconomia(e);
-				}else {
+				} else {
 					expedienteRepo.save(e);
 				}
-				
+
 				break;
 
 			case AMBAS_COMISIONES:
 				if (circuito != e.getEstado()) {
 					moverAAmbasComisiones(e);
-				}else {
+				} else {
 					expedienteRepo.save(e);
 				}
-				
+
 				break;
 
 			case ARCHIVO:
@@ -138,73 +138,73 @@ public class ExpedienteDaos implements IExpedienteDaos {
 			case PRESIDENCIA:
 				if (circuito != e.getEstado()) {
 					moverAPresidencia(e);
-				}else {
+				} else {
 					expedienteRepo.save(e);
 				}
-				
+
 				break;
 
 			case BLOQUE_A:
 				if (circuito != e.getEstado()) {
 					moverABloque_A(e);
-				}else {
+				} else {
 					expedienteRepo.save(e);
 				}
-				
+
 				break;
 
 			case BLOQUE_B:
 				if (circuito != e.getEstado()) {
 					moverABloque_B(e);
-				}else {
+				} else {
 					expedienteRepo.save(e);
 				}
-				
+
 				break;
 
 			case BLOQUE_C:
 				if (circuito != e.getEstado()) {
 					moverABloque_B(e);
-				}else {
+				} else {
 					expedienteRepo.save(e);
 				}
-				
+
 				break;
 
 			case TODOS_LOS_BLOQUES:
 				if (circuito != e.getEstado()) {
 					moverATodosBloques(e);
-				}else {
+				} else {
 					expedienteRepo.save(e);
 				}
-				
+
 				break;
 
 			case LEGISLACION:
 				if (circuito != e.getEstado()) {
 					moverALegislacion(e);
-				}else {
+				} else {
 					expedienteRepo.save(e);
 				}
-				
+
 				break;
 
 			case DESPACHOS_DE_COMISION:
 				if (circuito != e.getEstado()) {
 					moverADespachoComision(e);
-				}else {
+				} else {
 					expedienteRepo.save(e);
 				}
-				
+
 				break;
 
 			case NOTAS_DE_COMISION:
 				if (circuito != e.getEstado()) {
 					moverANotasComision(e);
-				}else {
+				} else {
 					expedienteRepo.save(e);
 				}
-				
+
 				break;
 
 			case REPUESTA_AL_CIUDADANO:
@@ -285,7 +285,8 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverAOficinaParlamentaria(Expediente expediente) throws IOException {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.REPUESTA_DEL_MUNICIPIO)) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)
+				|| (expediente.getEstado() == CircuitoExpediente.REPUESTA_DEL_MUNICIPIO)) {
 			expediente.setEstado(CircuitoExpediente.OFICINA_PARLAMENTARIA);
 			expedienteRepo.save(expediente);
 		} else {
@@ -297,7 +298,8 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverAComisionAmbientalYEconomia(Expediente expediente) throws IOException {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)
+				|| (expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA);
 			expedienteRepo.save(expediente);
 		} else {
@@ -309,7 +311,8 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverAGobiernoYSocial(Expediente expediente) throws IOException {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)
+				|| (expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL);
 			expedienteRepo.save(expediente);
 		} else {
@@ -321,7 +324,8 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverAAmbasComisiones(Expediente expediente) throws IOException {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)
+				|| (expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.AMBAS_COMISIONES);
 			expedienteRepo.save(expediente);
 		} else {
@@ -333,7 +337,8 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverAArchivo(Expediente expediente) throws IOException {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA) ){
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)
+				|| (expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.ARCHIVO);
 			expedienteRepo.save(expediente);
 		} else {
@@ -345,7 +350,8 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverAPresidencia(Expediente expediente) throws IOException {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)
+				|| (expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.PRESIDENCIA);
 			expedienteRepo.save(expediente);
 		} else {
@@ -357,7 +363,8 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverABloque_A(Expediente expediente) throws IOException {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)
+				|| (expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.BLOQUE_A);
 			expedienteRepo.save(expediente);
 		} else {
@@ -369,7 +376,8 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverABloque_B(Expediente expediente) throws IOException {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)
+				|| (expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.BLOQUE_B);
 			expedienteRepo.save(expediente);
 		} else {
@@ -381,7 +389,8 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverABloque_C(Expediente expediente) throws IOException {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)
+				|| (expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.BLOQUE_C);
 			expedienteRepo.save(expediente);
 		} else {
@@ -393,7 +402,8 @@ public class ExpedienteDaos implements IExpedienteDaos {
 	@Override
 	public void moverATodosBloques(Expediente expediente) throws IOException {
 
-		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)||(expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
+		if ((expediente.getEstado() == CircuitoExpediente.INGRESO)
+				|| (expediente.getEstado() == CircuitoExpediente.OFICINA_PARLAMENTARIA)) {
 			expediente.setEstado(CircuitoExpediente.TODOS_LOS_BLOQUES);
 			expedienteRepo.save(expediente);
 		} else {
@@ -551,17 +561,48 @@ public class ExpedienteDaos implements IExpedienteDaos {
 
 	@Override
 	public List<Expediente> buscarPorRangoDeFechasYCircuitos(LocalDate startDate, LocalDate endDate) {
-		List<CircuitoExpediente> circuitos = Arrays.asList(
-				CircuitoExpediente.INGRESO,
+		List<CircuitoExpediente> circuitos = Arrays.asList(CircuitoExpediente.INGRESO,
 				CircuitoExpediente.COMISION_DE_GOBIERNO_Y_DESARROLLO_SOCIAL,
 				CircuitoExpediente.COMISION_DE_DESARROLLO_URBANO_AMBIENTAL_Y_ECONOMIA,
-				CircuitoExpediente.AMBAS_COMISIONES,
-				CircuitoExpediente.ARCHIVO,
-				CircuitoExpediente.DESPACHOS_DE_COMISION,
-				CircuitoExpediente.LEGISLACION
-		);
+				CircuitoExpediente.AMBAS_COMISIONES, CircuitoExpediente.ARCHIVO,
+				CircuitoExpediente.DESPACHOS_DE_COMISION, CircuitoExpediente.LEGISLACION);
 		return expedienteRepo.findByUltimoMovimientoFechaBetweenAndCircuitoIn(startDate, endDate, circuitos);
 	}
 
+	@Override
+	public List<Expediente> porVencer() {
+
+		LocalDate hoy = LocalDate.now();
+		LocalDate desde = hoy.minusMonths(12);
+		LocalDate hasta = hoy.minusMonths(11);
+		List<CircuitoExpediente> excluidos = List.of(CircuitoExpediente.ARCHIVO, CircuitoExpediente.LEGISLACION,
+				CircuitoExpediente.FIN);
+
+		return expedienteRepo.findByUltimoMovimientoFechaBetweenAndCircuitoIn(desde, hasta, excluidos);
+	}
+
+	@Override
+	public void sinestadoParlamentario() {
+
+		LocalDate haceUnAnio = LocalDate.now().minusYears(1);
+
+		List<CircuitoExpediente> excluidos = List.of(CircuitoExpediente.ARCHIVO, CircuitoExpediente.LEGISLACION,
+				CircuitoExpediente.FIN);
+
+		List<Expediente> vencidos = expedienteRepo.findByFechaBeforeAndEstadoNotIn(haceUnAnio, excluidos);
+		// ver
+		Movimiento m = new Movimiento();
+		m.setDetalle("SIN ESTADO PARLAMENTARIO.");
+		m.setFecha(LocalDate.now());
+
+		vencidos.forEach(exp -> {
+
+			exp.setEstado(CircuitoExpediente.ARCHIVO);
+			m.setId(generateMovimientoId(exp));
+			exp.getMovimientos().add(m);
+		});
+
+		expedienteRepo.saveAll(vencidos);
+	}
 
 }
