@@ -88,7 +88,7 @@ Roles
 
 Estas entidades se relacionan para permitir un flujo ordenado y controlado de los procesos administrativos.
 
-##📈 Impacto
+## 📈 Impacto
 
 Reducción significativa del uso de papel
 Mejora en la trazabilidad de los expedientes
