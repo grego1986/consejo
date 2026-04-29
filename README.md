@@ -49,7 +49,6 @@ Además, el sistema implementa una espera activa al iniciar para asegurar que la
 
 ### ▶️ Pasos
 
-```bash
 # Clonar el repositorio
 git clone https://github.com/grego1986/consejo.git
 
