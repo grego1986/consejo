@@ -8,8 +8,8 @@ services:
       - "8080:8080"  # Mapea el puerto 8080 del contenedor al 8080 de la máquina host
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/concejorecreo  # URL de conexión a la base de datos
-      SPRING_DATASOURCE_USERNAME: GregoDev  # Usuario de la base de datos
-      SPRING_DATASOURCE_PASSWORD: Grego_53  # Contraseña de la base de datos
+      SPRING_DATASOURCE_USERNAME: example_username  # Usuario de la base de datos
+      SPRING_DATASOURCE_PASSWORD: example_password  # Contraseña de la base de datos
     depends_on:
       - db  # Espera a que el servicio de la base de datos esté disponible
     restart: unless-stopped  # Reinicia el contenedor si se detiene por cualquier motivo
@@ -20,9 +20,9 @@ services:
     image: mysql:5.7
     environment:
       MYSQL_DATABASE: concejorecreo
-      MYSQL_ROOT_PASSWORD: Grego_53@Grego
-      MYSQL_USER: GregoDev
-      MYSQL_PASSWORD: Grego_53
+      MYSQL_ROOT_PASSWORD: example_password
+      MYSQL_USER: example_username
+      MYSQL_PASSWORD: example_password
     ports:
       - "3306:3306"
     volumes:
